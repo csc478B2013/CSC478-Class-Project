@@ -1,0 +1,8 @@
+<phpunit colors="true">
+  <testsuites>
+    <testsuite name="Model_Objects">
+      <file>/Users/joejones/iPhoneDev/p4workspace/ThinkFit/website/CSC478/unitTests/StudentModelUnitTest.php</file>
+	<file>/Users/joejones/iPhoneDev/p4workspace/ThinkFit/website/CSC478/unitTests/StudentSettingsModelUnitTest.php</file>
+    </testsuite>
+  </testsuites>
+</phpunit>
