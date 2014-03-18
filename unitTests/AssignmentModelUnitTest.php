@@ -20,7 +20,7 @@ class AssignmentModelUnitTest extends PHPUnit_Framework_TestCase
 		$testSemesterID		= '1';
 		$testCourseID 		= '2';
 		$testAssignmentID 	= '1';
-		$testAssignmentType = 'quiz';
+		$testAssignmentType = 'Quiz';
 		$testName 			= 'Software Engineering Capstone Quiz 7';
 		$testDueDate 		= '2013-01-01';
 		$testStudyTime 		= '4';

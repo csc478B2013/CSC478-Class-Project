@@ -20,7 +20,7 @@ class SemesterModelUnitTest extends PHPUnit_Framework_TestCase
 		$testStudentID = '1';
 		$testSemesterID	= '1';
 		$testYear = '2014';
-		$testTerm= 'spring';
+		$testTerm= 'Spring';
 		$testStartDate = '2014-01-01';
 		$testEndDate = '2014-04-01';
 		$testSemesterGPA= '3.4';

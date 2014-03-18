@@ -49,7 +49,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId->getSemesterId());
 		$this->assertEquals("1", $assignmentId->getCourseId());
 		$this->assertEquals("1", $assignmentId->getAssignmentId());
-		$this->assertEquals("exam", $assignmentId->getAssignmentType());
+		$this->assertEquals("Exam", $assignmentId->getAssignmentType());
 		$this->assertEquals("Midterm", $assignmentId->getName());
 		$this->assertEquals("2013-01-01" , $assignmentId->getDueDate());	
 		$this->assertEquals("2", $assignmentId->getStudyTime());
@@ -66,7 +66,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[0]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[0]->getCourseId());
 		$this->assertEquals("1", $assignmentId[0]->getAssignmentId());
-		$this->assertEquals("exam", $assignmentId[0]->getAssignmentType());
+		$this->assertEquals("Exam", $assignmentId[0]->getAssignmentType());
 		$this->assertEquals("Midterm", $assignmentId[0]->getName());
 		$this->assertEquals("2013-01-01" , $assignmentId[0]->getDueDate());	
 		$this->assertEquals("2", $assignmentId[0]->getStudyTime());
@@ -77,7 +77,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[1]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[1]->getCourseId());
 		$this->assertEquals("2", $assignmentId[1]->getAssignmentId());
-		$this->assertEquals("quiz", $assignmentId[1]->getAssignmentType());
+		$this->assertEquals("Quiz", $assignmentId[1]->getAssignmentType());
 		$this->assertEquals("Quiz 2", $assignmentId[1]->getName());
 		$this->assertEquals("2014-04-01" , $assignmentId[1]->getDueDate());	
 		$this->assertEquals("1", $assignmentId[1]->getStudyTime());
@@ -127,7 +127,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("2", $assignment1->getSemesterId());
 		$this->assertEquals("2", $assignment1->getCourseId());
 		$this->assertEquals("1", $assignment1->getAssignmentId());
-		$this->assertEquals("quiz", $assignment1->getAssignmentType());
+		$this->assertEquals("Quiz", $assignment1->getAssignmentType());
 		$this->assertEquals("Software Engineering Capstone Quiz 7", $assignment1->getName());
 		$this->assertEquals("2013-02-02" , $assignment1->getDueDate());	
 		$this->assertEquals("4", $assignment1->getStudyTime());
@@ -143,7 +143,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$testStudentID 		= '1';
 		$testSemesterID		= '1';
 		$testCourseID 		= '2';
-		$testAssignmentType = 'quiz';
+		$testAssignmentType = 'Quiz';
 		$testName 			= 'Software Engineering Capstone Quiz 7';
 		$testDueDate 		= '2013-01-01';
 		$testStudyTime 		= '4';
@@ -171,7 +171,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentAdded->getSemesterId());
 		$this->assertEquals("2", $assignmentAdded->getCourseId());
 		$this->assertEquals("4", $assignmentAdded->getAssignmentId());
-		$this->assertEquals("quiz", $assignmentAdded->getAssignmentType());
+		$this->assertEquals("Quiz", $assignmentAdded->getAssignmentType());
 		$this->assertEquals("Software Engineering Capstone Quiz 7", $assignmentAdded->getName());
 		$this->assertEquals("2013-01-01" , $assignmentAdded->getDueDate());	
 		$this->assertEquals("4", $assignmentAdded->getStudyTime());
@@ -199,7 +199,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[0]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[0]->getCourseId());
 		$this->assertEquals("1", $assignmentId[0]->getAssignmentId());
-		$this->assertEquals("exam", $assignmentId[0]->getAssignmentType());
+		$this->assertEquals("Exam", $assignmentId[0]->getAssignmentType());
 		$this->assertEquals("Midterm", $assignmentId[0]->getName());
 		$this->assertEquals("2013-01-01" , $assignmentId[0]->getDueDate());	
 		$this->assertEquals("2", $assignmentId[0]->getStudyTime());
@@ -210,7 +210,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[1]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[1]->getCourseId());
 		$this->assertEquals("2", $assignmentId[1]->getAssignmentId());
-		$this->assertEquals("quiz", $assignmentId[1]->getAssignmentType());
+		$this->assertEquals("Quiz", $assignmentId[1]->getAssignmentType());
 		$this->assertEquals("Quiz 2", $assignmentId[1]->getName());
 		$this->assertEquals("2014-04-01" , $assignmentId[1]->getDueDate());	
 		$this->assertEquals("1", $assignmentId[1]->getStudyTime());
@@ -226,7 +226,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[0]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[0]->getCourseId());
 		$this->assertEquals("1", $assignmentId[0]->getAssignmentId());
-		$this->assertEquals("exam", $assignmentId[0]->getAssignmentType());
+		$this->assertEquals("Exam", $assignmentId[0]->getAssignmentType());
 		$this->assertEquals("Midterm", $assignmentId[0]->getName());
 		$this->assertEquals("2013-01-01" , $assignmentId[0]->getDueDate());	
 		$this->assertEquals("2", $assignmentId[0]->getStudyTime());
@@ -237,7 +237,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[1]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[1]->getCourseId());
 		$this->assertEquals("2", $assignmentId[1]->getAssignmentId());
-		$this->assertEquals("quiz", $assignmentId[1]->getAssignmentType());
+		$this->assertEquals("Quiz", $assignmentId[1]->getAssignmentType());
 		$this->assertEquals("Quiz 2", $assignmentId[1]->getName());
 		$this->assertEquals("2014-04-01" , $assignmentId[1]->getDueDate());	
 		$this->assertEquals("1", $assignmentId[1]->getStudyTime());
@@ -253,7 +253,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[0]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[0]->getCourseId());
 		$this->assertEquals("1", $assignmentId[0]->getAssignmentId());
-		$this->assertEquals("exam", $assignmentId[0]->getAssignmentType());
+		$this->assertEquals("Exam", $assignmentId[0]->getAssignmentType());
 		$this->assertEquals("Midterm", $assignmentId[0]->getName());
 		$this->assertEquals("2013-01-01" , $assignmentId[0]->getDueDate());	
 		$this->assertEquals("2", $assignmentId[0]->getStudyTime());
@@ -264,7 +264,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[1]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[1]->getCourseId());
 		$this->assertEquals("2", $assignmentId[1]->getAssignmentId());
-		$this->assertEquals("quiz", $assignmentId[1]->getAssignmentType());
+		$this->assertEquals("Quiz", $assignmentId[1]->getAssignmentType());
 		$this->assertEquals("Quiz 2", $assignmentId[1]->getName());
 		$this->assertEquals("2014-04-01" , $assignmentId[1]->getDueDate());	
 		$this->assertEquals("1", $assignmentId[1]->getStudyTime());
@@ -282,7 +282,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[0]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[0]->getCourseId());
 		$this->assertEquals("2", $assignmentId[0]->getAssignmentId());
-		$this->assertEquals("quiz", $assignmentId[0]->getAssignmentType());
+		$this->assertEquals("Quiz", $assignmentId[0]->getAssignmentType());
 		$this->assertEquals("Quiz 2", $assignmentId[0]->getName());
 		$this->assertEquals("2014-04-01" , $assignmentId[0]->getDueDate());	
 		$this->assertEquals("1", $assignmentId[0]->getStudyTime());
@@ -293,7 +293,7 @@ class AssignmentDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $assignmentId[1]->getSemesterId());
 		$this->assertEquals("1", $assignmentId[1]->getCourseId());
 		$this->assertEquals("3", $assignmentId[1]->getAssignmentId());
-		$this->assertEquals("exam", $assignmentId[1]->getAssignmentType());
+		$this->assertEquals("Exam", $assignmentId[1]->getAssignmentType());
 		$this->assertEquals("Midterm", $assignmentId[1]->getName());
 		$this->assertEquals("2014-06-01" , $assignmentId[1]->getDueDate());	
 		$this->assertEquals("2", $assignmentId[1]->getStudyTime());

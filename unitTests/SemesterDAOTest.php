@@ -44,7 +44,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId->getStudentId());
 		$this->assertEquals("1", $semesterId->getSemesterId());
 		$this->assertEquals("2014", $semesterId->getYear());
-		$this->assertEquals("spring", $semesterId->getTerm());
+		$this->assertEquals("Spring", $semesterId->getTerm());
 		$this->assertEquals("2014-01-01", $semesterId->getStartDate());
 		$this->assertEquals("2014-01-04" , $semesterId->getEndDate());	
 		$this->assertEquals("4.440", $semesterId->getSemesterGPA());
@@ -58,7 +58,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId[0]->getStudentId());
 		$this->assertEquals("1", $semesterId[0]->getSemesterId());
 		$this->assertEquals("2014", $semesterId[0]->getYear());
-		$this->assertEquals("spring", $semesterId[0]->getTerm());
+		$this->assertEquals("Spring", $semesterId[0]->getTerm());
 		$this->assertEquals("2014-01-01", $semesterId[0]->getStartDate());
 		$this->assertEquals("2014-01-04" , $semesterId[0]->getEndDate());	
 		$this->assertEquals("4.440", $semesterId[0]->getSemesterGPA());
@@ -67,7 +67,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId[1]->getStudentId());
 		$this->assertEquals("2", $semesterId[1]->getSemesterId());
 		$this->assertEquals("2013", $semesterId[1]->getYear());
-		$this->assertEquals("summer", $semesterId[1]->getTerm());
+		$this->assertEquals("Summer", $semesterId[1]->getTerm());
 		$this->assertEquals("2013-01-01", $semesterId[1]->getStartDate());
 		$this->assertEquals("2013-01-04" , $semesterId[1]->getEndDate());	
 		$this->assertEquals("4.440", $semesterId[1]->getSemesterGPA());
@@ -82,7 +82,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 
 		$semester->setStudentId("2");
 		$semester->setYear("2012");
-		$semester->setTerm("fall");
+		$semester->setTerm("Fall");
 		$semester->setStartDate("2013-01-01");
 		$semester->setEndDate("2013-04-01");
 		$semester->setSemesterGPA("4.000");
@@ -95,7 +95,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("2", $semester1->getStudentId());
 		$this->assertEquals("1", $semester1->getSemesterId());
 		$this->assertEquals("2012", $semester1->getYear());
-		$this->assertEquals("fall", $semester1->getTerm());
+		$this->assertEquals("Fall", $semester1->getTerm());
 		$this->assertEquals("2013-01-01", $semester1->getStartDate());
 		$this->assertEquals("2013-04-01" , $semester1->getEndDate());	
 		$this->assertEquals("4.000", $semester1->getSemesterGPA());
@@ -109,7 +109,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 
 		$semester->setStudentId("2");
 		$semester->setYear("2012");
-		$semester->setTerm("fall");
+		$semester->setTerm("Fall");
 		$semester->setStartDate("2013-01-01");
 		$semester->setEndDate("2013-04-01");
 		$semester->setSemesterGPA("4.000");
@@ -120,7 +120,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("2", $semesterAdded->getStudentId());
 		$this->assertEquals("4", $semesterAdded->getSemesterId());
 		$this->assertEquals("2012", $semesterAdded->getYear());
-		$this->assertEquals("fall", $semesterAdded->getTerm());
+		$this->assertEquals("Fall", $semesterAdded->getTerm());
 		$this->assertEquals("2013-01-01", $semesterAdded->getStartDate());
 		$this->assertEquals("2013-04-01" , $semesterAdded->getEndDate());	
 		$this->assertEquals("4.000", $semesterAdded->getSemesterGPA());
@@ -144,7 +144,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId[0]->getStudentId());
 		$this->assertEquals("1", $semesterId[0]->getSemesterId());
 		$this->assertEquals("2014", $semesterId[0]->getYear());
-		$this->assertEquals("spring", $semesterId[0]->getTerm());
+		$this->assertEquals("Spring", $semesterId[0]->getTerm());
 		$this->assertEquals("2014-01-01", $semesterId[0]->getStartDate());
 		$this->assertEquals("2014-01-04" , $semesterId[0]->getEndDate());	
 		$this->assertEquals("4.440", $semesterId[0]->getSemesterGPA());
@@ -153,7 +153,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId[1]->getStudentId());
 		$this->assertEquals("2", $semesterId[1]->getSemesterId());
 		$this->assertEquals("2013", $semesterId[1]->getYear());
-		$this->assertEquals("summer", $semesterId[1]->getTerm());
+		$this->assertEquals("Summer", $semesterId[1]->getTerm());
 		$this->assertEquals("2013-01-01", $semesterId[1]->getStartDate());
 		$this->assertEquals("2013-01-04" , $semesterId[1]->getEndDate());	
 		$this->assertEquals("4.440", $semesterId[1]->getSemesterGPA());
@@ -167,7 +167,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId[0]->getStudentId());
 		$this->assertEquals("1", $semesterId[0]->getSemesterId());
 		$this->assertEquals("2014", $semesterId[0]->getYear());
-		$this->assertEquals("spring", $semesterId[0]->getTerm());
+		$this->assertEquals("Spring", $semesterId[0]->getTerm());
 		$this->assertEquals("2014-01-01", $semesterId[0]->getStartDate());
 		$this->assertEquals("2014-01-04" , $semesterId[0]->getEndDate());	
 		$this->assertEquals("4.440", $semesterId[0]->getSemesterGPA());
@@ -176,7 +176,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId[1]->getStudentId());
 		$this->assertEquals("2", $semesterId[1]->getSemesterId());
 		$this->assertEquals("2013", $semesterId[1]->getYear());
-		$this->assertEquals("summer", $semesterId[1]->getTerm());
+		$this->assertEquals("Summer", $semesterId[1]->getTerm());
 		$this->assertEquals("2013-01-01", $semesterId[1]->getStartDate());
 		$this->assertEquals("2013-01-04" , $semesterId[1]->getEndDate());	
 		$this->assertEquals("4.440", $semesterId[1]->getSemesterGPA());
@@ -190,7 +190,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId->getStudentId());
 		$this->assertEquals("1", $semesterId->getSemesterId());
 		$this->assertEquals("2014", $semesterId->getYear());
-		$this->assertEquals("spring", $semesterId->getTerm());
+		$this->assertEquals("Spring", $semesterId->getTerm());
 		$this->assertEquals("2014-01-01", $semesterId->getStartDate());
 		$this->assertEquals("2014-01-04" , $semesterId->getEndDate());	
 		$this->assertEquals("4.440", $semesterId->getSemesterGPA());
@@ -204,7 +204,7 @@ class SemesterDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("1", $semesterId->getStudentId());
 		$this->assertEquals("1", $semesterId->getSemesterId());
 		$this->assertEquals("2014", $semesterId->getYear());
-		$this->assertEquals("spring", $semesterId->getTerm());
+		$this->assertEquals("Spring", $semesterId->getTerm());
 		$this->assertEquals("2014-01-01", $semesterId->getStartDate());
 		$this->assertEquals("2014-01-04" , $semesterId->getEndDate());	
 		$this->assertEquals("4.440", $semesterId->getSemesterGPA());

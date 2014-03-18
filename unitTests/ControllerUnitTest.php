@@ -23,7 +23,7 @@ class ControllerUnitTest extends PHPUnit_Framework_TestCase
 		$testStudentID1 		= '2';
 		$testSemesterID1		= '2';
 		$testCourseID1			= '2';
-		$testAssignmentType1 	= 'quiz';
+		$testAssignmentType1 	= 'Quiz';
 		$testName1 				= 'Software Engineering Capstone Quiz 7';
 		$testDueDate1 			= '2013-02-02';
 		$testStudyTime1 		= '4';
@@ -33,7 +33,7 @@ class ControllerUnitTest extends PHPUnit_Framework_TestCase
 		$testStudentID2 		= '3';
 		$testSemesterID2		= '3';
 		$testCourseID2			= '3';
-		$testAssignmentType2 	= 'quiz';
+		$testAssignmentType2 	= 'Quiz';
 		$testName2 				= 'Software Engineering Capstone Quiz 8';
 		$testDueDate2 			= '2013-02-12';
 		$testStudyTime2 		= '4';

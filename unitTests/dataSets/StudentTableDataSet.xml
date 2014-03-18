@@ -43,7 +43,7 @@
 		<column>st_other</column>
 		<row>
 			<value>1</value>
-			<value>morning</value>
+			<value>Morning</value>
 			<value>1</value>
 			<value>3</value>
 			<value>4</value>
@@ -53,7 +53,7 @@
 		</row>
 		<row>
 			<value>2</value>
-			<value>afternoon</value>
+			<value>Afternoon</value>
 			<value>5</value>
 			<value>5</value>
 			<value>5</value>
@@ -63,7 +63,7 @@
 		</row>
 		<row>
 			<value>3</value>
-			<value>evening</value>
+			<value>Evening</value>
 			<value>1</value>
 			<value>3</value>
 			<value>4</value>
@@ -85,7 +85,7 @@
 			<value>1</value>
 			<value>1</value>
 			<value>2014</value>
-			<value>spring</value>
+			<value>Spring</value>
 			<value>2014-01-01</value>
 			<value>2014-01-04</value>
 			<value>4.440</value>
@@ -95,7 +95,7 @@
 			<value>1</value>
 			<value>2</value>
 			<value>2013</value>
-			<value>summer</value>
+			<value>Summer</value>
 			<value>2013-01-01</value>
 			<value>2013-01-04</value>
 			<value>4.440</value>
@@ -105,7 +105,7 @@
 			<value>2</value>
 			<value>3</value>
 			<value>2014</value>
-			<value>spring</value>
+			<value>Spring</value>
 			<value>2014-01-01</value>
 			<value>2014-01-04</value>
 			<value>4.440</value>

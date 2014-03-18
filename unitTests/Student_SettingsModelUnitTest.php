@@ -17,7 +17,7 @@ class Student_SettingsModelUnitTest extends PHPUnit_Framework_TestCase
 		//set up vars for the various properties
 		//
 		$testStudentID 				= '1';
-		$testStudyTimeOfDay			= 'morning';
+		$testStudyTimeOfDay			= 'Morning';
 		$testStudyTimeExam 			= '2';
 		$testStudyTimeQuiz 			= '3';
 		$testStudyTimeProject 		= '4';

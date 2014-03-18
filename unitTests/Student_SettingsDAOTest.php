@@ -40,7 +40,7 @@ class Student_SettingsDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$studentSettingsId = Student_SettingsDAO::loadById(1);
 		
 		$this->assertEquals("1", $studentSettingsId->getStudentId());
-		$this->assertEquals("morning", $studentSettingsId->getStudyTimeTimeOfDay());
+		$this->assertEquals("Morning", $studentSettingsId->getStudyTimeTimeOfDay());
 		$this->assertEquals("01", $studentSettingsId->getStudyTimeForExam());
 		$this->assertEquals("03", $studentSettingsId->getStudyTimeForQuiz());
 		$this->assertEquals("04", $studentSettingsId->getStudyTimeForProject());
@@ -56,7 +56,7 @@ class Student_SettingsDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$studentSettingsId = Student_SettingsDAO::loadALL();
 		
 		$this->assertEquals("1", $studentSettingsId[0]->getStudentId());
-		$this->assertEquals("morning", $studentSettingsId[0]->getStudyTimeTimeOfDay());
+		$this->assertEquals("Morning", $studentSettingsId[0]->getStudyTimeTimeOfDay());
 		$this->assertEquals("01", $studentSettingsId[0]->getStudyTimeForExam());
 		$this->assertEquals("03", $studentSettingsId[0]->getStudyTimeForQuiz());
 		$this->assertEquals("04", $studentSettingsId[0]->getStudyTimeForProject());
@@ -65,7 +65,7 @@ class Student_SettingsDAOTest extends PHPUnit_Extensions_Database_TestCase
 		$this->assertEquals("04" , $studentSettingsId[0]->getStudyTimeForOther());
 		
 		$this->assertEquals("2", $studentSettingsId[1]->getStudentId());
-		$this->assertEquals("afternoon", $studentSettingsId[1]->getStudyTimeTimeOfDay());
+		$this->assertEquals("Afternoon", $studentSettingsId[1]->getStudyTimeTimeOfDay());
 		$this->assertEquals("05", $studentSettingsId[1]->getStudyTimeForExam());
 		$this->assertEquals("05", $studentSettingsId[1]->getStudyTimeForQuiz());
 		$this->assertEquals("05", $studentSettingsId[1]->getStudyTimeForProject());
@@ -82,7 +82,7 @@ class Student_SettingsDAOTest extends PHPUnit_Extensions_Database_TestCase
 		//set up vars for the various properties
 		//
 		$testStudentID 				= '1';
-		$testStudyTimeOfDay			= 'afternoon';
+		$testStudyTimeOfDay			= 'Afternoon';
 		$testStudyTimeExam 			= '05';
 		$testStudyTimeQuiz 			= '05';
 		$testStudyTimeProject 		= '05';
@@ -123,7 +123,7 @@ class Student_SettingsDAOTest extends PHPUnit_Extensions_Database_TestCase
 		//set up vars for the various properties
 		//
 		$testStudentID 				= '4';
-		$testStudyTimeOfDay			= 'afternoon';
+		$testStudyTimeOfDay			= 'Afternoon';
 		$testStudyTimeExam 			= '05';
 		$testStudyTimeQuiz 			= '05';
 		$testStudyTimeProject 		= '05';
