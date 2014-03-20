@@ -163,7 +163,6 @@
                 case "search": control = this._createInputSearch(); break;
                 case "email": control = this._createInputEmail(); break;
                 case "tel": control = this._createInputTel(); break;
-				case "number": control = this._createInputNum(); break;
                 default: control = this._createInputText();
             }
 
@@ -264,38 +263,10 @@
         },
 
         _createInputSearch: function(){
-			return this._createInputVal("text", "btn-search");
-        },
-		
-		_createInputNum: function(){
-			return this._createInputVal("number", "btn-clear");
-        },
+            var element = this.element;
 
-        _createInputTel: function(){
-			return this._createInputVal("tel", "btn-clear");
-        },
-
-        _createInputEmail: function(){
-			return this._createInputVal("email", "btn-clear");
-        },
-
-        _createInputText: function(){
-			return this._createInputVal("text", "btn-clear");
-        },
-
-        _createInputPassword: function(){
-			return this._createInputVal("password", "btn-reveal");
-        },
-
-        _createInputFile: function(){
-			return this._createInputVal("file", "btn-file");
-        },
-		
-		_createInputVal: function(name, buttonName) {
-			var element = this.element;
-
-            var wrapper = $("<div/>").addClass("input-control").addClass(name);
-            var button = $("<button/>").addClass(buttonName);
+            var wrapper = $("<div/>").addClass("input-control").addClass("text");
+            var button = $("<button/>").addClass("btn-search");
             var clone = element.clone(true);
             var parent = element.parent();
 
@@ -306,7 +277,92 @@
             element.remove();
 
             return wrapper;
-		},
+        },
+
+        _createInputTel: function(){
+            var element = this.element;
+
+            var wrapper = $("<div/>").addClass("input-control").addClass("tel");
+            var button = $("<button/>").addClass("btn-clear");
+            var clone = element.clone(true);
+            var parent = element.parent();
+
+            clone.appendTo(wrapper);
+            button.appendTo(wrapper);
+
+            wrapper.insertBefore(element);
+            element.remove();
+
+            return wrapper;
+        },
+
+        _createInputEmail: function(){
+            var element = this.element;
+
+            var wrapper = $("<div/>").addClass("input-control").addClass("email");
+            var button = $("<button/>").addClass("btn-clear");
+            var clone = element.clone(true);
+            var parent = element.parent();
+
+            clone.appendTo(wrapper);
+            button.appendTo(wrapper);
+
+            wrapper.insertBefore(element);
+            element.remove();
+
+            return wrapper;
+        },
+
+        _createInputText: function(){
+            var element = this.element;
+
+            var wrapper = $("<div/>").addClass("input-control").addClass("text");
+            var button = $("<button/>").addClass("btn-clear");
+            var clone = element.clone(true);
+            var parent = element.parent();
+
+            clone.appendTo(wrapper);
+            button.appendTo(wrapper);
+
+            wrapper.insertBefore(element);
+            element.remove();
+
+            return wrapper;
+        },
+
+        _createInputPassword: function(){
+            var element = this.element;
+
+            var wrapper = $("<div/>").addClass("input-control").addClass("password");
+            var button = $("<button/>").addClass("btn-reveal");
+            var clone = element.clone(true);
+            var parent = element.parent();
+
+            clone.appendTo(wrapper);
+            button.appendTo(wrapper);
+
+            wrapper.insertBefore(element);
+            element.remove();
+
+            return wrapper;
+        },
+
+        _createInputFile: function(){
+            var element = this.element;
+
+            var wrapper = $("<div/>").addClass("input-control").addClass("file");
+            var button = $("<button/>").addClass("btn-file");
+            var clone = element.clone(true);
+            var parent = element.parent();
+
+            clone.appendTo(wrapper);
+            button.appendTo(wrapper);
+
+            wrapper.insertBefore(element);
+            element.remove();
+
+            return wrapper;
+        },
 
         _destroy: function(){},
 

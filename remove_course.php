@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
     <!-- Page Header -->
-	<header class="bg-dark" data-load='includes/header.html'></header>
+	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
+	
+	
+	<!-- PHP Header Scripts -->
+	<?php
+		// include resource files
+		include 'includes/functions.php';
+		include 'includes/drawTables.php';
+		include 'includes/drawForms.php';
+		
+		// set user authentication
+		$student_id = 1;
+		
+		// connect to database
+		$link = db_connect();
+	?>
 
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
@@ -26,90 +41,98 @@
     <script src="js/github.info.js"></script>
 
 	<title> Remove Course </title>
+	
+	<!-- Remove semester from database and then reload current page-->
+	<?php
+		if(isset($_POST['myFormSubmitted'])) {
+			
+			// local variables
+			$course_id      	= $_POST['course_id'];
+			
+			// get record information from database for output use
+			$courseOutput 		= Course::select($link, $course_id);
+
+			// delete record from database
+			Course::delete($link, $course_id);			
+		}
+	?>
+	
+	<!-- Javascript functions -->
+	<script>
+		// dynamic function that fills the course row based on the semester selection
+		function showCourses(str){			
+			if (window.XMLHttpRequest)
+				xmlhttp=new XMLHttpRequest();					// code for IE7+, Firefox, Chrome, Opera, Safari
+			else
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
+
+			xmlhttp.onreadystatechange=function() {
+				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+					document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+				}
+			}
+			xmlhttp.open("GET","includes/get/getCourses.php?semester_id="+str,true);
+			xmlhttp.send();
+		}
+	</script>
+	
 </head>
 
 <!-- Page Body -->
 <body class="metro">
-
-	<div class="grid span10 offset1">
-		<div class="row span8">
-			<form>
+	<div class="grid">
+		<div class="row">
+		<div class="span10 offset1">
+			<form action="remove_course.php" method="post" name="form">
 			<fieldset>
 			<legend>Remove Course</legend>
 				<table>
 				
-					<!-- Select Semester -->
-					<tr>
-						<td class="span2"><label>Semester:</label></td>
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>Summer 2014</option>	<!-- select current semester by default -->
-									<option>Spring 2014</option>
-								</select>
-							</div>
-						</td>
-					</tr>
-					
-					<!-- Select Course -->
-					<tr>
-						<td class="span2"><label>Course:</label></td>	<!-- load courses from semester -->
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>CSC 470, Android App Development</option>
-									<option>CSC 478, Software Engineering Capstone</option>
-									<option>CSC 574, Advanced Database Concepts</option>
-								</select>
-							</div>
-						</td>
-					</tr>
+					<!-- Select Semester and Dynamic Course -->
+					<tr><?php drawSelect_DynamicCourse($link, $student_id); ?></tr>
 					
 					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
+					<tr><?php drawOther_Gap(); ?></tr>
 					
 					<!-- Submission Control Buttons -->
-					<tr>
-						<td class="span2"><input type="submit" class="span2" value="Remove"></td>
-						<td class="span2"><input type="reset" class="span2" value="Reset Form"></td>
-					</tr>
+					<tr><?php drawButton_Remove(); ?></tr>
 					
 				</table>   
 			</fieldset>
 			</form>
-		</div>
+			
+			<!-- This section is to notify the user on the status of the request -->
+			<?php
+				if(isset($_POST['myFormSubmitted'])) {
+					
+					// get information
+					$designation	= $courseOutput->designation;
+					$name			= $courseOutput->name;
+					
+					// alert the user 
+					echo "	<blockquote>
+								<p class='text-success'>$designation, $name has been deleted successfully.</p>
+							</blockquote>";
 
-		<div class="row">
-			<button class="button span2" id="createWindow">Remove</button>
-			<input type="reset" class="span2" value="Reset Form">
+				}
+			?>	
+			
 		</div>
-	</div>
-                    
-    <script>
-        $(function(){              
-            $("#createWindow").on('click', function(){
-                $.Dialog({
-                    shadow: true,
-                    overlay: false,
-                    icon: '<span class="icon-rocket"></span>',
-                    title: 'Title',
-                    width: 500,
-                    padding: 10,
-                    content: 'Window content here'
-                });
-            });
-        })
-    </script>
-    
-    <script src="js/hitua.js"></script>
-    
+		</div>
+    </div>
 </body> 
 
 <!-- Page Footer -->
 <footer>
 
-</footer>
+    <?php
+        // include footer files
+        include 'includes/footer.html';
+
+        // close database
+        mysql_close($link);
+    ?>
+
+</footer> 
   
 </html>

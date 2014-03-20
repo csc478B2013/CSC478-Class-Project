@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
     <!-- Page Header -->
-	<header class="bg-dark" data-load='includes/header.html'></header>
+	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
+	
+	
+	<!-- PHP Header Scripts -->
+	<?php
+		// include resource files
+		include 'includes/functions.php';
+		include 'includes/drawTables.php';
+		include 'includes/drawForms.php';
+		
+		// set user authentication
+		$student_id = 1;
+		
+		// connect to database
+		$link = db_connect();
+	?>
 
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
@@ -26,76 +41,80 @@
     <script src="js/github.info.js"></script>
 
 	<title> Remove Semester </title>
+		
+		
+	<!-- Remove semester from database and then reload current page-->
+	<?php
+		if(isset($_POST['myFormSubmitted'])) {
+			
+			// local variables
+			$semester_id        = $_POST['semester_id'];
+			
+			// get record information from database for output use
+			$semesterOutput 	= Semester::select($link, $semester_id);
+
+			// delete record from database
+			Semester::delete($link, $semester_id);			
+		}
+	?>	
+		
 </head>
 
 <!-- Page Body -->
 <body class="metro">
-
-	<div class="grid span10 offset1">
-		<div class="row span8">
-			<form>
+	<div class="grid">
+		<div class="row">
+		<div class="span10 offset1">
+			<form action="remove_semester.php" method="post" name="form">
 			<fieldset>
 			<legend>Remove Semester</legend>
 				<table>
 				
 					<!-- Select Semester -->
-					<tr>
-						<td class="span2"><label>Semester:</label></td>
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>Summer 2014</option>	<!-- select current semester by default -->
-									<option>Spring 2014</option>
-								</select>
-							</div>
-						</td>
-					</tr>
-					
+					<tr><?php drawSelect_Semester($link, $student_id); ?></tr>
+
 					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
+					<tr><?php drawOther_Gap(); ?></tr>
 					
 					<!-- Submission Control Buttons -->
-					<tr>
-						<td class="span2"><input type="submit" class="span2" value="Remove"></td>
-						<td class="span2"><input type="reset" class="span2" value="Reset Form"></td>
-					</tr>
+					<tr><?php drawButton_Remove(); ?></tr>
 					
 				</table>   
 			</fieldset>
 			</form>
-		</div>
+			
+			<!-- This section is to notify the user on the status of the request -->
+			<?php
+				if(isset($_POST['myFormSubmitted'])) {
+					
+					// get information
+					$year	= $semesterOutput->year;
+					$term	= $semesterOutput->term;
+					
+					// alert the user 
+					echo "	<blockquote>
+								<p class='text-success'>$term, $year has been deleted successfully.</p>
+							</blockquote>";
 
-		<div class="row">
-			<button class="button span2" id="createWindow">Remove</button>
-			<input type="reset" class="span2" value="Reset Form">
+				}
+			?>	
+			
+		</div>
 		</div>
 	</div>
-                    
-    <script>
-        $(function(){              
-            $("#createWindow").on('click', function(){
-                $.Dialog({
-                    shadow: true,
-                    overlay: false,
-                    icon: '<span class="icon-rocket"></span>',
-                    title: 'Title',
-                    width: 500,
-                    padding: 10,
-                    content: 'Window content here'
-                });
-            });
-        })
-    </script>
-    
-    <script src="js/hitua.js"></script>
-    
 </body> 
 
 <!-- Page Footer -->
 <footer>
 
-</footer>
+    <?php
+        // include footer files
+        include 'includes/footer.html';
+
+        // close database
+        mysql_close($link);
+    ?>
+
+</footer> 
   
 </html>

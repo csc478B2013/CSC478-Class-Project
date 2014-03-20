@@ -1,0 +1,11 @@
+Student
+    Create:     Student::create($link, $fname, $email, $phone, $password); 
+    Update:     Student::update($link, $student_id, $fname, $email, $phone, $password);
+    Delete:     Student::delete($link, $student_id); 
+    Lookup:     $student = Student::lookup($link, $student_id);
+    
+    
+    
+Semester
+Course
+Assignment

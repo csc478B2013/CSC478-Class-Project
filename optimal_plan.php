@@ -2,14 +2,23 @@
 <html lang="en">
 <head>
     <!-- Page Header -->
-	<header class="bg-dark" data-load='includes/header.html'></header>
+	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
-
-	<!-- Connect to Database -->
-    <?php require_once('includes/db_connect.php'); ?>   
-    
-    <!-- Include Resource Files -->
-    <?php include 'includes/functions.php'; ?>
+	
+	
+	<!-- PHP Header Scripts -->
+	<?php
+		// include resource files
+		include 'includes/functions.php';
+		include 'includes/drawTables.php';
+		include 'includes/drawForms.php';
+		
+		// set user authentication
+		$student_id = 1;
+		
+		// connect to database
+		$link = db_connect();
+	?>
 	
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
@@ -154,8 +163,13 @@
 <!-- Page Footer -->
 <footer>
 
-<!-- Close Database -->
-<?php mysql_close($link); ?>
+    <?php
+        // include footer files
+        include 'includes/footer.html';
+
+        // close database
+        mysql_close($link);
+    ?>
 
 </footer> 
   

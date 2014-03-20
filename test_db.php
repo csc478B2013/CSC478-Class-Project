@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	
     <!-- Page Header -->
-	<header class="bg-dark" data-load='includes/header.html'></header>
+	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
-    
-    <!-- Connect to Database -->
-    <?php require_once('includes/db_connect.php'); ?>          
-   
+	
+	
+	<!-- PHP Header Scripts -->
+	<?php
+		// include resource files
+		include 'includes/functions.php';
+		include 'includes/drawTables.php';
+		include 'includes/drawForms.php';
+		
+		// set user authentication
+		$student_id = 1;
+		
+		// connect to database
+		$link = db_connect();
+	?>
+	
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
     <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
@@ -44,9 +57,7 @@
 					$count = 0;		// count entries in table
 					
                     // get information from database
-                    $sql = "SELECT * 
-							FROM Student";
-                    $result = mysql_query($sql)or die(mysql_error());
+					$studentResults = selectStudent_All($link);
                      
                     // create table
                     echo "<table class='table'>";
@@ -59,7 +70,7 @@
                         </tr></thead>";
                     
                     // fill table
-                    while($row = mysql_fetch_array($result)){
+                    while($row = mysql_fetch_array($studentResults)){
                         
                         // set variables
                         $student_id     = $row['student_id'];
@@ -105,9 +116,7 @@
 					$count = 0;		// count entries in table
 					
                     // get information from database
-                    $sql = "SELECT * 
-							FROM Student_Settings";
-                    $result = mysql_query($sql)or die(mysql_error());
+					$studentSettingsResults = selectStudentSettings_All($link);
                      
                     // create table
                     echo "<table class='table'>";
@@ -123,7 +132,7 @@
                         </tr></thead>";
                     
                     // fill table
-                    while($row = mysql_fetch_array($result)){
+                    while($row = mysql_fetch_array($studentSettingsResults)){
                         
                         // set variables
                         $student_id     = $row['student_id'];
@@ -179,9 +188,7 @@
 					$count = 0;		// count entries in table
 					
                     // get information from database
-                    $sql = "SELECT * 
-							FROM Semester";
-                    $result = mysql_query($sql)or die(mysql_error());
+                    $semesterResults = selectSemester_All($link);
                      
                     // create table
                     echo "<table class='table'>";
@@ -197,7 +204,7 @@
                         </tr></thead>";
                     
                     // fill table
-                    while($row = mysql_fetch_array($result)){
+                    while($row = mysql_fetch_array($semesterResults)){
                         
                         // set variables
                         $student_id     = $row['student_id'];
@@ -253,9 +260,7 @@
 					$count = 0;		// count entries in table
 					
                     // get information from database
-                    $sql = "SELECT * 
-							FROM Course";
-                    $result = mysql_query($sql)or die(mysql_error());
+                    $courseResults = selectCourse_All($link);
                      
                     // create table
                     echo "<table class='table'>";
@@ -270,7 +275,7 @@
                         </tr></thead>";
                     
                     // fill table
-                    while($row = mysql_fetch_array($result)){
+                    while($row = mysql_fetch_array($courseResults)){
                         
                         // set variables
                         $student_id     = $row['student_id'];
@@ -323,9 +328,7 @@
 					$count = 0;		// count entries in table
 					
                     // get information from database
-                    $sql = "SELECT * 
-							FROM Assignment";
-                    $result = mysql_query($sql)or die(mysql_error());
+                    $assignmentResults = selectAssignment_All($link);
                      
                     // create table
                     echo "<table class='table'>";
@@ -343,7 +346,7 @@
                         </tr></thead>";
                     
                     // fill table
-                    while($row = mysql_fetch_array($result)){
+                    while($row = mysql_fetch_array($assignmentResults)){
                         
                         // set variables
                         $student_id         = $row['student_id'];
@@ -355,7 +358,7 @@
                         $due_date           = $row['due_date'];
                         $studytime          = $row['studytime'];
                         $points_allowed     = $row['points_allowed'];
-                        $points_recieved    = $row['points_recieved'];
+                        $points_received    = $row['points_received'];
                         
                         // fill row
                         echo "<tr>
@@ -368,7 +371,7 @@
                                 <td>".$due_date."</td>
                                 <td>".$studytime."</td>
                                 <td>".$points_allowed."</td>
-                                <td>".$points_recieved."</td>
+                                <td>".$points_received."</td>
                             </tr>";
                         
 						// increment result counter
@@ -400,9 +403,14 @@
 <!-- Page Footer -->
 <footer>
 
-<!-- Close Database -->
-<?php mysql_close($link); ?>
+    <?php
+        // include footer files
+        include 'includes/footer.html';
 
-</footer>
+        // close database
+        mysql_close($link);
+    ?>
+
+</footer> 
 
 </html>

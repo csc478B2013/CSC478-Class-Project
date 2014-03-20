@@ -39,7 +39,7 @@
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
     
-	<title> Dashboard </title>
+	<title>Test</title>
 </head>
 
 <!-- Page Body -->
@@ -48,36 +48,18 @@
 <div class="container">
     <div class="grid">
         <div class="row">
+        <?php
 
-            <!-- Upcoming Coursework Table -->
-            <div class="span4 offset1">
-                <p class="subheader" style="padding: 10px 0 0 0">Upcoming Course Work</p>
-                            
-                <?php			
-					// get date and set date range
-					//$date = get_date();		// get current date
-					$offset = 14;				// set date offset to show assignments
-					$date = "2014-01-01";  		// get current date (temp)
-					
-					// create upcoming course work table
-                    draw_table_upcomingCourseWork($link, $student_id, $date, $offset);				
-                ?>
-            </div>
-
-            
-            <!-- Current Grades Table -->
-            <div class="span5 offset1">
-                <p class="subheader" style="padding: 10px 0 0 0">Current Grades</p>
-                            
-                <?php
-                    // get current semester id from database
-					$semesterObject = Semester::select_current($link, $student_id);
-					$semester_id = $semesterObject->semester_id;
-					
-					// draw grades table
-					draw_table_grades($link, $semester_id);
-                ?>
-            </div>
+			Semester::insert($link, 1, 2014, 'Spring', '2014-01-01', '2014-05-25');
+			Semester::insert($link, 1, 2015, 'Spring', '2014-01-01', '2014-05-25');
+			Semester::insert($link, 1, 2016, 'Spring', '2014-01-01', '2014-05-25');
+            Semester::insert($link, 1, 2014, 'Summer', '2014-01-01', '2014-05-25');
+			Semester::insert($link, 1, 2015, 'Summer', '2014-01-01', '2014-05-25');
+			Semester::insert($link, 1, 2016, 'Summer', '2014-01-01', '2014-05-25');
+			Semester::insert($link, 1, 2014, 'Fall', '2014-01-01', '2014-05-25');
+			Semester::insert($link, 1, 2015, 'Fall', '2014-01-01', '2014-05-25');
+			Semester::insert($link, 1, 2016, 'Fall', '2014-01-01', '2014-05-25');
+        ?>
         </div>
     </div>
 </div>

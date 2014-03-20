@@ -2,8 +2,22 @@
 <html lang="en">
 <head>
     <!-- Page Header -->
-	<header class="bg-dark" data-load='includes/header.html'></header>
+	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
+	
+	<!-- PHP Header Scripts -->
+	<?php
+		// include resource files
+		include 'includes/functions.php';
+		include 'includes/drawTables.php';
+		include 'includes/drawForms.php';
+		
+		// set user authentication
+		$student_id = 1;
+		
+		// connect to database
+		$link = db_connect();
+	?>
 
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
@@ -25,74 +39,111 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 
-    
 	<title> Add Course </title>
+	
+	<!-- Add Course to database -->
+	<?php
+		if(isset($_POST['myFormSubmitted'])) {
+			
+			// local variables
+			$semester_id    = $_POST['semester_id'];
+			$designation    = $_POST['designation'];
+			$name           = $_POST['name'];
+			$credits        = $_POST['credits'];
+			
+			// insert into database
+			Course::insert($link, $student_id, $semester_id, $designation, $name, $credits);
+
+			// get record information from database for output use
+			$semesterOutput = Semester::select($link, $semester_id);
+			$courseOutput 	= new Course();
+			
+			// pass information for output use
+			$courseOutput->designation 	= $designation;
+			$courseOutput->name 		= $name;
+		}
+	?>
+			
+			
 </head>
 
 <!-- Page Body -->
 <body class="metro">
-	<div class="grid span10 offset1">
-		<div class="row span8">
-			<form>
+	<div class="grid">
+		<div class="row">
+		<div class="span10 offset1">
+			<form action="add_course.php" method="post" name="form">
 			<fieldset>
 			<legend>Add Course</legend>
 				<table>
-
+				
+					<!-- Select Semester -->
+					<tr><?php drawSelect_Semester($link, $student_id); ?></tr>
+					
 					<!-- Select Course Designation -->
-					<tr>
-						<td class="span2"><label>Course Designation:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="input-control">
-								<input type="text" placeholder="ex. CSC 478">
-								<button class="btn-clear" tabindex="-1" type="button"></button>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawText("Designation", "designation", "ex. CSC 478"); ?></tr>
 					
 					<!-- Select Course Name -->
-					<tr>
-						<td class="span2"><label>Course Name:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="input-control">
-								<input type="text" placeholder="ex. Software Engineering Capstone">
-								<button class="btn-clear" tabindex="-1" type="button"></button>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawText("Name", "name", "ex. Software Engineering Capstone"); ?></tr>
 					
 					<!-- Select Course Credits -->
-					<tr>
-						<td class="span2"><label>Credits:</label></td>
-						<td class="span5">
-							<div class="input-control text">
-								<input type="text" value="" placeholder="ex. 4"/>
-								<button class="btn-clear"></button>
-							</div>
-						</td>
-					</tr>					
+					<tr><?php drawText("Credits", "credits", "ex. 4"); ?></tr>					
 					
 					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
+					<tr><?php drawOther_Gap(); ?></tr>
 					
 					<!-- Submission Control Buttons -->
-					<tr>
-						<td class="span2"><input type="submit" class="span2" value="Add"></td>
-						<td class="span2"><input type="reset" class="span2" value="Reset Form"></td>
+					<tr> 
+						<?php drawButton_Add(); ?> 
+						<?php drawButton_Reset(); ?>
+						<?php drawButton_Link("add_assignment.php", "Add Assignment"); ?>
 					</tr>
 					
 				</table>   
 			</fieldset>
 			</form>
+			
+			<!-- This section is to notify the user on the status of the request -->
+			<?php
+				if(isset($_POST['myFormSubmitted'])) {
+
+					// get semester information
+					$year           = $semesterOutput->year;
+					$term           = $semesterOutput->term;
+					
+					// get course information
+					$designation    = $courseOutput->designation;
+					$name           = $courseOutput->name;
+					
+					// let the user know that the course has been added. prompt options
+					echo "<p class='text-success'>$designation, $name has been added to $term, $year. </p>"; 
+					echo "<blockquote>
+							<p class='text-info'>
+								<strong>Add</strong> another course, 
+								<strong>Add</strong> an assignment, or 
+								<strong>Return</strong> to dashboard.
+							</p>
+						</blockquote>";
+					exit;
+				}
+			?>
+			
+		</div>
 		</div>
 	</div>
- 
 </body>  
  
 <!-- Page Footer -->
 <footer>
 
-</footer>
+    <?php
+        // include footer files
+        include 'includes/footer.html';
+
+        // close database
+        mysql_close($link);
+    ?>
+
+</footer> 
 
 </html>

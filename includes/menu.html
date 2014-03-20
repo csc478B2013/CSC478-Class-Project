@@ -1,0 +1,71 @@
+<!-- Web Menu -->
+<div>
+<nav class="horizontal-menu">
+    <ul>
+        <!-- User Dashboard -->
+        <li><a href="dashboard.php">Dashboard</a></li>
+        
+        <!-- Information View Options -->
+        <li><a class="dropdown-toggle" href="#">View</a>
+            <ul class="dropdown-menu" data-role="dropdown">
+                <li><a href="current_semester.php">Current Semester</a></li>
+                <li><a href="history.php">History</a></li>
+            </ul>
+        </li>
+        
+        <!-- Tool Creation -->
+        <li><a class="dropdown-toggle" href="#">Create</a>
+            <ul class="dropdown-menu" data-role="dropdown">
+                <li><a href="schedule.php">Schedule</a></li>
+                <li><a href="optimal_plan.php">Optimal Plan</a></li>
+            </ul>
+        </li>
+        
+        <!-- Information Manipulation Options -->
+        <li><a class="dropdown-toggle" href="#">Modify</a>
+            <ul class="dropdown-menu" data-role="dropdown">
+                <li><a class="dropdown-toggle" href="#">Semester</a>
+                    <ul class="dropdown-menu" data-role="dropdown">
+                        <li><a href="add_semester.php">Add</a></li>
+                        <li><a href="update_semester.php">Update</a></li>
+                        <li><a href="remove_semester.php">Remove</a></li>
+                    </ul>
+                </li>
+                <li><a class="dropdown-toggle" href="#">Course</a>
+                    <ul class="dropdown-menu" data-role="dropdown">
+                        <li><a href="add_course.php">Add</a></li>
+                        <li><a href="update_course.php">Update</a></li>
+                        <li><a href="remove_course.php">Remove</a></li>
+                    </ul>
+                </li>
+                <li><a class="dropdown-toggle" href="#">Assignment</a>
+                    <ul class="dropdown-menu" data-role="dropdown">
+                        <li><a href="add_assignment.php">Add</a></li>
+                        <li><a href="update_assignment.php">Update</a></li>
+                        <li><a href="remove_assignment.php">Remove</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        
+		<!-- Local Test Pages -->
+        <li><a class="dropdown-toggle" href="#">Test</a>
+            <ul class="dropdown-menu" data-role="dropdown">
+                
+                <!-- Local Welcome Page -->
+                <li><a href="index.php">Welcome</a></li>
+                
+				<!-- Test Pages -->
+				<li><a href="test_db.php">Database</a></li>
+				<li><a class="dropdown-toggle" href="#">User</a>
+					<ul class="dropdown-menu" data-role="dropdown">
+						<li><a href="account.php">Account</a></li>
+						<li><a href="newuser.php">New User</a></li>
+						<li><a href="newuserinfo.php">New User Settings</a></li>
+					</ul>
+				</li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+</div>

@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
 	<!-- Page Header -->
-	<header class="bg-dark" data-load='includes/public_header.php'></header>
+	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
+	
 	
 	<!-- PHP Header Scripts -->
 	<?php
@@ -18,7 +19,7 @@
 		// connect to database
 		$link = db_connect();
 	?>
-    
+
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
     <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
@@ -38,17 +39,32 @@
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
     
-	<title> New User </title>
+	<title> Account </title>
 </head>
 
 <!-- Page Body -->
+<?php
+	// get information from database
+	$studentObject 		= Student::select($link, $student_id);
+	//$settingsObject 	= Settings::select($link, $student_id);		<- Need to Implement Settings Class
+
+	// set variables
+	$fname 				= $studentObject->fname;
+	$email 				= $studentObject->email;
+	$phone 				= $studentObject->phone;
+	$password 			= $studentObject->password;
+
+?>
+
+
 <body class="metro">
-	<div class="grid">
-		<div class="row">
-		<div class="span10 offset1">
-			<form action="newuser.php" method="post">
+<div class="container">
+    <div class="grid">
+        <div class="row">
+		
+            <form action="account.php" method="post">
 			<fieldset>
-				<legend>New User Setup</legend>
+			<legend>Update Student Settings</legend>
 				<table>
 
 					<!-- Get First Name -->
@@ -56,7 +72,7 @@
 						<td class="span2"><label>First Name:</label></td>
 						<td class="span5">
 							<div class="input-control text" data-role="input-control">
-								<input type="text" name="name" placeholder="ex. John">
+								<input type="text" name="name" value="<?php echo $fname; ?>">
 								<button class="btn-clear" tabindex="-1""></button>
 							</div>
 						</td>
@@ -67,7 +83,7 @@
 						<td class="span2"><label>Email:</label></td>
 						<td class="span5">
 							<div class="input-control text" data-role="input-control">
-								<input type="email" name="email" placeholder="ex. john@gmail.com">
+								<input type="email" name="email" value="<?php echo $email; ?>">
 								<button class="btn-clear" tabindex="-1"></button>
 							</div>
 						</td>
@@ -78,7 +94,7 @@
 						<td class="span2"><label>Phone Number:</label></td>
 						<td class="span5">
 							<div class="input-control text" data-role="input-control">
-								<input type="tel" name="phone" placeholder="ex. (888)123-4567">
+								<input type="tel" name="phone" value="<?php echo $phone; ?>">
 								<button class="btn-clear" tabindex="-1"></button>
 							</div>
 						</td>
@@ -89,7 +105,7 @@
 						<td class="span2"><label>Password:</label></td>
 						<td class="span5">
 							<div class="input-control password" data-role="input-control">
-								<input type="password" name="password" placeholder="input password" autofocus="">
+								<input type="password" name="password" value="<?php echo $password; ?>">
 								<button class="btn-reveal" tabindex="-1"></button>
 							</div>
 						</td>
@@ -102,21 +118,17 @@
 					
 					<!-- Submission Control Buttons -->
 					<tr>
-						<td class="span2"><input type="submit" class="primary span2" value="Create" name="myFormSubmitted"></td>
-						<td class="span2"><input type="reset" class="inverse span2" value="Reset Form"></td>
-						<td class="span2"><button class="danger span2 offset1"><a href="index.php">Cancel</a></button></td>
+						<td class="span2"><input type="submit" class="primary span2" value="Update" name="myFormSubmitted"></td>
 					</tr>
-				</table>
+				</table>   
 			</fieldset>
 			</form>
 			
+			<!-- PHP POST Handling (Form Submittal) -->
 			<?php
 
 				// Add student to database and then redirect to add semester
 				if(isset($_POST['myFormSubmitted'])) {
-				
-					// test variable
-					$insertTest = 0;
 					
 					// local variables
 					$fname = $_POST['name'];
@@ -125,27 +137,20 @@
 					$password = $_POST['password'];
 					
 					// insert record into database
-					$insertTest = Insert_Student($link, $fname, $email, $phone, $password);
-					
-					// test if insert was successful
-					if ($insertTest) {
-						Redirect('add_semester.php');
-					}
-					else
-						echo "Insert Failed. Try Again";
+					Student::update($link, $student_id, $fname, $email, $phone, $password);
+
+					Redirect('account.php');
 				}
 			?>
-	
+			
+			
+        </div>
+    </div>
+</div>
 
-		</div>
-		</div>
-	</div>
-	
+</body>
 
-	
-</body>  
- 
- 
+
 <!-- Page Footer -->
 <footer>
 
@@ -157,6 +162,6 @@
         mysql_close($link);
     ?>
 
-</footer> 
-
+</footer>    
+        
 </html>

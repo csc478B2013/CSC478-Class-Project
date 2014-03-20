@@ -1,11 +1,10 @@
 (function( $ ) {
     $.widget("metro.dropdown", {
 
-        version: "1.0.1",
+        version: "1.0.0",
 
         options: {
-            effect: 'slide',
-			toggleElement: false
+            effect: 'slide'
         },
 
         _create: function(){
@@ -13,7 +12,7 @@
                  menu = this.element,
                  name = this.name,
                  parent = this.element.parent(),
-                 toggle = this.options.toggleElement || parent.children('.dropdown-toggle');
+                 toggle = parent.children('.dropdown-toggle');
 
             if (menu.data('effect') != undefined) {
                 this.options.effect = menu.data('effect');
