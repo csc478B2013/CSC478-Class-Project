@@ -1,3 +1,7 @@
+<?php
+include 'includes/auth.php';
+authenticateUserCookie();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>

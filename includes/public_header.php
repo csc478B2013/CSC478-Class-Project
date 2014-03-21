@@ -1,9 +1,9 @@
 <!-- Tab Icon -->
 <link rel="shortcut icon" href="../favicon.ico" >
 
+
 <!-- Turn on PHP Output Buffering -->
 <?php ob_start(); ?>
-
 <!-- Navigation Bar -->
 <div class="navigation-bar dark">
     <div class="navigation-bar-content">
@@ -47,14 +47,14 @@
 					padding: 10,
 					onShow: function(_dialog){
 						var content = 
-						'<form class="user-input">' +
-							'<label>Login</label>' +
+						'<form class="user-input" action="index.php" method="post" >' +
+							'<label>Email</label>' +
 							'<div class="input-control text"><input type="text" name="login"><button class="btn-clear"></button></div>' +
 								'<label>Password</label>'+
 								'<div class="input-control password"><input type="password" name="password"><button class="btn-reveal"></button></div>' +
 								'<div class="form-actions">' +
 								'<label></label>'+
-								'<button class="button primary">Login to...</button>&nbsp;'+
+								'<button class="button primary" type="submit" name="loginForm">Login to</button>&nbsp;'+
 								'<button class="button warning" type="button" onclick="$.Dialog.close()">Cancel</button> '+
 								'<button class="button info offset1"><a href="http://www.myuplan.com/newuser.php">Create Account</a></button></a>&nbsp;'+
 							'</div>'+

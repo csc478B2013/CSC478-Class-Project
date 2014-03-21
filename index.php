@@ -14,9 +14,22 @@
 		
 		// set user authentication
 		$student_id = 1;
+	
 		
 		// connect to database
 		$link = db_connect();
+		
+
+	?>
+	
+	<?php
+		//perform log in validation here
+		//
+		$isValidUserLogin = true;
+		if(isset($_POST['loginForm'])) 
+		{
+			$isValidUserLogin = authenticateUserWithCookie($link, $_POST['login'], $_POST['password']);	
+		}
 	?>
     
 	<!-- Load CSS Libraries -->
@@ -45,8 +58,17 @@
 <!-- Page Body -->
 <body class="metro">
 
+<?php
+
+	//echo error here
+	//
+	if(!$isValidUserLogin)
+	{
+		echo "<p>Email and Password are Incorrect.</p>";
+	}
 
 
+?>
  
 </body>  
  

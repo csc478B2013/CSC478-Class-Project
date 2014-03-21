@@ -36,6 +36,32 @@
 		exit();
 	}
   
+
+
+/*
+	Check if user email and password pair match
+	SIDE NOTE: THIS IS SHITTY SECURITY BUT THIS IS A CLASS PROJECT SO WE NEED TO FOCUS ON OTHER ASPECTS OF THE CODE
+	TODO: Fix this weak security
+*/
+function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
+{
+	$isAuthenticatedUser = FALSE;
+	
+	//first lets see if the email and password pair match
+	//
+	if(Student::isPasswordValid($link, $passedEmail, $passedPassword))
+	{
+		//ok so we are good here so now lets set up the cookie
+		//
+		$studentObj = Student::selectByEmail($link, $passedEmail);
+
+		setcookie("UserIdent", $studentObj->student_id, time()+360000);
+		
+		$isAuthenticatedUser = TRUE;
+	}
+	
+	return $isAuthenticatedUser;
+}
   
   
   
@@ -113,6 +139,78 @@
             
             // return student instance
             return $instance;
+        }
+
+		/*
+			Select user by email
+		*/
+		public static function selectByEmail($link, $passedEmail) 
+		{
+            
+            // create new object to return
+            $instance = new self();
+            
+            // select object attributes
+            $query = selectStudentByEmail($link, $passedEmail);
+            $row = mysql_fetch_array($query);
+            
+            // set object properties
+            $instance->student_id = $row['student_id'];
+            $instance->fname = $row['fname'];
+            $instance->email = $row['email'];
+            $instance->phone = $row['phone'];
+            $instance->password = $row['password'];
+            $instance->date_created = $row['date_created']; 
+            
+            // return student instance
+            return $instance;
+        }
+
+		/*
+			This method allows us to check if a user email and password match
+		*/
+		public static function isPasswordValid($link, $passedEmail, $passedPassword)
+		{
+        
+           	//set up our boolean if the password is valid
+			//
+			$isPasswordValid = False;
+
+			//ok make sure that we check the email param
+			//
+			if ($passedEmail == null or $passedEmail == "")
+			{
+				throw new InvalidArgumentException("No Email");
+			}
+
+			//ok make sure that we check the password param
+			//
+			if ($passedPassword == null or $passedPassword == "")
+			{
+				throw new InvalidArgumentException("No Password");
+			}
+			
+			//query
+			//
+			$query = selectStudentByEmail($link, $passedEmail);
+			$row = mysql_fetch_array($query);
+			
+			//check if no user
+			//
+			if(sizeof($row) == 0)
+			{
+				return $isPasswordValid;
+			}
+			
+			//check if the password mactch
+			//
+			if(strcmp($row['password'], $passedPassword) == 0)
+			{
+				$isPasswordValid = True;
+			}
+			
+			return $isPasswordValid;
+		
         }
     }
     
@@ -646,6 +744,25 @@
 		$sql = "SELECT * 
 				FROM Student
 				WHERE student_id = $student_id";
+		$result = mysql_query($sql)or die(mysql_error());
+		
+		// test if database operation was successful
+        if (mysql_num_rows($result) == 0)
+			echo "selectStudent_All returned 0 rows<br>";
+			
+		// return information
+		return $result;
+	}
+	
+	/*
+		Select a Student By Email Address
+	*/
+	function selectStudentByEmail($link, $email) 
+	{				
+		// get information from database
+		$sql = 'SELECT * 
+				FROM Student
+				WHERE email =' . '\'' . $email . '\'';
 		$result = mysql_query($sql)or die(mysql_error());
 		
 		// test if database operation was successful
