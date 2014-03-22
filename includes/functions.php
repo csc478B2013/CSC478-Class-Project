@@ -36,15 +36,14 @@
 		exit();
 	}
   
+  
 
+// Authentication
+	function authenticateUserWithCookie($link, $passedEmail, $passedPassword) {
+	// Check if user email and password pair match
+	// SIDE NOTE: THIS IS SHITTY SECURITY BUT THIS IS A CLASS PROJECT SO WE NEED TO FOCUS ON OTHER ASPECTS OF THE CODE
+	// TODO: Fix this weak security
 
-/*
-	Check if user email and password pair match
-	SIDE NOTE: THIS IS SHITTY SECURITY BUT THIS IS A CLASS PROJECT SO WE NEED TO FOCUS ON OTHER ASPECTS OF THE CODE
-	TODO: Fix this weak security
-*/
-function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
-{
 	$isAuthenticatedUser = FALSE;
 	
 	//first lets see if the email and password pair match
@@ -87,10 +86,10 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
             $instance = new self();
             
             // set object properties
-            $instance->fname = $fname;
-            $instance->email = $email;
-            $instance->phone = $phone;
-            $instance->password = $password;
+            $instance->fname 		= $fname;
+            $instance->email 		= $email;
+            $instance->phone 		= $phone;
+            $instance->password 	= $password;
             
             // insert into database
             insertStudent($link, $instance);
@@ -102,10 +101,10 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
             $instance = Student::select($link, $student_id);
             
             // set object properties
-            $instance->fname = $fname;
-            $instance->email = $email;
-            $instance->phone = $phone;
-            $instance->password = $password;
+            $instance->fname 		= $fname;
+            $instance->email 		= $email;
+            $instance->phone 		= $phone;
+            $instance->password 	= $password;
             
             // insert into database
             updateStudent($link, $instance);
@@ -130,92 +129,157 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
             $row = mysql_fetch_array($query);
             
             // set object properties
-            $instance->student_id = $row['student_id'];
-            $instance->fname = $row['fname'];
-            $instance->email = $row['email'];
-            $instance->phone = $row['phone'];
-            $instance->password = $row['password'];
+            $instance->student_id 	= $row['student_id'];
+            $instance->fname 		= $row['fname'];
+            $instance->email 		= $row['email'];
+            $instance->phone 		= $row['phone'];
+            $instance->password 	= $row['password'];
             $instance->date_created = $row['date_created']; 
             
             // return student instance
             return $instance;
         }
 
-		/*
-			Select user by email
-		*/
-		public static function selectByEmail($link, $passedEmail) 
-		{
+		public static function selectByEmail($link, $passedEmail) {
             
             // create new object to return
             $instance = new self();
             
             // select object attributes
-            $query = selectStudentByEmail($link, $passedEmail);
+            $query = selectStudent_Email($link, $passedEmail);
             $row = mysql_fetch_array($query);
             
             // set object properties
-            $instance->student_id = $row['student_id'];
-            $instance->fname = $row['fname'];
-            $instance->email = $row['email'];
-            $instance->phone = $row['phone'];
-            $instance->password = $row['password'];
+            $instance->student_id 	= $row['student_id'];
+            $instance->fname 		= $row['fname'];
+            $instance->email 		= $row['email'];
+            $instance->phone 		= $row['phone'];
+            $instance->password 	= $row['password'];
             $instance->date_created = $row['date_created']; 
             
             // return student instance
             return $instance;
         }
 
-		/*
-			This method allows us to check if a user email and password match
-		*/
-		public static function isPasswordValid($link, $passedEmail, $passedPassword)
-		{
+		//This method allows us to check if a user email and password match
+		public static function isPasswordValid($link, $passedEmail, $passedPassword) {
         
            	//set up our boolean if the password is valid
-			//
 			$isPasswordValid = False;
 
 			//ok make sure that we check the email param
-			//
-			if ($passedEmail == null or $passedEmail == "")
-			{
+			if ($passedEmail == null or $passedEmail == "") {
 				throw new InvalidArgumentException("No Email");
 			}
 
 			//ok make sure that we check the password param
-			//
-			if ($passedPassword == null or $passedPassword == "")
-			{
+			if ($passedPassword == null or $passedPassword == "") {
 				throw new InvalidArgumentException("No Password");
 			}
 			
 			//query
-			//
-			$query = selectStudentByEmail($link, $passedEmail);
+			$query = selectStudent_Email($link, $passedEmail);
 			$row = mysql_fetch_array($query);
 			
 			//check if no user
-			//
-			if(sizeof($row) == 0)
-			{
+			if(sizeof($row) == 0) {
 				return $isPasswordValid;
 			}
 			
 			//check if the password mactch
-			//
-			if(strcmp($row['password'], $passedPassword) == 0)
-			{
+			if(strcmp($row['password'], $passedPassword) == 0) {
 				$isPasswordValid = True;
 			}
 			
 			return $isPasswordValid;
-		
         }
     }
     
     class Settings {
-    
+        
+        // object properties
+        public $student_id;
+        public $study_tod;
+        public $st_exam;
+        public $st_quiz;
+        public $st_project;
+		public $st_homework;
+		public $st_discussion;
+		public $st_other;
+        
+        // new object construction
+        public function __construct() {
+            // not used
+        }
+        
+        public static function insert($link, $student_id, $study_tod, $st_exam, $st_quiz, $st_project, $st_homework, $st_discussion, $st_other) {
+        
+            // create new object to insert int database
+            $instance = new self();
+            
+            // set object properties
+            $instance->student_id 		= $student_id;
+            $instance->study_tod 		= $study_tod;
+            $instance->st_exam 			= $st_exam;
+            $instance->st_quiz 			= $st_quiz;
+			$instance->st_project 		= $st_project;
+			$instance->st_homework 		= $st_homework;
+			$instance->st_discussion 	= $st_discussion;
+			$instance->st_other 		= $st_other;
+            
+            // insert into database
+            insertSettings($link, $instance);
+        }
+        
+        public static function update($link, $student_id, $study_tod, $st_exam, $st_quiz, $st_project, $st_homework, $st_discussion, $st_other) {
+        
+            // select the object
+            $instance = Settings::select($link, $student_id);
+            
+            // set object properties
+            $instance->study_tod 		= $study_tod;
+            $instance->st_exam 			= $st_exam;
+            $instance->st_quiz 			= $st_quiz;
+			$instance->st_project 		= $st_project;
+			$instance->st_homework 		= $st_homework;
+			$instance->st_discussion 	= $st_discussion;
+			$instance->st_other 		= $st_other;
+            
+            // insert into database
+            updateSettings($link, $instance);
+        }
+        
+        public static function delete($link, $student_id) {
+            
+            // select the object
+            $instance = Settings::select($link, $student_id);    
+            
+            // delete from database
+            deleteSettings($link, $instance);
+        }
+        
+        public static function select($link, $student_id) {
+            
+            // create new object to return
+            $instance = new self();
+            
+            // select object attributes
+            $query = selectSettings($link, $student_id);
+            $row = mysql_fetch_array($query);
+            
+            // set object properties	
+			$instance->student_id 		= $row['student_id'];
+            $instance->study_tod 		= $row['study_tod'];
+            $instance->st_exam 			= $row['st_exam'];
+            $instance->st_quiz 			= $row['st_quiz'];
+			$instance->st_project 		= $row['st_project'];
+			$instance->st_homework 		= $row['st_homework'];
+			$instance->st_discussion 	= $row['st_discussion'];
+			$instance->st_other 		= $row['st_other'];
+			
+            // return student instance
+            return $instance;
+        }
     }
     
 	class Semester {
@@ -522,6 +586,28 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
           die('Could not insert student data: ' . mysql_error());
 	}
     
+	function insertSettings($link, $settingsObject) {
+	
+		// set variables from object properties	
+		$student_id 		= $settingsObject->student_id;
+		$study_tod 			= $settingsObject->study_tod;
+		$st_exam 			= $settingsObject->st_exam;
+		$st_quiz 			= $settingsObject->st_quiz;
+		$st_project 		= $settingsObject->st_project;
+		$st_homework 		= $settingsObject->st_homework;
+		$st_discussion 		= $settingsObject->st_discussion;
+		$st_other 			= $settingsObject->st_other;
+		
+		// insert into mysql database
+		$sql = "INSERT INTO Settings"."(student_id, study_tod, st_exam, st_quiz, st_project, st_homework, st_discussion, st_other)".
+			   "VALUES ('$student_id', '$study_tod', '$st_exam', '$st_quiz', '$st_project', '$st_homework', '$st_discussion', '$st_other')";
+		$retval = mysql_query( $sql, $link );
+		
+		// test if database operation was successful
+        if(! $retval )
+          die('Could not insert student settings data: ' . mysql_error());
+	}
+	
 	function insertSemester($link, $semesterObject) {
 		
 		// set variables from object properties
@@ -586,16 +672,20 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 	
 	// UPDATE	
     function updateStudent($link, $studentObject) {
-        // set variables from object properties
-        $student_id 	= $studentObject->student_id;
-        $fname 			= $studentObject->fname;
-        $email 			= $studentObject->email;
-        $phone 			= $studentObject->phone;
-        $password 		= $studentObject->password;
+        
+		// set variables from object properties
+        $student_id 		= $studentObject->student_id;
+        $fname 				= $studentObject->fname;
+        $email 				= $studentObject->email;
+        $phone 				= $studentObject->phone;
+        $password 			= $studentObject->password;
 
 		// update mysql database
         $sql = "UPDATE Student 
-                SET fname = '$fname', email = '$email', phone = '$phone', password = '$password' 
+                SET fname 		= '$fname', 
+					email 		= '$email', 
+					phone 		= '$phone', 
+					password 	= '$password' 
                 WHERE student_id = '$student_id'";
 		$retval = mysql_query( $sql, $link );
         
@@ -604,17 +694,52 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
           die('Could not update student data: ' . mysql_error());
     }
 
+	function updateSettings($link, $settingsObject) {
+		
+		// set variables from object properties	
+		$student_id 		= $settingsObject->student_id;
+		$study_tod 			= $settingsObject->study_tod;
+		$st_exam 			= $settingsObject->st_exam;
+		$st_quiz 			= $settingsObject->st_quiz;
+		$st_project 		= $settingsObject->st_project;
+		$st_homework 		= $settingsObject->st_homework;
+		$st_discussion 		= $settingsObject->st_discussion;
+		$st_other 			= $settingsObject->st_other;
+		
+		// update mysql database
+        $sql = "UPDATE Settings 
+                SET study_tod 		= '$study_tod', 
+					st_exam 		= '$st_exam', 
+					st_quiz 		= '$st_quiz', 
+					st_project 		= '$st_project', 
+					st_homework 	= '$st_homework', 
+					st_discussion 	= '$st_discussion', 
+					st_other 		= '$st_other' 
+                WHERE student_id = '$student_id'";
+		$retval = mysql_query( $sql, $link );
+        
+        // test if database operation was successful
+        if(! $retval )
+          die('Could not update settings data: ' . mysql_error());
+	}
+	
 	function updateSemester($link, $semesterObject) {
-        // set variables from object properties
-		$semester_id	= $semesterObject->semester_id;
-        $year 			= $semesterObject->year;
-        $term 			= $semesterObject->term;
-		$start_date 	= $semesterObject->start_date;
-		$end_date 		= $semesterObject->end_date;
-		$isCurrent		= $semesterObject->isCurrent;
+       
+	   // set variables from object properties
+		$semester_id		= $semesterObject->semester_id;
+        $year 				= $semesterObject->year;
+        $term 				= $semesterObject->term;
+		$start_date 		= $semesterObject->start_date;
+		$end_date 			= $semesterObject->end_date;
+		$isCurrent			= $semesterObject->isCurrent;
+		
 		// update mysql database
         $sql = "UPDATE Semester 
-                SET year = '$year', term = '$term', start_date = '$start_date', end_date = '$end_date', isCurrent = '$isCurrent' 
+                SET year 		= '$year', 
+					term 		= '$term', 
+					start_date 	= '$start_date', 
+					end_date 	= '$end_date', 
+					isCurrent 	= '$isCurrent' 
                 WHERE semester_id = '$semester_id'";
 		$retval = mysql_query( $sql, $link );
         
@@ -624,16 +749,20 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
     }
 	
 	function updateCourse($link, $courseObject) {
-        // set variables from object properties
-		$course_id		= $courseObject->course_id;
-        $designation 	= $courseObject->designation;
-        $name 			= $courseObject->name;
-		$credits 		= $courseObject->credits;
-		$grade 			= $courseObject->grade;
+        
+		// set variables from object properties
+		$course_id			= $courseObject->course_id;
+        $designation 		= $courseObject->designation;
+        $name 				= $courseObject->name;
+		$credits 			= $courseObject->credits;
+		$grade 				= $courseObject->grade;
 
 		// update mysql database
         $sql = "UPDATE Course 
-                SET designation = '$designation', name = '$name', credits = '$credits', grade = '$grade' 
+                SET designation = '$designation', 
+					name 		= '$name', 
+					credits 	= '$credits', 
+					grade 		= '$grade' 
                 WHERE course_id = '$course_id'";
 		$retval = mysql_query( $sql, $link );
         
@@ -655,7 +784,12 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 
 		// update mysql database
         $sql = "UPDATE Assignment 
-                SET assignment_type = '$assignment_type', name = '$name', due_date = '$due_date', studytime = '$studytime', points_allowed = '$points_allowed', points_received = '$points_received'
+                SET assignment_type = '$assignment_type', 
+					name 			= '$name', 
+					due_date 		= '$due_date', 
+					studytime 		= '$studytime', 
+					points_allowed 	= '$points_allowed', 
+					points_received = '$points_received'
                 WHERE assignment_id = '$assignment_id'";
 		$retval = mysql_query( $sql, $link );
         
@@ -667,7 +801,8 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 	
 	// DELETE	
     function deleteStudent($link, $studentObject) {
-        // set variables from object properties
+        
+		// set variables from object properties
         $student_id = $studentObject->student_id;
         
 		// delete record from mysql database
@@ -680,8 +815,24 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
           die('Could not delete student data: ' . mysql_error());
     }
     
+	function deleteSettings($link, $settingsObject) {
+		
+		// set variables from object properties
+        $student_id = $settingsObject->student_id;
+        
+		// delete record from mysql database
+		$sql = "DELETE FROM Settings
+                WHERE student_id = $student_id";
+		$retval = mysql_query( $sql, $link );
+		
+		// test if database operation was successful
+        if(! $retval )
+          die('Could not delete student settings data: ' . mysql_error());
+	}
+	
 	function deleteSemester($link, $semesterObject) {
-        // set variables from object properties
+       
+	   // set variables from object properties
         $semester_id = $semesterObject->semester_id;
         
 		// delete record from mysql database
@@ -695,7 +846,8 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
     }
    
 	function deleteCourse($link, $courseObject) {
-        // set variables from object properties
+    
+    // set variables from object properties
         $course_id = $courseObject->course_id;
         
 		// delete record from mysql database
@@ -709,7 +861,8 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
     }
 
 	function deleteAssignment($link, $assignmentObject) {
-        // set variables from object properties
+        
+		// set variables from object properties
         $assignment_id = $assignmentObject->assignment_id;
         
 		// delete record from mysql database
@@ -730,10 +883,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				FROM Student
 				ORDER BY student_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-        if (mysql_num_rows($result) == 0)
-			echo "selectStudent_All returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -745,60 +894,40 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				FROM Student
 				WHERE student_id = $student_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-        if (mysql_num_rows($result) == 0)
-			echo "selectStudent_All returned 0 rows<br>";
 			
 		// return information
 		return $result;
 	}
 	
-	/*
-		Select a Student By Email Address
-	*/
-	function selectStudentByEmail($link, $email) 
-	{				
+	function selectStudent_Email($link, $email) {				// select a student by their email address
 		// get information from database
 		$sql = 'SELECT * 
 				FROM Student
 				WHERE email =' . '\'' . $email . '\'';
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-        if (mysql_num_rows($result) == 0)
-			echo "selectStudent_All returned 0 rows<br>";
 			
 		// return information
 		return $result;
 	}
 	
 	
-	function selectStudentSettings_All($link) {					// select all students settings in the database
+	function selectSettings_All($link) {						// select all students settings in the database
 		// get information from database
 		$sql = "SELECT * 
-				FROM Student_Settings
+				FROM Settings
 				ORDER BY student_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-        if (mysql_num_rows($result) == 0)
-			echo "selectStudent_All returned 0 rows<br>";
 			
 		// return information
 		return $result;
 	}
 	
-	function selectStudentSettings($link, $student_id) {		// select a specific student's settings
+	function selectSettings($link, $student_id) {				// select a specific student's settings
 		// select item from mysql database
 		$sql = "SELECT * 
-				FROM Student_Settings
+				FROM Settings
 				WHERE student_id = $student_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-        if (mysql_num_rows($result) == 0)
-			echo "selectStudent returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -811,10 +940,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				FROM Semester
 				ORDER BY semester_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectSemester_All returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -827,10 +952,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				WHERE student_id = $student_id
 				ORDER BY term, year";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectSemester_Student returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -843,10 +964,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				WHERE semester_id = $semester_id";
 		$result = mysql_query($sql)or die(mysql_error());
 
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectSemester returned 0 rows<br>";
-
 		// return information
 		return $result;
 	}
@@ -857,10 +974,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				FROM Semester
 				WHERE student_id = $student_id AND isCurrent = '1'";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectSemester_Current returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -873,10 +986,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				FROM Course
 				ORDER BY course_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectCourse_All returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -889,10 +998,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				WHERE student_id = $student_id
 				ORDER BY semester_id, designation";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectCourse_Student returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -905,10 +1010,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				WHERE semester_id = $semester_id
 				ORDER BY designation";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectCourse_Semester returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -921,10 +1022,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				WHERE course_id = $course_id";
 		$result = mysql_query($sql)or die(mysql_error());
 		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectCourse returned 0 rows<br>";
-		
 		// return information
 		return $result;
 	}
@@ -936,10 +1033,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				FROM Assignment
 				ORDER BY assignment_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectAssignment_All returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -952,10 +1045,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				WHERE student_id = $student_id
 				ORDER BY semester_id, course_id, assignment_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectAssignment_Student returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -966,12 +1055,8 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 		$sql = "SELECT * 
 				FROM Assignment
 				WHERE semester_id = $semester_id
-				ORDER BY course_id, assignment_id";
+				ORDER BY due_date";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectAssignment_Semester returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -984,10 +1069,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				WHERE course_id = $course_id
 				ORDER BY due_date ASC";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectAssignment_Course returned 0 rows<br>";
 			
 		// return information
 		return $result;
@@ -999,10 +1080,6 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
 				FROM Assignment
 				WHERE assignment_id = $assignment_id";
 		$result = mysql_query($sql)or die(mysql_error());
-		
-		// test if database operation was successful
-		if (mysql_num_rows($result) == 0)
-			echo "selectAssignment returned 0 rows<br>";
 
 		// return information
 		return $result;
@@ -1282,452 +1359,4 @@ function authenticateUserWithCookie($link, $passedEmail, $passedPassword)
         return $isCurrent;
     }
 
-
-
-// MySQL Functions
-	
-// Insert Functions
-	function Insert_Student($link, $fname, $email, $phone, $password) {
-		
-		// Insert record into database
-		$sql = "INSERT INTO Student"."(fname, email, phone, password, date_created)".
-			   "VALUES ('$fname', '$email', '$phone', '$password', NOW())";
-		$retval = mysql_query( $sql, $link );
-		
-		// Check if insert was successful
-		if(!$retval) { 
-			die('Could not enter data: ' . mysql_error()); 
-			return 0;
-		}
-		else
-			return 1;
-	}
-	
-	function Insert_Semester($link, $student_id, $year, $term, $start_date, $end_date) {
-		
-		// Insert record into database
-		$sql = "INSERT INTO Semester"."(student_id, year, term, start_date, end_date)".
-			   "VALUES ('$student_id', '$year', '$term', '$start_date', '$end_date')";
-		$retval = mysql_query( $sql, $link );
-		
-		// Check if insert was successful
-		if(!$retval) { 
-			die('Could not enter data: ' . mysql_error()); 
-			return 0;
-		}
-		else
-			return 1;
-	}
-
-	function Insert_Course($link, $student_id, $semester_id, $designation, $name, $credits) {
-		
-		// Insert record into database
-		$sql = "INSERT INTO Course"."(student_id, semester_id, designation, name, credits)".
-			   "VALUES ('$student_id', '$semester_id', '$designation', '$name', '$credits')";
-		$retval = mysql_query( $sql, $link );
-		
-		// Check if insert was successful
-		if(!$retval) { 
-			die('Could not enter data: ' . mysql_error()); 
-			return 0;
-		}
-		else
-			return 1;
-	}
-	
-	function Insert_Assignment($link, $student_id, $semester_id, $course_id, $assignment_type, $name, $due_date, $points_allowed) {
-		
-		// Insert record into database
-		$sql = "INSERT INTO Assignment"."(student_id, semester_id, course_id, assignment_type, name, due_date, points_allowed)".
-			   "VALUES ('$student_id', '$semester_id', '$course_id', '$assignment_type', '$name', '$due_date', '$points_allowed')";
-		$retval = mysql_query( $sql, $link );
-		
-		// Check if insert was successful
-		if(!$retval) { 
-			die('Could not enter data: ' . mysql_error()); 
-			return 0;
-		}
-		else
-			return 1;
-	}
-	
-
-	
-// Update Functions
-
-
-
-// Delete Functions
-
-
-
-// Query Functions
-
-	// Get Student Information Functions
-	function get_students_all($link) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Student";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_student($link, $student_id) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Student
-				WHERE student_id = $student_id";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	
-	}
-	
-	function get_student_fname($link, $studentResult) {
-	
-		// get information from database
-		$row = mysql_fetch_array($studentResult);
-		$fname = $row['fname'];
-		
-		// return information
-		return $fname;
-	}
-	
-	
-	// Get Student Settings Information Functions
-	function get_studentsettings_all($link) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Student_Settings";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_studentsettings($link, $student_id) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Student_Settings
-				WHERE student_id = $student_id";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	
-	// Get Semester Information Functions
-	function get_semesters_all ($link) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Semester";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_semesters_student($link, $student_id) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Semester
-				WHERE student_id = $student_id
-				ORDER BY year, term";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_semester_current($link, $student_id) {
-	
-		// get information from database
-		$sql = "SELECT * 
-				FROM Semester
-				WHERE student_id = $student_id AND isCurrent ='1'";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-
-	function get_semester($link, $semester_id) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Semester
-				WHERE semester_id = $semester_id";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_semester_id($link, $semesterResult) {
-		// parse information
-		$row = mysql_fetch_array($semesterResult);
-		$semester_id = $row['semester_id'];
-		
-		// return result
-		return $semester_id;
-	}
-	
-    function get_semester_gpa($link, $semester_id) {
-		// parse information
-		$row = mysql_fetch_array($semesterResult);
-		$semester_GPA = $row['semester_GPA'];
-		
-		// return result
-		return $semester_GPA;
-	}
-   
-    function get_semester_info($link, $semester_id, $request) {
-        // retrieve the desired semester from the database
-        $query = get_semester($link, $semester_id);
-        $row = mysql_fetch_array($query);
-        
-        // parse the requested information
-        switch($request) {
-            case 'student_id':
-                $result = $row['student_id'];
-                break;
-            case 'semester_id':
-                $result = $row['semester_id'];
-                break;
-            case 'year':
-                $result = $row['year'];
-                break;
-            case 'term':
-                $result = $row['term'];
-                break;
-            case 'start_date':
-                $result = $row['start_date'];
-                break;
-            case 'end_date':
-                $result = $row['end_date'];
-                break;
-            case 'semester_GPA':
-                $result = $row['semester_GPA'];
-                break;
-            case 'isCurrent':
-                $result = $row['isCurrent'];
-                break;
-            default:
-                $result = NULL;
-                break;
-        }
-        
-        // return the requested information
-        return $result;    
-    }
-	
-    
-	// Get Course Information Functions
-	function get_courses_all ($link) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Course";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_courses_student($link, $student_id) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Course
-				WHERE student_id = $student_id";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_courses_semester($link, $semester_id) {
-	
-		// get information from database
-		$sql = "SELECT * 
-				FROM Course
-				WHERE semester_id = $semester_id";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_course ($link, $course_id) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Course
-				WHERE course_id = $course_id";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_course_designation($link, $courseResult) {
-		// parse information
-		$row = mysql_fetch_array($courseResult);
-		$designation = $row['designation'];
-		
-		// return result
-		return $designation;
-	}
-	
-	function get_course_name($link, $courseResult) {
-		// parse information
-		$row = mysql_fetch_array($courseResult);
-		$name = $row['name'];
-		
-		// return result
-		return $name;
-	}
-	
-    function get_course_info($link, $course_id, $request) {
-        // retrieve the desired semester from the database
-        $query = get_course($link, $course_id);
-        $row = mysql_fetch_array($query);
-        
-        // parse the requested information
-        switch($request) {
-            case 'student_id':
-                $result = $row['student_id'];
-                break;
-            case 'semester_id':
-                $result = $row['semester_id'];
-                break;
-            case 'course_id':
-                $result = $row['course_id'];
-                break;
-            case 'designation':
-                $result = $row['designation'];
-                break;
-            case 'name':
-                $result = $row['name'];
-                break;
-            case 'credits':
-                $result = $row['credits'];
-                break;
-            case 'grade':
-                $result = $row['grade'];
-                break;
-            default:
-                $result = NULL;
-                break;
-        }
-        
-        // return the requested information
-        return $result;    
-    }
-	
-    
-	// Get Assignment Information Functions
-	function get_assignments_all ($link) {
-		// get information from database
-		$sql = "SELECT * 
-				FROM Assignment";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-	}
-	
-	function get_assignments_student($link, $student_id) {
-		// get assignments from database
-		$sql = "SELECT * 
-				FROM Assignment 
-				WHERE student_id = $student_id 
-				ORDER BY due_date";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return results
-		return $result;
-	}
-
-	function get_assignments_semester($link, $semester_id) {
-		// get assignments from database
-		$sql = "SELECT * 
-				FROM Assignment 
-				WHERE semester_id = $semester_id 
-				ORDER BY due_date";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return results
-		return $result;
-	}
-	
-	function get_assignments_course($link, $course_id) {
-		// get assignments from database
-		$sql = "SELECT * 
-				FROM Assignment 
-				WHERE course_id = $course_id
-				ORDER BY due_date";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return results
-		return $result;
-	}
-
-    function get_assignment($link, $assignment_id) {
-        // get information from database
-		$sql = "SELECT * 
-				FROM Assignment
-				WHERE assignment_id = $assignment_id";
-		$result = mysql_query($sql)or die(mysql_error());
-		
-		// return information
-		return $result;
-    }
-    
-	function get_assignments_info($link, $assignment_id, $request) {
-        // retrieve the desired semester from the database
-        $query = get_assignment($link, $assignment_id);
-        $row = mysql_fetch_array($query);
-        
-        // parse the requested information
-        switch($request) {
-            case 'student_id':
-                $result = $row['student_id'];
-                break;
-            case 'semester_id':
-                $result = $row['semester_id'];
-                break;
-            case 'course_id':
-                $result = $row['course_id'];
-                break;
-            case 'assignment_id':
-                $result = $row['assignment_id'];
-                break;
-            case 'assignment_type':
-                $result = $row['assignment_type'];
-                break;
-            case 'name':
-                $result = $row['name'];
-                break;
-            case 'due_date':
-                $result = $row['due_date'];
-                break;
-            case 'studytime':
-                $result = $row['studytime'];
-                break;
-            case 'points_allowed':
-                $result = $row['points_allowed'];
-                break;
-            case 'points_received':
-                $result = $row['points_received'];
-                break;
-            default:
-                $result = NULL;
-                break;
-        }
-        
-        // return the requested information
-        return $result;    
-    }
-	
 ?>

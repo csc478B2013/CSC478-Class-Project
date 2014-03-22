@@ -18,8 +18,6 @@
 		
 		// connect to database
 		$link = db_connect();
-		
-
 	?>
 	
 	<?php

@@ -13,7 +13,8 @@ function authenticateUserCookie()
 {
 	if (!isset($_COOKIE["UserIdent"]))
 	{
-		header("Location: http://uplan.site/index.php");
+		header("Location: http://myuplan.site/index.php");
+		//header("Location: index.php");
 		exit();
 	}	
 }

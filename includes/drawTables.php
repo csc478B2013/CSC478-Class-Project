@@ -2,7 +2,8 @@
 
 
 // Accordians
-	function draw_accordian_semesters($link, $student_id) {
+	function drawAccordian_Semesters($link, $student_id) {
+		
 		// get semester id from database
 		$semesterResults = selectSemester_Student($link, $student_id); 
 		
@@ -21,10 +22,10 @@
 			echo "<div class='content clearfix'>"; 
             
             // display current semester gpa
-            echo "<p class='subheader'> Semester GPA: ".$semester_GPA."</p>";
+            echo "<legend>GPA: $semester_GPA</legend>";
 			
             // draw the accordian for all courses in the semester
-            draw_accordian_courses($link, $semester_id);
+            drawAccordian_Courses($link, $semester_id);
 			
 			echo "</div>";
 			echo "</div>";
@@ -32,10 +33,12 @@
 		}// end loop
 	}
 
-	function draw_accordian_courses($link, $semester_id) {
+	function drawAccordian_Courses($link, $semester_id) {
+		
 		// get course id's from database
 		$courseResults = selectCourse_Semester($link, $semester_id);                   
-	
+
+		// create course drop down menus
 		while($row = mysql_fetch_array($courseResults)){
 
 			// set variables
@@ -51,7 +54,7 @@
 			echo "<div class='content'>";
 			
             // draw the table for all assignments in the semester
-			draw_table_assignments($link, $course_id);
+			drawTable_Assignments($link, $course_id);
 			
 			echo "</div>";
 			echo "</div>";
@@ -62,7 +65,7 @@
 	
 	
 // Tables
-	function draw_table_assignments($link, $course_id) {
+	function drawTable_Assignments($link, $course_id) {
 		// set local variables
 		$total_points_allowed = 0;
 		$total_points_received = 0;
@@ -71,14 +74,12 @@
 		$courseObject = Course::select($link, $course_id);
 		$grade = $courseObject->grade;
 		
-		// output grade to top of table
-		echo "<p class='subheader'> Grade: ".$grade."</p>";
-		
 		// get assignments for course from database
 		$assignmentResults = selectAssignment_Course($link, $course_id);
 		
 		// create assignment table
 		echo "<table class='table'>";
+		echo "<legend>Grade: $grade</legend>";
 		echo "<thead><tr>
 				<th class='text-left'>Due Date</th>
 				<th class='text-left'>Assignment Type</th>
@@ -144,7 +145,12 @@
 		echo "</table>";	// end table	
 	}
 	
-	function draw_table_grades($link, $semester_id) {
+	function drawTable_Grades($link, $semester_id) {
+		
+		// draw table
+		echo" <div class='span5 offset1'>";
+        echo" <p class='subheader' style='margin-top: 10px'>Current Grades</p>";
+		
 		// get course id from database\		
 		$coursesResult = selectCourse_Semester($link, $semester_id);
 
@@ -184,10 +190,17 @@
 		echo "<tr><td>Semester GPA</td><td></td><td class='right'>$semester_GPA</td></tr>";
 		echo "</tfoot>";
 		echo "</table>";
+		
+		echo "</div>";
 	
 	}
 
-	function draw_table_upcomingCourseWork($link, $student_id, $date, $offset) {
+	function drawTable_UpcomingCourseWork($link, $student_id, $date, $offset) {
+		
+		// draw section
+		echo" <div class='span4 offset1'>";
+        echo" <p class='subheader' style='margin-top: 10px'>Tasks</p>";
+		
 		// calculate date range
 		$date_range = get_dateRange($date, $offset);
 		
@@ -214,20 +227,20 @@
 			
 			// restrict the displayed results to only the next 7 days
 			if ($due_date >= $date AND $due_date < $date_range AND $points_received == NULL) {
-			//if ($points_received == NULL) {
 			
 				// get course info from database
-				$courseObject = Course::select($link, $course_id);
-				$course_name 	= $courseObject->name;
+				$courseObject 			= Course::select($link, $course_id);
+				$course_name 			= $courseObject->name;
 				$course_designation 	= $courseObject->designation;
 
 				// fill row
 				echo"    <a class='list'>";
 				echo"		<div class='list-content'>";
-				echo"			<span class='list-title'>$name</span>";
+				echo"			<span class='list-title'>$name 
+									<span class='place-right'>$points_allowed pts</span>
+								</span>";
 				echo"			<span class='list-subtitle'>Due Date: $due_date</span>";
 				echo"			<span class='list-remark'>$course_designation, $course_name</span>";
-				echo"			<span class='list-remark'>($points_allowed points)</span>";
 				echo"		</div>";
 				echo"	</a>";   
 			}                        
@@ -235,82 +248,7 @@
 		
 		echo "</div>";       
 		echo "</div>";
-	}
-
-
-	
-// Forms
-	function draw_form_text ($link, $title) {
-		
-	}
-
-	function draw_form_select_row_semester($link, $student_id, $type) {
-		
-		switch ($type) {
-		
-			case 'year':
-				echo "<tr>";
-				echo	"<td class='span2'><label>Year:</label></td>";
-				echo	"<td class='span5'>";
-				echo		"<div class='input-control select' data-role='input-control'>";
-				echo		"<select name='year'>";
-				echo			"<option>".(date("Y")+0)."</option>";
-				echo			"<option>".(date("Y")+1)."</option>";
-				echo			"<option>".(date("Y")+2)."</option>";
-				echo		"</select>";
-				echo		"</div>";
-				echo	"</td>";
-				echo "</tr>";
-				break;
-				
-			case 'term':
-				echo "<tr>";
-				echo	"<td class='span2'><label>Term:</label></td>";
-				echo	"<td class='span5'>";
-				echo		"<div class='input-control select' data-role='input-control'>";
-				echo		"<select name='term'>";
-				echo			"<option>Spring</option>";
-				echo			"<option>Summer</option>";
-				echo			"<option>Fall</option>";
-				echo		"</select>";
-				echo		"</div>";
-				echo	"</td>";
-				echo "</tr>";
-				break;
-			
-			case 'start_date':
-				echo	"<tr>";
-				echo		"<td class='span2'><label>Start Date:</label></td>";
-				echo		"<td class='span5'>";
-				echo			"<div class='input-control text' 
-									data-role='datepicker' 
-									data-week-start='1'
-									data-format='yyyy/mm/dd'
-									data-position='bottom'>";
-				echo				"<input type='text' name='start_date'>";
-				echo			"</div>";
-				echo		"</td>";
-				echo	"</tr>";	
-				break;
-			
-			case 'end_date':
-				echo	"<tr>";
-				echo		"<td class='span2'><label>End Date:</label></td>";
-				echo		"<td class='span5'>";
-				echo			"<div class='input-control text' 
-									data-role='datepicker' 
-									data-week-start='1'
-									data-format='yyyy/mm/dd'
-									data-position='bottom'>";
-				echo				"<input type='text' name='end_date'>";
-				echo			"</div>";
-				echo		"</td>";
-				echo	"</tr>";	
-				break;
-			
-			default:
-				break;
-		}
+		echo "</div>";
 	}
 
 	

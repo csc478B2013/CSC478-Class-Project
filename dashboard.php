@@ -1,7 +1,10 @@
+
+<!-- User Authentication -->
 <?php
-include 'includes/auth.php';
-authenticateUserCookie();
+	include 'includes/auth.php';
+	authenticateUserCookie();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,35 +56,27 @@ authenticateUserCookie();
     <div class="grid">
         <div class="row">
 
-            <!-- Upcoming Coursework Table -->
-            <div class="span4 offset1">
-                <p class="subheader" style="padding: 10px 0 0 0">Upcoming Course Work</p>
-                            
-                <?php			
-					// get date and set date range
-					//$date = get_date();		// get current date
-					$offset = 14;				// set date offset to show assignments
-					$date = "2014-01-01";  		// get current date (temp)
-					
-					// create upcoming course work table
-                    draw_table_upcomingCourseWork($link, $student_id, $date, $offset);				
-                ?>
-            </div>
+            <!-- Upcoming Coursework Table -->               
+			<?php			
+				// get date and set date range
+				//$date = get_date();		// get current date
+				$offset = 7;				// set date offset to show assignments
+				$date = "2014-01-01";  		// get current date (temp)
+				
+				// create upcoming course work table
+				drawTable_UpcomingCourseWork($link, $student_id, $date, $offset);				
+			?>
 
             
-            <!-- Current Grades Table -->
-            <div class="span5 offset1">
-                <p class="subheader" style="padding: 10px 0 0 0">Current Grades</p>
-                            
-                <?php
-                    // get current semester id from database
-					$semesterObject = Semester::select_current($link, $student_id);
-					$semester_id = $semesterObject->semester_id;
-					
-					// draw grades table
-					draw_table_grades($link, $semester_id);
-                ?>
-            </div>
+            <!-- Current Grades Table -->                            
+			<?php
+				// get current semester id from database
+				$semesterObject = Semester::select_current($link, $student_id);
+				$semester_id = $semesterObject->semester_id;
+				
+				// draw grades table
+				drawTable_Grades($link, $semester_id);
+			?>
         </div>
     </div>
 </div>

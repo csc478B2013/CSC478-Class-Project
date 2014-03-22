@@ -10,10 +10,6 @@
         <!-- Add homepage with icon to navigation bar -->
         <a href="http://www.myuplan.com/" class="element"><span class="icon-laptop"></span> &nbsp; MyUPlan</a>
 
-<!--TEMP--><!-- Add homepage with icon to navigation bar -->
-        <a href="_test.php" class="element"> Test Page</a>
-<!--TEMP--> 
-
         <!-- Enable pull menu for smaller screens -->
         <a class="element1 pull-menu" href="#"></a>
         <ul class="element-menu place-right">
@@ -28,8 +24,8 @@
                 <!-- Add settings options to navigation bar -->
                 <a class="dropdown-toggle" href="#"><span class="icon-cog"></span></a>
                 <ul class="dropdown-menu dark place-right" data-role="dropdown">
-                    <li><a href="http://www.myuplan.com/contact">Contact</a></li>
-                    <li><a href="http://www.myuplan.com/help">Help</a></li>
+                    <li><a href="contact.php">Contact</a></li>
+                    <li><a href="help.php">Help</a></li>
                 </ul>
             </li>
         </ul>
@@ -56,7 +52,7 @@
 								'<label></label>'+
 								'<button class="button primary" type="submit" name="loginForm">Login to</button>&nbsp;'+
 								'<button class="button warning" type="button" onclick="$.Dialog.close()">Cancel</button> '+
-								'<button class="button info offset1"><a href="http://www.myuplan.com/newuser.php">Create Account</a></button></a>&nbsp;'+
+								'<button class="button info offset1"><a href="newuser.php">Create Account</a></button></a>&nbsp;'+
 							'</div>'+
 						'</form>';
 

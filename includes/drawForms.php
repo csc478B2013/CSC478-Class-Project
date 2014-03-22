@@ -1,10 +1,10 @@
-
 <?php
 	
 // Text Input
 	function drawText($label, $name, $placeholder) {
 		echo "	<td class='span2'>";
-		echo "		<label>$label:</label></td>";
+		echo "		<label>$label:</label>";
+		echo "	</td>";
 		echo "	<td class='span5'>";
 		echo "		<div class='input-control text' data-rol='input-control'>";
 		echo "			<input type='text' name='$name' placeholder='$placeholder'>";
@@ -13,6 +13,18 @@
 		echo "	</td>";	
 	}
 
+	function drawText_Password($label, $name, $placeholder) {
+		echo " 	<td class='span2'>";
+		echo "		<label>$label:</label>";
+		echo "	</td>";	
+		echo " 	<td class='span5'>";	
+		echo " 		<div class='input-control password' data-role='input-control'>";	
+		echo " 			<input type='password' name='$name' placeholder='$placeholder' autofocus=''>";	
+		echo " 			<button class='btn-reveal' tabindex='-1'></button>";	
+		echo " 		</div>";	
+		echo " 	</td>";	
+	}
+	
 	
 // Select Input
 	function drawSelect_Semester($link, $student_id) {
@@ -87,7 +99,7 @@
 		echo "	</td>";
 	}
 
-
+	
 // Select Input (Special Case)
 
 	function drawSelect_DynamicCourse($link, $student_id) {
@@ -160,6 +172,10 @@
 		echo "<td class='span2'><input type='submit' class='span2 danger' value='Remove' name='myFormSubmitted'></td>";
 	}	
 	
+	function drawButton_Update() {
+		echo "<td class='span2'><input type='submit' class='primary span2' value='Update' name='myFormSubmitted'></td>";
+	}
+	
 	function drawButton_Reset() {
 		echo "<td class='span2'><input type='reset' class='span2 inverse' value='Clear'></td>";
 	}
@@ -168,7 +184,5 @@
 		echo "<td class='span2'><button class='span2 offset1 success'><a href='$URL'>$value</a></button></td>";
 	}
 	
-	function drawButton_Update() {
 	
-	}
 ?>

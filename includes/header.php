@@ -1,14 +1,20 @@
 <!-- Tab Icon -->
 <link rel="shortcut icon" href="/favicon.ico" >
 
-<!-- Include Resource Files -->
-<?php include 'functions.php'; ?>
 
-<!-- Set Authentication -->
-<?php
-	$student_id = 1;
-	$link = db_connect();
-?>
+<!-- PHP Header Scripts -->
+	<?php
+		// include resource files
+		include 'functions.php';
+		include 'drawTables.php';
+		include 'drawForms.php';
+		
+		// set user authentication
+		$student_id = 1;
+		
+		// connect to database
+		$link = db_connect();
+	?>
 	
 <!-- Navigation Bar -->
 <div class="navigation-bar dark">
@@ -24,8 +30,8 @@
                 <!-- Add identifier to navigation bar -->
 				<?php
 					// get information from database
-                    $studentResult = get_student($link, $student_id);
-					$fname = get_student_fname($link, $studentResult);
+                    $student = Student::select($link, $student_id);
+					$fname = $student->fname;
 					
 					// output name to header
 					echo "<a href='http://www.myuplan.com/dashboard.php' class='element'><span class='icon-user'></span> &nbsp;".$fname."&nbsp; </a>";
