@@ -1,5 +1,3 @@
-
-<!-- User Authentication -->
 <?php
 	include 'includes/auth.php';
 	authenticateUserCookie();
