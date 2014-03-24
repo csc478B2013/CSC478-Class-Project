@@ -20,8 +20,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -47,111 +47,102 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 
-	<title> Remove Course </title>
+	<title>Update Course</title>
+		
+		
+	<!-- Remove semester from database and then reload current page-->
+	<?php
+		if(isset($_POST['myFormSubmitted'])) {
+			
+			// local variables
+			$course_id    	= $_POST['course_id'];
+			$designation    = $_POST['designation'];
+			$name           = $_POST['name'];
+			$credits        = $_POST['credits'];
+
+			// delete record from database
+			Course::update($link, $course_id, $designation, $name, $credits);			
+		}
+	?>
+	
+	<!-- Javascript functions -->
+	<script>
+		// dynamic function that fills the course row based on the semester selection
+		function showCourses(str){			
+			if (window.XMLHttpRequest)
+				xmlhttp=new XMLHttpRequest();					// code for IE7+, Firefox, Chrome, Opera, Safari
+			else
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
+
+			xmlhttp.onreadystatechange=function() {
+				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+					document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+				}
+			}
+			xmlhttp.open("GET","includes/get/getCourses.php?semester_id="+str,true);
+			xmlhttp.send();
+		}
+	</script>
+		
 </head>
 
 <!-- Page Body -->
 <body class="metro">
-
-	<div class="grid span10 offset1">
-		<div class="row span8">
-			<form>
+	<div class="grid">
+		<div class="row">
+		<div class="span10 offset1">
+			<form action="modify_UpdateCourse.php" method="post" name="form">
 			<fieldset>
+			
+			<!-- Select Data to be Updated -->
 			<legend>Select Course</legend>
 				<table>
-				
 					<!-- Select Semester -->
-					<tr>
-						<td class="span2"><label>Semester:</label></td>
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>Summer 2014</option>	<!-- select current semester by default -->
-									<option>Spring 2014</option>
-								</select>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawSelect_DynamicCourse($link, $student_id); ?></tr>
 					
-					<!-- Select Course -->
-					<tr>
-						<td class="span2"><label>Course:</label></td>	<!-- load courses from semester -->
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>CSC 470, Android App Development</option>
-									<option>CSC 478, Software Engineering Capstone</option>
-									<option>CSC 574, Advanced Database Concepts</option>
-								</select>
-							</div>
-						</td>
-					</tr>
-					
-				</table>   
-			</fieldset>
-			</form>
-		</div>
-
-		<div class="row span8">
-			<form>
-			<fieldset>
+					<!-- Force Gap -->
+					<tr><?php drawOther_Divider(); ?></tr>
+					<tr><?php drawOther_Gap(); ?></tr>
+				</table	>
+			
+			
+			<!-- Fill in Updated Data -->
 			<legend>Update Course</legend>
-				<table>
-
+				<table>	
 					<!-- Select Course Designation -->
-					<tr>
-						<td class="span2"><label>Course Designation:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="input-control">
-								<input type="text" placeholder="ex. CSC 478">
-								<button class="btn-clear" tabindex="-1" type="button"></button>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawText("Designation", "designation", "ex. CSC 478"); ?></tr>
 					
 					<!-- Select Course Name -->
-					<tr>
-						<td class="span2"><label>Course Name:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="input-control">
-								<input type="text" placeholder="ex. Software Engineering Capstone">
-								<button class="btn-clear" tabindex="-1" type="button"></button>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawText("Name", "name", "ex. Software Engineering Capstone"); ?></tr>
 					
 					<!-- Select Course Credits -->
-					<tr>
-						<td class="span2"><label>Credits:</label></td>
-						<td class="span5">
-							<div class="input-control text">
-								<input type="text" value="" placeholder="ex. 4"/>
-								<button class="btn-clear"></button>
-							</div>
-						</td>
-					</tr>					
-					
+					<tr><?php drawText("Credits", "credits", "ex. 4"); ?></tr>	
+
+			<!-- Submit Data -->
 					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
-					
+					<tr><?php drawOther_Gap(); ?></tr>
+									
 					<!-- Submission Control Buttons -->
-					<tr>
-						<td class="span2"><input type="submit" class="span2" value="Update"></td>
-						<td class="span2"><input type="reset" class="span2" value="Reset Form"></td>
-					</tr>
-					
+					<tr><?php drawButton_Submit("Update"); ?></tr>
 				</table>   
 			</fieldset>
 			</form>
+			
+			<!-- This section is to notify the user on the status of the request -->
+			<?php
+				if(isset($_POST['myFormSubmitted'])) {
+				
+					// alert the user 
+					echo "	<blockquote>
+								<p class='text-success'>$designation, $name has been updated successfully.</p>
+							</blockquote>";
+
+				}
+			?>	
+			
+		</div>
 		</div>
 	</div>
-	
-	
-	</div>
-                    
-    
 </body> 
 
 <!-- Page Footer -->

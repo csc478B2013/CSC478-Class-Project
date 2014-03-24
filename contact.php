@@ -1,10 +1,3 @@
-
-<!-- User Authentication -->
-<?php
-	include 'includes/auth.php';
-	authenticateUserCookie();
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,9 +12,6 @@
 		include 'includes/functions.php';
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
-		
-		// set user authentication
-		$student_id = 1;
 		
 		// connect to database
 		$link = db_connect();

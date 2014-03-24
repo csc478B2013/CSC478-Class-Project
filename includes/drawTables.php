@@ -21,12 +21,12 @@
 			echo "<a class='heading bg-amber fg-white' href='#'>$term, $year</a>";
 			echo "<div class='content clearfix'>"; 
             
-            // display current semester gpa
-            echo "<legend>GPA: $semester_GPA</legend>";
-			
+			// display current semester gpa
+            echo "<p class='subheader'>GPA: $semester_GPA</p>";
+
             // draw the accordian for all courses in the semester
             drawAccordian_Courses($link, $semester_id);
-			
+
 			echo "</div>";
 			echo "</div>";
 			echo "</div>";  
@@ -197,17 +197,17 @@
 
 	function drawTable_UpcomingCourseWork($link, $student_id, $date, $offset) {
 		
-		// draw section
-		echo" <div class='span4 offset1'>";
-        echo" <p class='subheader' style='margin-top: 10px'>Tasks</p>";
-		
 		// calculate date range
 		$date_range = get_dateRange($date, $offset);
 		
 		// get current semester id from database
 		$semesterObject = Semester::select_current($link, $student_id);
 		$semester_id = $semesterObject->semester_id;
-					
+			
+		// draw section
+		echo" <div class='span4'>";
+        echo" <p class='subheader' style='margin-top: 10px'>Tasks</p>";
+		
 		// get assignments from database
 		$result = selectAssignment_Semester($link, $semester_id);
 		

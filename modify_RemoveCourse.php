@@ -20,8 +20,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -47,7 +47,7 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 
-	<title> Remove Course </title>
+	<title>Remove Course</title>
 	
 	<!-- Remove semester from database and then reload current page-->
 	<?php

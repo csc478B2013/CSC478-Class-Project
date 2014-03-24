@@ -20,7 +20,7 @@
 		$database = "myuplan";
 
 		// Local Connection (TEMP)
-		$hostname = "localhost";   
+		//$hostname = "localhost";   
 
 		// Connect to Database
 		$link = mysql_connect($hostname,$username,$password);
@@ -39,29 +39,34 @@
   
 
 // Authentication
-	function authenticateUserWithCookie($link, $passedEmail, $passedPassword) {
-	// Check if user email and password pair match
-	// SIDE NOTE: THIS IS SHITTY SECURITY BUT THIS IS A CLASS PROJECT SO WE NEED TO FOCUS ON OTHER ASPECTS OF THE CODE
+	// SIDE NOTE: THIS IS LOW-SECURITY  SOLUTION BUT THIS IS A CLASS PROJECT SO WE NEED TO FOCUS ON OTHER ASPECTS OF THE CODE
 	// TODO: Fix this weak security
-
-	$isAuthenticatedUser = FALSE;
+	function authenticateUserWithCookie($link, $passedEmail, $passedPassword) {
 	
-	//first lets see if the email and password pair match
-	//
-	if(Student::isPasswordValid($link, $passedEmail, $passedPassword))
-	{
-		//ok so we are good here so now lets set up the cookie
-		//
-		$studentObj = Student::selectByEmail($link, $passedEmail);
-
-		setcookie("UserIdent", $studentObj->student_id, time()+360000);
+		// Check if user email and password pair match
+		$isAuthenticatedUser = FALSE;
 		
-		$isAuthenticatedUser = TRUE;
+		//first lets see if the email and password pair match
+		if(Student::isPasswordValid($link, $passedEmail, $passedPassword)) {
+			
+			//ok so we are good here so now lets set up the cookie
+			$studentObj = Student::selectByEmail($link, $passedEmail);
+			
+			// set the cookie
+			setcookie("UserIdent", $studentObj->student_id, time()+360000);
+			
+			$isAuthenticatedUser = TRUE;
+		}
+		
+		return $isAuthenticatedUser;
 	}
-	
-	return $isAuthenticatedUser;
-}
   
+	function logout() {
+	
+		// if a user truly is logged in, log them out
+		setcookie("UserIdent" , NULL, time()-50000);
+
+	}
   
   
 // Class Objects
@@ -385,9 +390,29 @@
 			$instance->semester_GPA 	= $row['semester_GPA'];
 			$instance->isCurrent 		= $row['isCurrent'];
 			
-			
             // return student instance
             return $instance;
+		}
+		
+		public static function existsCurrent($link, $student_id) {
+			$exists = true;
+			
+			// get current semester id from database
+			$semesterObject = Semester::select_current($link, $student_id);
+			$semester_id = $semesterObject->semester_id;
+			
+			// if no current semester exists...
+			if ($semester_id == '') {
+				$exists = false;
+				
+				// let the user know
+				echo "	<span class='fg-red'>
+								Oops! It seems we don't have a current semester for you.<br>
+								Please add your current semester to the planner.
+							</span>";
+			}
+			
+			return $exists;
 		}
 	}
 	

@@ -19,8 +19,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -46,7 +46,7 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 
-	<title> Add Course </title>
+	<title>Add Course</title>
 	
 	<!-- Add Course to database -->
 	<?php
@@ -101,7 +101,7 @@
 					
 					<!-- Submission Control Buttons -->
 					<tr> 
-						<?php drawButton_Add(); ?> 
+						<?php drawButton_Submit("Add"); ?>
 						<?php drawButton_Reset(); ?>
 						<?php drawButton_Link("modify_AddAssignment.php", "Add Assignment"); ?>
 					</tr>

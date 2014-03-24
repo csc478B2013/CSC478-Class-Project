@@ -20,8 +20,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -47,162 +47,130 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 
-	<title> Update Assignment </title>
+	<title>Update Assignment</title>
+		
+		
+	<!-- Remove semester from database and then reload current page-->
+	<?php
+		if(isset($_POST['myFormSubmitted'])) {
+			
+			// local variables
+			$semester_id        = $_POST['semester_id'];
+			$course_id          = $_POST['course_id'];
+			$assignment_id      = $_POST['assignment_id'];
+			$assignment_type    = $_POST['assignment_type'];
+			$name               = $_POST['name'];
+			$due_date           = $_POST['due_date'];
+			$points_allowed     = $_POST['points_allowed'];
+			$points_received     = $_POST['points_received'];
+
+			// delete record from database
+			Assignment::update($link, $assignment_id, $assignment_type, $name, $due_date, $points_allowed, $points_received);			
+		}
+	?>
+	
+	<!-- Javascript functions -->
+	<script>
+	
+		// dynamic function that fills the course row based on the semester selection
+		function showCourses(str){			
+			if (window.XMLHttpRequest)
+				xmlhttp=new XMLHttpRequest();					// code for IE7+, Firefox, Chrome, Opera, Safari
+			else
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
+
+			xmlhttp.onreadystatechange=function() {
+				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+					document.getElementById("courselist").innerHTML=xmlhttp.responseText;
+				}
+			}
+			xmlhttp.open("GET","includes/get/getCourses.php?semester_id="+str,true);
+			xmlhttp.send();
+		}
+				
+		// dynamic function that fills the assignments row based on the semester selection
+		function showAssignments(str){			
+			if (window.XMLHttpRequest)
+				xmlhttp=new XMLHttpRequest();					// code for IE7+, Firefox, Chrome, Opera, Safari
+			else
+				xmlhttp=new ActiveXObject("Microsoft.XMLHTTP"); // code for IE6, IE5
+
+			xmlhttp.onreadystatechange=function() {
+				if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+					document.getElementById("assignmentlist").innerHTML=xmlhttp.responseText;
+				}
+			}
+			xmlhttp.open("GET","includes/get/getAssignments.php?course_id="+str,true);
+			xmlhttp.send();
+		}
+	</script>
+		
 </head>
 
 <!-- Page Body -->
 <body class="metro">
-
-	<div class="grid span10 offset1">
-		<div class="row span8">
-			<form>
+	<div class="grid">
+		<div class="row">
+		<div class="span10 offset1">
+			<form action="modify_UpdateAssignment.php" method="post" name="form">
 			<fieldset>
+			
+			<!-- Select Data to be Updated -->
 			<legend>Select Assignment</legend>
 				<table>
+					<!-- Select Semester and Dynamic Course -->
+					<tr><?php drawSelect_DynamicAssignment($link, $student_id); ?></tr>
+					
+					<!-- Force Gap -->
+					<tr><?php drawOther_Divider(); ?></tr>
+					<tr><?php drawOther_Gap(); ?></tr>
+				</table	>
 				
-					<!-- Select Semester -->
-					<tr>
-						<td class="span2"><label>Semester:</label></td>
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>Summer 2014</option>	<!-- select current semester by default -->
-									<option>Spring 2014</option>
-								</select>
-							</div>
-						</td>
-					</tr>
-					
-					<!-- Select Course -->
-					<tr>
-						<td class="span2"><label>Course:</label></td>	<!-- load courses from semester -->
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>CSC 470, Android App Development</option>
-									<option>CSC 478, Software Engineering Capstone</option>
-									<option>CSC 574, Advanced Database Concepts</option>
-								</select>
-							</div>
-						</td>
-					</tr>
-					
-					<!-- Select Assignment -->
-					<tr>
-						<td class="span2"><label>Assignment:</label></td>	<!-- load courses from semester -->
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>Exam</option>
-									<option>Quiz</option>
-									<option>Project</option>
-									<option>Homework</option>
-									<option>Discussion</option>
-									<option>Other</option>
-								</select>
-							</div>
-						</td>
-					</tr>
-					
-				</table>   
-			</fieldset>
-			</form>
-		</div>
-		
-		<div class="row span8">
-			<form>
-			<fieldset>
+				
+			<!-- Fill in Updated Data -->
 			<legend>Update Assignment</legend>
 				<table>
-								
 					<!-- Select Assignment Type -->
-					<tr>
-						<td class="span2"><label>Assignment Type:</label></td>
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>Exam</option>
-									<option>Quiz</option>
-									<option>Project</option>
-									<option>Homework</option>
-									<option>Discussion</option>
-									<option>Other</option>
-								</select>
-							</div>
-						</td>
-					</tr>					
+					<tr><?php drawSelect_AssignmentType(); ?>					
 						
 					<!-- Select Assignment Name:-->
-					<tr>
-						<td class="span2"><label>Assignment Name:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="input-control">
-								<input type="text" placeholder="ex. Final Exam">
-								<button class="btn-clear" tabindex="-1" type="button"></button>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawText("Assignment Name", "name", "ex. Final Exam"); ?></tr>
 						
 					<!-- Select Due Date -->
-					<tr>
-						<td class="span2"><label>Due Date:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="datepicker" data-week-start="1">
-								<input type="text">
-								<button class="btn-date"></button>
-							</div>
-						</td>
-					</tr>
-					
-					<!-- Select Study Time -->
-					<tr>
-						<td class="span2"><label>Study Time:</label></td>
-						<td class="span5">
-							<div class="input-control text">
-								<input type="text" value="" placeholder="ex. 2.5 hrs"/>
-								<button class="btn-clear"></button>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawOther_Datepicker("Due Date", "due_date"); ?>
 					
 					<!-- Select Points Possible -->
-					<tr>
-						<td class="span2"><label>Points Possible:</label></td>
-						<td class="span5">
-							<div class="input-control text">
-								<input type="text" value="" placeholder="ex. 100"/>
-								<button class="btn-clear"></button>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawText("Points Possible", "points_allowed", "ex. 100"); ?></tr>
 					
-					<!-- Select Points Received -->
-					<tr>
-						<td class="span2"><label>Points Received:</label></td>
-						<td class="span5">
-							<div class="input-control text">
-								<input type="text" value="" placeholder="ex. 100"/>
-								<button class="btn-clear"></button>
-							</div>
-						</td>
-					</tr>
+					<!-- Select Points Possible -->
+					<tr><?php drawText("Points Received", "points_received", "ex. 100"); ?></tr>
 					
-					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
-					
+			<!-- Submit Data -->
+					<!-- Force Gap -->
+
+					<tr><?php drawOther_Gap(); ?></tr>
+									
 					<!-- Submission Control Buttons -->
-					<tr>
-						<td class="span2"><input type="submit" class="span2" value="Update"></td>
-						<td class="span2"><input type="reset" class="span2" value="Reset Form"></td>
-					</tr>
-					
+					<tr><?php drawButton_Submit("Update"); ?></tr>
 				</table>   
 			</fieldset>
 			</form>
+			
+			<!-- This section is to notify the user on the status of the request -->
+			<?php
+				if(isset($_POST['myFormSubmitted'])) {
+				
+					// alert the user 
+					echo "	<blockquote>
+								<p class='text-success'>$assignment_type, $name has been updated successfully.</p>
+							</blockquote>";
+
+				}
+			?>	
+			
 		</div>
-    
+		</div>
+	</div>
 </body> 
 
 <!-- Page Footer -->

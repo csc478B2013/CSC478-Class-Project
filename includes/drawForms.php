@@ -1,12 +1,26 @@
 <?php
 	
+	
+// Labels
+	function drawLabel_Title($name) {
+		echo "	<p class='subheader' style='margin-top: 25px'>$name</p>";
+		echo "	<legend style='margin: 10px 0px 10px 0px'></legend>";
+	}
+	
+	function drawLabel_st() {
+		echo "	<tr><td class='span7'>";
+		echo "		<label>How many hours do you typically need for each type of assignment?</label>";
+		echo "	</td></tr>";
+	}
+	
+	
 // Text Input
 	function drawText($label, $name, $placeholder) {
 		echo "	<td class='span2'>";
 		echo "		<label>$label:</label>";
 		echo "	</td>";
 		echo "	<td class='span5'>";
-		echo "		<div class='input-control text' data-rol='input-control'>";
+		echo "		<div class='input-control text' data-role='input-control'>";
 		echo "			<input type='text' name='$name' placeholder='$placeholder'>";
 		echo "			<button class='btn-clear' tabindex='-1' type='button'></button>";
 		echo "		</div>";
@@ -20,9 +34,21 @@
 		echo " 	<td class='span5'>";	
 		echo " 		<div class='input-control password' data-role='input-control'>";	
 		echo " 			<input type='password' name='$name' placeholder='$placeholder' autofocus=''>";	
-		echo " 			<button class='btn-reveal' tabindex='-1'></button>";	
+		echo " 			<button class='btn-reveal' tabindex='-1' type='button'></button>";	
 		echo " 		</div>";	
 		echo " 	</td>";	
+	}
+	
+	function drawText_ST($label, $name, $placeholder) {
+		echo " 	<td class='span2'>";
+		echo "		<label>$label:</label>";
+		echo "	</td>";	
+		echo " 	<td class='span2'>";	
+		echo " 		<div class='input-control text' data-role='input-control'>";	
+		echo " 			<input type='text' name='$name' placeholder='$placeholder'>";	
+		echo " 			<button class='btn-clear' tabindex='-1' type='button'></button>";	
+		echo " 		</div>";	
+		echo " 	</td>";
 	}
 	
 	
@@ -81,7 +107,37 @@
 	
 	}
 	
-	function drawSelect_Assignment_Type() {
+	function drawSelect_Year() {
+		echo "	<td class='span2'>";
+		echo "		<label>Year:</label>";
+		echo "	</td>";
+		echo "	<td class='span5'>";
+		echo "		<div class='input-control select' data-role='input-control'>";
+		echo "			<select name='year'>";
+		echo "				<option>".date(Y)."</option>";
+		echo "				<option>".(date(Y)+1)."</option>";
+		echo "				<option>".(date(Y)+2)."</option>";
+		echo "			</select>";
+		echo "		</div>";
+		echo "	</td>";
+	}
+	
+	function drawSelect_Term() {
+		echo "	<td class='span2'>";
+		echo "		<label>Term:</label>";
+		echo "	</td>";
+		echo "	<td class='span5'>";
+		echo "		<div class='input-control select' data-role='input-control'>";
+		echo "			<select name='term'>";
+		echo "				<option>Spring</option>";
+		echo "				<option>Summer</option>";
+		echo "				<option>Fall</option>";
+		echo "			</select>";
+		echo "		</div>";
+		echo "	</td>";
+	}
+	
+	function drawSelect_AssignmentType() {
 		echo "	<td class='span2'>";
 		echo "		<label>Assignment Type:</label>";
 		echo "	</td>";
@@ -99,6 +155,22 @@
 		echo "	</td>";
 	}
 
+	function drawSelect_TOD() {
+		echo "	<tr><td class='span7'>";
+		echo "		<label>What time during the day do you prefer to study?</label>";
+		echo "	</td></tr>";
+		echo "	<tr><td class='span7'>";
+		echo "		<div class='input-control select'>";
+		echo "			<select name='study_tod'>";
+		echo "				<option>Morning</option>";
+		echo "				<option>Afternoon</option>";
+		echo "				<option>Evening</option>";
+		echo "				<option>Dedicated Insomniac!</option>";
+		echo "			</select>";
+		echo "		</div>";
+		echo "	</td></tr>";
+	}
+	
 	
 // Select Input (Special Case)
 
@@ -110,14 +182,14 @@
 		echo"	<td class='span5'>";
 		echo"		<div class='input-control select'>";
 		echo"			<select name='semester_id' onchange='showCourses(this.value)'>";
-							$semesters = get_semesters_student($link, $student_id);
+							$semesters = selectSemester_Student($link, $student_id);
 							echo "<option value=''></option>";
 							while($row = mysql_fetch_array($semesters)){
 								// set variables
 								$semester_id  		= $row['semester_id'];
 								$year       		= $row['year'];  
 								$term   			= $row['term']; 
-					
+
 								echo "<option value=$semester_id onselect=getOption_Semester()>$year, $term</option>";
 							}
 		echo"			</select>";
@@ -138,13 +210,60 @@
 	}
 
 	function drawSelect_DynamicAssignment($link, $student_id) {
-	
+		
+		// Select Semester
+		echo"	<tr><td class='span2'>";
+		echo"		<label>Semester:</label></td>";
+		echo"	<td class='span5'>";
+		echo"		<div class='input-control select'>";
+		echo"			<select name='semester_id' onchange='showCourses(this.value)'>";
+							$semesters = selectSemester_Student($link, $student_id);
+							echo "<option value=''></option>";
+							while($row = mysql_fetch_array($semesters)){
+								// set variables
+								$semester_id  		= $row['semester_id'];
+								$year       		= $row['year'];  
+								$term   			= $row['term']; 
+
+								echo "<option value=$semester_id onselect=getOption_Semester()>$year, $term</option>";
+							}
+		echo"			</select>";
+		echo"		</div>";
+		echo"	</td></tr>";
+		
+		// Dynamic Course Selection (course list updates from semester selection)
+		echo"<tr>";
+		echo"	<td class='span2'><label>Course:</label></td>";	
+		echo"	<td class='span5'>";
+		echo"		<div id='courselist' class='input-control select'>";
+		echo "			<select>";
+		echo "				<option value=''></option>";									
+		echo "			</select>";
+		echo"		</div>";
+		echo"	</td>";
+		echo"</tr>";
+		
+		// Dynamic Assignment Selection (course list updates from semester selection)
+		echo"<tr>";
+		echo"	<td class='span2'><label>Assignment:</label></td>";	
+		echo"	<td class='span5'>";
+		echo"		<div id='assignmentlist' class='input-control select'>";
+		echo "			<select>";
+		echo "				<option value=''></option>";									
+		echo "			</select>";
+		echo"		</div>";
+		echo"	</td>";
+		echo"</tr>";
 	}
 	
 	
 // Other
 	function drawOther_Gap() {
 		echo "<td class='span10'><div style='margin-top: 20px'></div></td>";
+	}
+	
+	function drawOther_Divider() {
+		echo "<td class='span10'><div style='margin-top: 10px'><legend></legend></div></td>";
 	}
 	
 	function drawOther_Datepicker($label, $name) {
@@ -164,16 +283,12 @@
 	
 	
 // Buttons
-	function drawButton_Add() {
-		echo "<td class='span2'><input type='submit' class='primary span2' value='Add' name='myFormSubmitted'></td>";
+	function drawButton_Submit($value) {
+		echo "<td class='span2'><input type='submit' class='primary span2' value='$value' name='myFormSubmitted'></td>";
 	}
 	
 	function drawButton_Remove() {
 		echo "<td class='span2'><input type='submit' class='span2 danger' value='Remove' name='myFormSubmitted'></td>";
-	}	
-	
-	function drawButton_Update() {
-		echo "<td class='span2'><input type='submit' class='primary span2' value='Update' name='myFormSubmitted'></td>";
 	}
 	
 	function drawButton_Reset() {
@@ -181,7 +296,7 @@
 	}
 	
 	function drawButton_Link($URL, $value) {
-		echo "<td class='span2'><button class='span2 offset1 success'><a href='$URL'>$value</a></button></td>";
+		echo "<td class='span2'><button class='span2 offset1 info'><a href='$URL'>$value</a></button></td>";
 	}
 	
 	

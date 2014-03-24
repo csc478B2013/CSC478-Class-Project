@@ -19,8 +19,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -50,15 +50,16 @@
 
 <!-- Page Body -->
 <body class="metro">
+<div class="container">
 <div class="grid">
 
     <!-- Test Row -->
     <div class="row">
         <div class="span10 offset1">
       
-            <p class="subheader">History</p>
-            <div style="margin-top: 10px"></div>
-
+			<!-- Page Title -->
+			<?php drawLabel_Title("History"); ?>
+			
 			<!-- Student History -->               
 			<?php
 				// draw student history
@@ -66,8 +67,7 @@
             ?>         
         </div>
     </div>
-    
-    
+</div>    
 </div>
 
 </body>

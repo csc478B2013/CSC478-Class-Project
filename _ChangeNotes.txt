@@ -1,0 +1,44 @@
+Changes (2014-03-23, Stephen)
+
+	Removed forced student_id = 1 from web pages.
+	
+	Added $student_id = $_COOKIE["UserIdent"]; to all of the pages.
+	
+	Added user logout functionality
+	
+	Changed user index page
+		+ If user is logged in, redirects them to their dashboard page.
+		+ If user is not logged in, normal index page.
+		+ If user attempts to log in with invalid username or password, let them know.
+
+	Changed dashboard
+		+ added function that tests if a current semester exists.
+
+	Complete Remove Functions
+		+ Semester, Course, Assignment Remove Functions
+		
+		
+		
+Changes (2014-03-22, Stephen)
+
+	Updated Database
+		+ added email as a primary key for student.
+		+ changed "student_settings" to just "settings" for simplicity. 
+		+ fixed all of the datatypes for id's. (some were bigint, some were int; they should all be bigint)
+		+ changed syntax to reflect proper syntaX
+		+ tested on both local and web server - passed
+
+	Updated Test Page
+		+ moved all test functions to test.php
+			- includes drop down for easier testing straight from web page
+			- displays results after each test for verification
+		+ created a testFunctions.php to go along
+
+	Updated functions.php
+		+ updated sql grabs for "Settings"
+		+ updated functions
+
+	Cleaned up some aesthetics.
+	
+	Changed web page names to resemble actual function.
+

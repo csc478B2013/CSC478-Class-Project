@@ -19,8 +19,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -46,7 +46,7 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 
-	<title> Add Semester </title>
+	<title>Add Semester</title>
 </head>
 
 <!-- Page Body -->
@@ -60,32 +60,10 @@
 				<table>
 
 					<!-- Select Year -->
-					<tr>
-						<td class="span2"><label>Year:</label></td>
-						<td class="span5">
-							<div class="input-control select" data-role="input-control">
-								<select name="year">
-									<option><?php echo date("Y"); ?></option>
-									<option><?php echo date("Y")+1; ?></option>
-									<option><?php echo date("Y")+2; ?></option>
-								</select>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawSelect_Year(); ?></tr>
 					
 					<!-- Select Term -->
-					<tr>
-						<td class="span2"><label>Term:</label></td>
-						<td class="span5">
-							<div class="input-control select" data-role="input-control">
-								<select name="term">
-									<option>Spring</option>
-									<option>Summer</option>
-									<option>Fall</option>
-								</select>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawSelect_Term(); ?></tr>
 					
 					<!-- Select Start Date -->
 					<tr><?php drawOther_Datepicker("Start Date", "start_date"); ?>
@@ -98,7 +76,7 @@
 					
 					<!-- Submission Control Buttons -->
 					<tr>
-						<?php drawButton_Add(); ?> 
+						<?php drawButton_Submit("Add"); ?> 
 						<?php drawButton_Reset(); ?>
 					</tr>
 

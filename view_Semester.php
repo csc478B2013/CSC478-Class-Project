@@ -19,8 +19,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -50,35 +50,39 @@
 
 <!-- Page Body -->
 <body class="metro">
+<div class="container">
 <div class="grid">
    
     <!-- Test Row -->
     <div class="row">
         <div class="span10 offset1">
       
-            <p class="subheader">Current Semester</p>
-            <div style="margin-top: 10px"></div>
+            <!-- Page Title -->
+			<?php drawLabel_Title("Current Semester"); ?>
        
 			<?php
 				
-				// get current semester from database
-				$semesterObject = Semester::select_current($link, $student_id);
-				$semester_id 	= $semesterObject->semester_id;
-				$semester_GPA 	= $semesterObject->semester_GPA;
+				// if no current semester exists...
+				if (Semester::existsCurrent($link, $student_id)) {
 				
-				// display current semester gpa
-				echo "<legend>GPA: $semester_GPA</legend>";
+					// get current semester from database
+					$semesterObject = Semester::select_current($link, $student_id);
+					$semester_id 	= $semesterObject->semester_id;
+					$semester_GPA 	= $semesterObject->semester_GPA;
+					
+					// display current semester gpa
+					echo "<p class='subheader'>GPA: $semester_GPA</p>";
 
-				// draw current semester
-				drawAccordian_Courses($link, $semester_id);
+					// draw current semester
+					drawAccordian_Courses($link, $semester_id);
+				}
 
 			?>         
 
-            </div>
         </div>
     </div>
-
-</div>  
+</div>
+</div>
 </body>
 
 <!-- Page Footer -->

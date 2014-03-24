@@ -91,7 +91,7 @@
 							break;						
 							
 						case 11:
-							testDelete_All($link);		// Delete Database Content
+							testDelete($link);			// Delete Database Content
 							testSelect($link);			// Select Test After Delet All
 							break;
 					}

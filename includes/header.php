@@ -9,8 +9,8 @@
 		include 'drawTables.php';
 		include 'drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -50,7 +50,7 @@
                     <li><a href="contact.php">Contact</a></li>
                     <li><a href="help.php">Help</a></li>
 					<li class="divider"></li>
-					<li><a href="http://www.myuplan.com/#">Logout</a></li>
+					<li><a href="logout.php">Logout</a></li>
                 </ul>
             </li>
         </ul>

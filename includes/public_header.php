@@ -50,7 +50,7 @@
 								'<div class="input-control password"><input type="password" name="password"><button class="btn-reveal"></button></div>' +
 								'<div class="form-actions">' +
 								'<label></label>'+
-								'<button class="button primary" type="submit" name="loginForm">Login to</button>&nbsp;'+
+								'<button class="button primary" type="submit" name="loginForm">Login</button>&nbsp;'+
 								'<button class="button warning" type="button" onclick="$.Dialog.close()">Cancel</button> '+
 								'<button class="button info offset1"><a href="newuser.php">Create Account</a></button></a>&nbsp;'+
 							'</div>'+

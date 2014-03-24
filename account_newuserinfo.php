@@ -3,7 +3,6 @@
 <head>
     <!-- Page Header -->
 	<header class="bg-dark" data-load='includes/header.php'></header>
-    <header class="bg-white" data-load='includes/menu.html'></header>
 	
 	
 	<!-- PHP Header Scripts -->
@@ -13,13 +12,36 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
 	?>
     
+	<?php
+	
+		// Add student to database and then redirect to add semester
+		if(isset($_POST['myFormSubmitted'])) {
+		
+			// local variables
+			$study_tod 		= $_POST['study_tod'];
+			$st_exam 		= $_POST['st_exam'];
+			$st_quiz 		= $_POST['st_quiz'];
+			$st_project 	= $_POST['st_project'];
+			$st_homework 	= $_POST['st_homework'];
+			$st_discussion 	= $_POST['st_discussion'];
+			$st_other 		= $_POST['st_other'];
+			
+			// insert record into database
+			Settings::insert($link, $student_id, $study_tod, $st_exam, $st_quiz, $st_project, $st_homework, $st_discussion, $st_other);
+				
+			// send them to the new account info page
+			Redirect("modify_AddSemester.php");
+		}
+		
+	?>
+	
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
     <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
@@ -44,108 +66,43 @@
 
 <!-- Page Body -->
 <body class="metro">
-	<div class="grid span10 offset1">
-		<div class="row span8">
-			<form>
+	<div class="grid">
+		<div class="row">
+		<div class="span10 offset1">
+			<form action="account_newuserinfo.php" method="post" name="form">
 			<fieldset>
 				<legend>New User Questionaire</legend>
 				<table>
-
-					<!-- Get Study Time of Day -->
-					<tr>
-						<td class="span7">
-							<label>What time during the day do you prefer to study?</label>
-							<div class="input-control select">
-								<select>
-									<option>Morning</option> 
-									<option>Afternoon</option>
-									<option>Evening</option>
-									<option>Insomniac!</option>
-								</select>
-							</div>
-						</td>
-					</tr>
+				
+					<!-- Select Study Time of Day -->
+					<tr><?php drawSelect_TOD(); ?></tr>
+					
+					<!-- Force Gap -->
+					<tr><?php drawOther_Gap(); ?></tr>
+					
+					<!-- Select Study Time for Each Assignment Type -->
+					<tr><?php drawLabel_st(); ?></tr>
+					<tr><?php drawText_ST("Exam", "st_exam", "ex. 5"); ?></tr>
+					<tr><?php drawText_ST("Quiz", "st_quiz", "ex. 4"); ?></tr>
+					<tr><?php drawText_ST("Project", "st_project", "ex. 3"); ?></tr>
+					<tr><?php drawText_ST("Homework", "st_homework", "ex. 2"); ?></tr>
+					<tr><?php drawText_ST("Discussion", "st_discussion", "ex. 1"); ?></tr>
+					<tr><?php drawText_ST("Other", "st_other", "ex. 5"); ?></tr>		
 					
 					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
-					
-					<!-- Get Study Times -->
-					<tr>
-						<td class="span7">
-						<label>How much time do you typically need to study for each type of assignment?</label>
-						<table>
-							<tr>
-								<td class="span2"><label>Exam:</label></td>
-								<td class="span2">
-									<div class="input-control text" data-role="input-control">
-										<input type="tel" placeholder="ex. 3.0">
-										<button class="btn-clear" tabindex="-1" type="button"></button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="span2"><label>Quiz:</label></td>
-								<td class="span2">
-									<div class="input-control text" data-role="input-control">
-										<input type="tel" placeholder="ex. 2.0">
-										<button class="btn-clear" tabindex="-1" type="button"></button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="span2"><label>Project:</label></td>
-								<td class="span2">
-									<div class="input-control text" data-role="input-control">
-										<input type="tel" placeholder="ex. 10.0">
-										<button class="btn-clear" tabindex="-1" type="button"></button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="span2"><label>Homework:</label></td>
-								<td class="span2">
-									<div class="input-control text" data-role="input-control">
-										<input type="tel" placeholder="ex. 1.5">
-										<button class="btn-clear" tabindex="-1" type="button"></button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="span2"><label>Discussion:</label></td>
-								<td class="span2">
-									<div class="input-control text" data-role="input-control">
-										<input type="tel" placeholder="ex. 1.0">
-										<button class="btn-clear" tabindex="-1" type="button"></button>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td class="span2"><label>Other:</label></td>
-								<td class="span2">
-									<div class="input-control text" data-role="input-control">
-										<input type="tel" placeholder="ex. 3.0">
-										<button class="btn-clear" tabindex="-1" type="button"></button>
-									</div>
-								</td>
-							</tr>
-						</table>
-					</tr>
-					
-					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
+					<tr><?php drawOther_Gap(); ?></tr>
 					
 					<!-- Submission Control Buttons -->
-					<tr>
-						<td class="span2"><input type="submit" class="span2" value="Create!"></td>
-						<td class="span2"><input type="reset" class="span2" value="Reset Form"></td>
+					<tr> 
+						<?php drawButton_Submit("Create!"); ?> 
+						<?php drawButton_Reset(); ?>
 					</tr>
-				</table>
+					
+				</table>   
 			</fieldset>
 			</form>
+			
+		</div>
 		</div>
 	</div>
  

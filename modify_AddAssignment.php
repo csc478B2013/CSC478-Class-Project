@@ -19,8 +19,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -47,7 +47,7 @@
     <script src="js/github.info.js"></script>
 	<script src="includes/code.js"></script>
 	
-	<title> Add Assignment </title>
+	<title>Add Assignment</title>
 	
 	<!-- Add Assignment to database -->
 	<?php
@@ -65,8 +65,8 @@
 			Assignment::insert($link, $student_id, $semester_id, $course_id, $assignment_type, $name, $due_date, $points_allowed);
 					
 			// get course information from database
-			$courseOutput 			= Course::select($link, $course_id);
-			$assignmentOutput		= new Assignment();
+			$courseOutput 				= Course::select($link, $course_id);
+			$assignmentOutput			= new Assignment();
 			
 			// pass information for output use
 			$assignmentOutput->name 	= $name;
@@ -107,7 +107,7 @@
 					<tr><?php drawSelect_DynamicCourse($link, $student_id); ?></tr>
 					
 					<!-- Select Assignment Type -->
-					<tr><?php drawSelect_Assignment_Type(); ?>					
+					<tr><?php drawSelect_AssignmentType(); ?>					
 						
 					<!-- Select Assignment Name:-->
 					<tr><?php drawText("Assignment Name", "name", "ex. Final Exam"); ?></tr>
@@ -123,7 +123,7 @@
 					
 					<!-- Submission Control Buttons -->
 					<tr> 
-						<?php drawButton_Add(); ?> 
+						<?php drawButton_Submit("Add"); ?>
 						<?php drawButton_Reset(); ?>
 						<?php drawButton_Link("modify_AddCourse.php", "Add Course"); ?>
 					</tr>

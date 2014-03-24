@@ -1,9 +1,9 @@
-
 <!-- User Authentication -->
 <?php
 	include 'includes/auth.php';
 	authenticateUserCookie();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,8 +20,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -52,34 +52,49 @@
 <!-- Page Body -->
 
 <body class="metro">
-<div class="container">
+
     <div class="grid">
         <div class="row">
-
-            <!-- Upcoming Coursework Table -->               
+			<div class="span10 offset1">
+      
+            <!-- Page Title -->
+			<?php drawLabel_Title("Student Dashboard"); ?>
+                        
 			<?php			
-				// get date and set date range
-				//$date = get_date();		// get current date
-				$offset = 7;				// set date offset to show assignments
-				$date = "2014-01-01";  		// get current date (temp)
 				
-				// create upcoming course work table
-				drawTable_UpcomingCourseWork($link, $student_id, $date, $offset);				
+				// if no current semester exists...
+				if (Semester::existsCurrent($link, $student_id)) {
+				
+				echo "<table><tr><td style='vertical-align:top'>";
+				
+					// Current Tasks Table ///////////////////////////////////////////
+					// get date and set date range
+					//$date = get_date();		// get current date
+					$offset = 7;				// set date offset to show assignments
+					$date = "2014-01-01";  		// get current date (temp)
+					
+					// create upcoming course work table
+					drawTable_UpcomingCourseWork($link, $student_id, $date, $offset);
+					
+				echo "</td>";
+				echo "<td style='vertical-align:top'>";
+					
+					// Current Grades Table /////////////////////////////////////////
+					// get current semester id from database
+					$semesterObject = Semester::select_current($link, $student_id);
+					$semester_id = $semesterObject->semester_id;
+				
+					// draw grades table
+					drawTable_Grades($link, $semester_id);
+					
+				echo "</td></tr></table>";
+				}
+
 			?>
 
-            
-            <!-- Current Grades Table -->                            
-			<?php
-				// get current semester id from database
-				$semesterObject = Semester::select_current($link, $student_id);
-				$semester_id = $semesterObject->semester_id;
-				
-				// draw grades table
-				drawTable_Grades($link, $semester_id);
-			?>
         </div>
     </div>
-</div>
+
 
 </body>
 

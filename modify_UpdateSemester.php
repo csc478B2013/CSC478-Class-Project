@@ -20,8 +20,8 @@
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// set user authentication
-		$student_id = 1;
+		// set the student id
+		$student_id = $_COOKIE["UserIdent"];
 		
 		// connect to database
 		$link = db_connect();
@@ -47,111 +47,86 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 
-	<title> Update Semester </title>
+	<title>Update Semester</title>
+		
+		
+	<!-- Update semester in database -->
+	<?php
+		if(isset($_POST['myFormSubmitted'])) {
+			
+			// local variables
+			$semester_id        = $_POST['semester_id'];
+			$year        		= $_POST['year'];
+			$term        		= $_POST['term'];
+			$start_date        	= $_POST['start_date'];
+			$end_date        	= $_POST['end_date'];
+
+			// delete record from database
+			Semester::update($link, $semester_id, $year, $term, $start_date, $end_date);			
+		}
+	?>	
+		
 </head>
 
 <!-- Page Body -->
 <body class="metro">
-
-	<div class="grid span10 offset1">
-		<div class="row span8">
-			<form>
+	<div class="grid">
+		<div class="row">
+		<div class="span10 offset1">
+			<form action="modify_UpdateSemester.php" method="post" name="form">
 			<fieldset>
+			
+			<!-- Select Data to be Updated -->
 			<legend>Select Semester</legend>
 				<table>
-				
 					<!-- Select Semester -->
-					<tr>
-						<td class="span2"><label>Semester:</label></td>
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>Summer 2014</option>	<!-- select current semester by default -->
-									<option>Spring 2014</option>
-								</select>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawSelect_Semester($link, $student_id); ?></tr>
 					
-				</table>   
-			</fieldset>
-			</form>
-		</div>
-		
-		<div class="row span8">
-			<form>
-			<fieldset>
+					<!-- Force Gap -->
+					<tr><?php drawOther_Divider(); ?></tr>
+					<tr><?php drawOther_Gap(); ?></tr>
+				</table	>
+					
+			<!-- Fill in Updated Data -->
 			<legend>Update Semester</legend>
-				<table>
-
+				<table>	
 					<!-- Select Year -->
-					<tr>
-						<td class="span2"><label>Year:</label></td>
-						<td class="span5">
-							<div class="input-control select">
-								<select>									<!-- Select Current Year by Default -->
-									<option>2012</option>
-									<option>2013</option>
-									<option>2014</option>
-									<option>2015!</option>
-								</select>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawSelect_Year(); ?></tr>
 					
 					<!-- Select Term -->
-					<tr>
-						<td class="span2"><label>Term:</label></td>
-						<td class="span5">
-							<div class="input-control select">
-								<select>
-									<option>Spring</option>
-									<option>Summer</option>
-									<option>Fall</option>
-								</select>
-							</div>
-						</td>
-					</tr>
+					<tr><?php drawSelect_Term(); ?></tr>
 					
 					<!-- Select Start Date -->
-					<tr>
-						<td class="span2"><label>Start Date:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="datepicker" data-week-start="1">
-								<input type="text">
-								<button class="btn-date"></button>
-							</div>
-						</td>
-					</tr>					
-						
+					<tr><?php drawOther_Datepicker("Start Date", "start_date"); ?>
+					
 					<!-- Select End Date -->
-					<tr>
-						<td class="span2"><label>End Date:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="datepicker" data-week-start="1">
-								<input type="text">
-								<button class="btn-date"></button>
-							</div>
-						</td>
-					</tr>
-					
+					<tr><?php drawOther_Datepicker("End Date", "end_date"); ?>
+
+			<!-- Submit Data -->
 					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
-					
+					<tr><?php drawOther_Gap(); ?></tr>
+									
 					<!-- Submission Control Buttons -->
-					<tr>
-						<td class="span2"><input type="submit" class="span2" value="Add"></td>
-						<td class="span2"><input type="reset" class="span2" value="Reset Form"></td>
-					</tr>
-					
+					<tr><?php drawButton_Submit("Update"); ?></tr>
 				</table>   
 			</fieldset>
 			</form>
+			
+			<!-- This section is to notify the user on the status of the request -->
+			<?php
+				if(isset($_POST['myFormSubmitted'])) {
+				
+					// alert the user 
+					echo "	<blockquote>
+								<p class='text-success'>$term, $year has been updated successfully.</p>
+							</blockquote>";
+
+				}
+			?>	
+			
+		</div>
 		</div>
 	</div>
-    
 </body> 
 
 <!-- Page Footer -->

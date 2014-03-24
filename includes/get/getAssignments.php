@@ -1,6 +1,6 @@
 <?php
 	// GET php scripts
-	$semester_id = intval($_GET['semester_id']);
+	$course_id = intval($_GET['course_id']);
 	
 	// include functions file
 	include '../functions.php';
@@ -9,16 +9,19 @@
 	$link = db_connect();
 	
 	// create course selection table
-	echo "<select name='course_id'>";
-    $courseResults = selectCourse_Semester($link, $semester_id);
+	echo "<select name='assignment_id'>";
+    $assignmentResults = selectAssignment_Course($link, $course_id);
 	
-	while($row = mysql_fetch_array($courseResults)){
+	// create empty row
+	echo "<option value='$assignment_id'></option>";
+	
+	while($row = mysql_fetch_array($assignmentResults)){
 		// set variables
-		$course_id  		= $row['course_id'];
-		$designation       	= $row['designation'];  
+		$assignment_id  	= $row['assignment_id'];
+		$assignment_type  	= $row['assignment_type'];
 		$name   			= $row['name']; 
 	
-		echo "<option value='$course_id'>".$designation.", ".$name."</option>";
+		echo "<option value='$assignment_id'>".$assignment_type.", ".$name."</option>";
 	}
 	echo "</select>";
 
