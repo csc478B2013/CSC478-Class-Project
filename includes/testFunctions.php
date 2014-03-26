@@ -8,9 +8,10 @@
 		echo "	<td class='span5'>";
 		echo "		<div class='input-control select'>";
 		echo "			<select name='test'>";
+        echo "				<option value=0></option>";
 		echo "				<option value=1>Insert</option>";
 		echo "				<option value=2>Select</option>";
-		echo "				<option value=3>Update</option>";
+		echo "				<option value=3>Fill Scores</option>";
 		echo "				<option value=11>Delete</option>";
 		echo "				<option value=100>All</option>";
 		echo "			</select>";
@@ -93,9 +94,9 @@
 	}
 	
 	function testInsert_Semesters($link, $student_id) {
-		Semester::insert($link, $student_id, 2014, 'Spring', '2014-01-01', '2014-05-25');
-		Semester::insert($link, $student_id, 2014, 'Summer', '2014-06-01', '2014-07-25');
-		Semester::insert($link, $student_id, 2014, 'Fall', '2014-08-01', '2014-12-25');
+		Semester::insert($link, $student_id, 2014, 'Spring');
+		Semester::insert($link, $student_id, 2014, 'Summer');
+		Semester::insert($link, $student_id, 2014, 'Fall');
 	}
 
 	function testInsert_Courses($link, $student_id, $semester_id) {
@@ -320,8 +321,6 @@
 				<th class='text-left'>Semester ID</th>
 				<th class='text-left'>Year</th>
 				<th class='text-left'>Term</th>
-				<th class='text-left'>Start Date</th>
-				<th class='text-left'>End Date</th>
 				<th class='text-left'>Semeser GPA</th>
 				<th class='text-left'>Current?</th>
 			</tr></thead>";
@@ -334,8 +333,6 @@
 			$semester_id    = $row['semester_id'];
 			$year           = $row['year'];
 			$term           = $row['term'];
-			$start_date     = $row['start_date'];
-			$end_date       = $row['end_date'];
 			$semester_GPA   = $row['semester_GPA'];
 			$isCurrent      = $row['isCurrent'];
 			
@@ -345,8 +342,6 @@
 					<td>".$semester_id."</td>
 					<td>".$year."</td>
 					<td>".$term."</td>
-					<td>".$start_date."</td>
-					<td>".$end_date."</td>
 					<td>".$semester_GPA."</td>
 					<td>".$isCurrent."</td>
 				</tr>";
@@ -358,8 +353,6 @@
 		echo "<tr>
 				<td>Results:</td>
 				<td>$count</td>
-				<td></td>
-				<td></td>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -525,8 +518,6 @@
 	
 	
 	
-	
-	
 // Update Test
 	function testUpdate($link) {
 		
@@ -657,18 +648,16 @@
 		// set attributes
         $year 			= $semester->year;
         $term 			= $semester->term;
-        $start_date 	= $semester->start_date;
-        $end_date 		= $semester->end_date;
 		
 		// perform update operation
 		switch($semester_id % 2) {
 
 			case(0):
-				Semester::update($link, $semester_id, $year, $term, '1900-01-01', $end_date);
+				Semester::update($link, $semester_id, 9999, $term);
 				break;
 			
 			case(1):
-				Semester::update($link, $semester_id, $year, $term, $start_date, '1900-01-01');
+				Semester::update($link, $semester_id, 0000, $term);
 				break;
 							
 			default:
@@ -741,7 +730,78 @@
 		}
 	}
 	
+
+// Update Scores Test
+	function testUpdate_Scores($link) {
+		
+		// Get all of the students from the database
+		// For each student and settings, update an attribute
+		$students = selectStudent_All($link);
+		while($row = mysql_fetch_array($students)){
+			$student_id			= $row['student_id'];					// SELECT student id
+			
+			// Get all of the semesters for the student
+			// For each semester, update an attribute
+			$semesters = selectSemester_Student($link, $student_id);					
+			while($row = mysql_fetch_array($semesters)){
+				$semester_id	= $row['semester_id'];					// SELECT semester id
+				
+				// Get all of the courses for the semester
+				// For each course, update an attribute
+				$courses = selectCourse_Semester($link, $semester_id);						
+				while($row = mysql_fetch_array($courses)){
+					$course_id = $row['course_id'];						// SELECT course id
+					
+					// Get all of the assignments for the course
+					// For each assignment, update an attribute
+					$assignments = selectAssignment_Course($link, $course_id);						
+					while($row = mysql_fetch_array($assignments)){
+						$assignment_id = $row['assignment_id'];			// SELECT assignment id
+						testUpdate_Scores_Assignments($link, $assignment_id); 	// UPDATE assignment
+					}
+				}
+			}
+		}
+		
+		echo "	<div class='row'>
+					<div class='span10 offset1'>
+						Update Scores Test Complete
+					</div>
+				</div>";
+	}
 	
+	function testUpdate_Scores_Assignments($link, $assignment_id) {
+	
+		// get information from database
+		$assignment = Assignment::select($link, $assignment_id);
+		
+		// set attributes
+		$semester_id 		= $assignment->semester_id;
+		$course_id 			= $assignment->course_id;
+        $points_allowed 	= $assignment->points_allowed;
+		
+		// set random parameters
+		$max = $points_allowed;
+		$min = $max*.60;
+		
+		// perform update operation
+		switch(mt_rand(0, 1)) {
+
+			case(0):
+				$points_received = mt_rand($min, $max);
+				Assignment::updateScore($link, $assignment_id, $points_received);
+				break;
+			
+			case(1):
+				$points_received = mt_rand($min, $max);
+				//Assignment::updateScore($link, $assignment_id, $points_received);
+				break;
+				
+			default:
+				echo "assignment id does not exist.";
+				break;
+		}
+	}
 	
 // Delete Test	
 	function testDelete($link) {
@@ -776,6 +836,7 @@
 				Semester::delete($link, $semester_id);
 			}
 			
+            Settings::delete($link, $student_id);                       // Delete Student Settings
 			Student::delete($link, $student_id);						// Delete Student
 		}
 		

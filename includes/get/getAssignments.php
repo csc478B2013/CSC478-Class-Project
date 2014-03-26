@@ -20,8 +20,9 @@
 		$assignment_id  	= $row['assignment_id'];
 		$assignment_type  	= $row['assignment_type'];
 		$name   			= $row['name']; 
+		$points_allowed  	= $row['points_allowed'];
 	
-		echo "<option value='$assignment_id'>".$assignment_type.", ".$name."</option>";
+		echo "<option value='$assignment_id'>".$assignment_type.", ".$name." (".$points_allowed." points)</option>";
 	}
 	echo "</select>";
 

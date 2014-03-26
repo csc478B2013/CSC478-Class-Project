@@ -1,6 +1,18 @@
 <?php
+	// include files
 	include 'includes/auth.php';
+	include 'includes/functions.php';
+	include 'includes/drawTables.php';
+	include 'includes/drawForms.php';
+	
+	// authenticate user
 	authenticateUserCookie();
+	
+	// set the student id
+	$student_id = $_COOKIE["UserIdent"];
+		
+	// connect to database
+	$link = db_connect();
 ?>
 
 <!DOCTYPE html>
@@ -9,20 +21,6 @@
     <!-- Page Header -->
 	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
-	
-	<!-- PHP Header Scripts -->
-	<?php
-		// include resource files
-		include 'includes/functions.php';
-		include 'includes/drawTables.php';
-		include 'includes/drawForms.php';
-		
-		// set the student id
-		$student_id = $_COOKIE["UserIdent"];
-		
-		// connect to database
-		$link = db_connect();
-	?>
 	
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">

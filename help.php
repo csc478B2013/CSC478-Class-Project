@@ -4,12 +4,6 @@
 	include 'includes/functions.php';
 	include 'includes/drawTables.php';
 	include 'includes/drawForms.php';
-	
-	// authenticate user
-	authenticateUserCookie();
-	
-	// set the student id
-	$student_id = $_COOKIE["UserIdent"];
 		
 	// connect to database
 	$link = db_connect();
@@ -18,10 +12,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Page Header -->
+	<!-- Page Header -->
 	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
-	
+
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
     <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
@@ -41,35 +35,24 @@
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
     
-	<title> History </title>
+	<title> Account </title>
 </head>
 
 <!-- Page Body -->
 <body class="metro">
 <div class="container">
-<div class="grid">
-
-    <!-- Test Row -->
-    <div class="row">
-        <div class="span10 offset1">
-      
-			<!-- Page Title -->
-			<?php drawLabel_Title("History"); ?>
+    <div class="grid">
+        <div class="row">
+		
+			Not Yet Started...
 			
-			<!-- Student History -->               
-			<?php
-				// draw student history
-				drawAccordian_Semesters($link, $student_id);
-            ?>         
         </div>
     </div>
-</div>    
 </div>
 
 </body>
 
 
-<!-- Page Footer -->
 <!-- Page Footer -->
 <footer>
 
@@ -81,6 +64,6 @@
         mysql_close($link);
     ?>
 
-</footer> 
-
+</footer>    
+        
 </html>

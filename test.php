@@ -1,22 +1,21 @@
+<?php
+	// include files
+	include 'includes/auth.php';
+	include 'includes/functions.php';
+	include 'includes/drawTables.php';
+	include 'includes/drawForms.php';
+	include 'includes/testFunctions.php';
+		
+	// connect to database
+	$link = db_connect();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<!-- Page Header -->
-	<header class="bg-dark" data-load='includes/header.php'></header>
+	<header class="bg-dark" data-load='includes/public_header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
-	
-	
-	<!-- PHP Header Scripts -->
-	<?php
-		// include resource files
-		include 'includes/functions.php';
-		include 'includes/drawTables.php';
-		include 'includes/drawForms.php';
-		include 'includes/testFunctions.php';
-		
-		// connect to database
-		$link = db_connect();
-	?>
 
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
@@ -76,6 +75,10 @@
 					
 					// perform selected test
 					switch($test) {
+                        case 0:
+                            echo "No Test Selected";
+                            break;
+                        
 						case 1:
 							testInsert($link);			// Insert Test
 							testSelect($link);			// Select Test After Inserts
@@ -86,7 +89,7 @@
 							break;
 							
 						case 3;
-							testUpdate($link);			// Update Test
+							testUpdate_Scores($link);	// Update Test
 							testSelect($link);			// Select Test After Updates
 							break;						
 							
@@ -100,7 +103,7 @@
 					if ($test == 100) {
 						testInsert($link);			// Insert Test
 						testSelect($link);			// Select Test After Tests
-						testUpdate($link);			// Update Test
+						testUpdate_Scores($link);	// Update Test
 						testSelect($link);			// Select Test After Updates
 						testDelete($link);			// Delete Database Content
 						testSelect($link);			// Select Test After Delete All

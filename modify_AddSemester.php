@@ -1,6 +1,35 @@
 <?php
+	// include files
 	include 'includes/auth.php';
+	include 'includes/functions.php';
+	include 'includes/drawTables.php';
+	include 'includes/drawForms.php';
+	
+	// authenticate user
 	authenticateUserCookie();
+	
+	// set the student id
+	$student_id = $_COOKIE["UserIdent"];
+		
+	// connect to database
+	$link = db_connect();
+?>
+
+<?php
+	if(isset($_POST['myFormSubmitted'])) {
+		
+		// local variables
+		$year           = $_POST['year'];
+		$term           = $_POST['term'];
+		
+		// insert semester into database
+		Semester::insert($link, $student_id, $year, $term);
+
+		// go to the next page
+		Redirect('modify_AddCourse.php');
+		exit;
+		
+	}
 ?>
 
 <!DOCTYPE html>
@@ -9,20 +38,6 @@
     <!-- Page Header -->
 	<header class="bg-dark" data-load='includes/header.php'></header>
     <header class="bg-white" data-load='includes/menu.html'></header>
-	
-	<!-- PHP Header Scripts -->
-	<?php
-		// include resource files
-		include 'includes/functions.php';
-		include 'includes/drawTables.php';
-		include 'includes/drawForms.php';
-		
-		// set the student id
-		$student_id = $_COOKIE["UserIdent"];
-		
-		// connect to database
-		$link = db_connect();
-	?>
     
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
@@ -63,12 +78,6 @@
 					<!-- Select Term -->
 					<tr><?php drawSelect_Term(); ?></tr>
 					
-					<!-- Select Start Date -->
-					<tr><?php drawOther_Datepicker("Start Date", "start_date"); ?>
-					
-					<!-- Select End Date -->
-					<tr><?php drawOther_Datepicker("End Date", "end_date"); ?>
-					
 					<!-- Force Gap Between Input and Buttons -->
 					<tr><?php drawOther_Gap(); ?></tr>
 					
@@ -80,28 +89,7 @@
 
 				</table>   
 			</fieldset>
-			</form>
-			
-			<!-- Add semester to database and then redirect to add course -->
-			<?php
-				if(isset($_POST['myFormSubmitted'])) {
-					
-                    // local variables
-					$year           = $_POST['year'];
-					$term           = $_POST['term'];
-					$start_date     = $_POST['start_date'];
-					$end_date       = $_POST['end_date'];
-                    
-                    // insert semester into database
-                    Semester::insert($link, $student_id, $year, $term, $start_date, $end_date);
-
-                    // go to the next page
-                    Redirect('modify_AddCourse.php');
-                    exit;
-					
-				}
-			?>
-			
+			</form>			
 		</div>	
 		</div>
 	</div>

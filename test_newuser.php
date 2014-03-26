@@ -1,19 +1,19 @@
+<?php
+	// include files
+	include 'includes/auth.php';
+	include 'includes/functions.php';
+	include 'includes/drawTables.php';
+	include 'includes/drawForms.php';
+	
+	// connect to database
+	$link = db_connect();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<!-- Page Header -->
 	<header class="bg-dark" data-load='includes/public_header.php'></header>
-	
-	<!-- PHP Header Scripts -->
-	<?php
-		// include resource files
-		include 'includes/functions.php';
-		include 'includes/drawTables.php';
-		include 'includes/drawForms.php';
-		
-		// connect to database
-		$link = db_connect();
-	?>
     
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">

@@ -33,8 +33,6 @@ CREATE TABLE Semester (
   semester_id 		BIGINT(19) NOT NULL AUTO_INCREMENT,
   year 				YEAR,
   term				ENUM('Spring', 'Summer', 'Fall'),
-  start_date 		DATE,
-  end_date 			DATE,
   semester_GPA 		DECIMAL(4,3),
   isCurrent 		ENUM('0', '1'),
   PRIMARY KEY  (semester_id)
@@ -47,7 +45,7 @@ CREATE TABLE Course (
   designation 		VARCHAR(255),
   name				VARCHAR(255),
   credits 			INT(1),
-  grade 			DECIMAL(5,2),
+  grade 			VARCHAR(5),
   PRIMARY KEY  (course_id)
 );
 

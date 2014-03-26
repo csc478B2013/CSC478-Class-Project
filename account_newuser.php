@@ -1,42 +1,42 @@
+<?php
+	// include files
+	include 'includes/auth.php';
+	include 'includes/functions.php';
+	include 'includes/drawTables.php';
+	include 'includes/drawForms.php';
+		
+	// connect to database
+	$link = db_connect();
+?>
+
+<?php
+	// Add student to database and then redirect to add semester
+	if(isset($_POST['myFormSubmitted'])) {
+	
+		// local variables
+		$fname = $_POST['name'];
+		$email = $_POST['email'];
+		$phone = $_POST['phone'];
+		$password = $_POST['password'];
+		
+		// insert record into database
+		Student::insert($link, $fname, $email, $phone, $password);
+		
+		// log the new user in
+		$isValidUserLogin = authenticateUserWithCookie($link, $email, $password);
+		
+		// send them to the new account info page
+		Redirect("account_newuserinfo.php");
+	}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 	<!-- Page Header -->
 	<header class="bg-dark" data-load='includes/public_header.php'></header>
 	
-	<!-- PHP Header Scripts -->
-	<?php
-		// include resource files
-		include 'includes/functions.php';
-		include 'includes/drawTables.php';
-		include 'includes/drawForms.php';
-		
-		// connect to database
-		$link = db_connect();
-	?>
-    
-	<?php
-
-		// Add student to database and then redirect to add semester
-		if(isset($_POST['myFormSubmitted'])) {
-		
-			// local variables
-			$fname = $_POST['name'];
-			$email = $_POST['email'];
-			$phone = $_POST['phone'];
-			$password = $_POST['password'];
-			
-			// insert record into database
-			Student::insert($link, $fname, $email, $phone, $password);
-			
-			// log the new user in
-			$isValidUserLogin = authenticateUserWithCookie($link, $email, $password);
-			
-			// send them to the new account info page
-			Redirect("account_newuserinfo.php");
-		}
-	?>
-			
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
     <link href="css/metro-bootstrap-responsive.css" rel="stylesheet">
@@ -86,7 +86,7 @@
 					
 					<!-- Submission Control Buttons -->
 					<tr>
-						<?php drawButton_Add(); ?> 
+						<?php drawButton_Submit("Add"); ?> 
 						<?php drawButton_Reset(); ?>
 						<?php drawButton_Link("index.php", "Cancel"); ?>
 					</tr>

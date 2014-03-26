@@ -1,3 +1,36 @@
+Changes (2014-03-25, Stephen)
+
+    Database 
+        + ProjectDB.sql
+            - Removed Semester(start_date, end_date)
+			- Changed datatype of grade from decimal to varchar (letter grade).
+        + functions.php
+            - Updated functions and MySql query's relating semester start and end dates
+        + testFunctions.php
+            - Updated test data relating to semester start and end dates
+        + modify_AddSemester.php
+			- Removed Semester(start_date, end_date)
+	
+	Update Definitions	
+		+ functions.php
+			- Keep original code for updating all classes (Student, Settings, Semester, Course, Assignment).
+			- Add Code that handles updating assignment score only. (Assignment::updateScore(...))
+			
+		+ testFunctions.php
+			- Added code to test updating some scores of the database, not all (random assortment).
+        
+		+ test.php
+			- Changed options from update all to fill scores, which fills random assignments with random scores.
+
+		+ modify_UpdateAssignment.php
+			- Changed update assignment to handle updating scores using a POST method.
+			
+		+ header.html
+			- removed references to update semester, and update course
+
+	Headers
+		+ fixed all header redirects on all pages (AWESOME JOB JOE! IT WORKED!)
+
 Changes (2014-03-23, Stephen)
 
 	Removed forced student_id = 1 from web pages.

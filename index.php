@@ -1,35 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Page Header -->
-	<header class="bg-dark" data-load='includes/public_header.php'></header>
+<?php
 	
-	<!-- PHP Header Scripts -->
-	<?php
-		// include resource files
+	// include resource files
 		include 'includes/functions.php';
 		include 'includes/drawTables.php';
 		include 'includes/drawForms.php';
 		
-		// connect to database
-		$link = db_connect();
-	?>
-	
-	<!-- User Authentication -->
-	<?php
-	
-		//perform log in validation here
-		$isValidUserLogin = false;
-		if(isset($_POST['loginForm'])) {
-			$isValidUserLogin = authenticateUserWithCookie($link, $_POST['login'], $_POST['password']);	
-		}
+	// connect to database
+	$link = db_connect();
+		
+	//perform log in validation here
+	$isValidUserLogin = false;
+	if(isset($_POST['loginForm'])) {
+		$isValidUserLogin = authenticateUserWithCookie($link, $_POST['login'], $_POST['password']);	
 		
 		// if user is logged in, direct them to the dashboard
 		if ($isValidUserLogin) {
 			Redirect("dashboard.php");
 		}
-		
-	?>
+	}
+
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Page Header -->
+	<header class="bg-dark" data-load='includes/public_header.php'></header>	
     
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">
@@ -50,7 +46,6 @@
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
 
-    
 	<title> MyUPlan</title>
 </head>
 

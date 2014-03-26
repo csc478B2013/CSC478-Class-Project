@@ -20,7 +20,7 @@
 		$database = "myuplan";
 
 		// Local Connection (TEMP)
-		//$hostname = "localhost";   
+		$hostname = "localhost";   
 
 		// Connect to Database
 		$link = mysql_connect($hostname,$username,$password);
@@ -294,8 +294,6 @@
         public $semester_id;
         public $year;
         public $term;
-        public $start_date;
-        public $end_date;
 		public $semester_GPA;
         public $isCurrent;
 		
@@ -305,7 +303,7 @@
             // not used
         }
         
-        public static function insert($link, $student_id, $year, $term, $start_date, $end_date) {
+        public static function insert($link, $student_id, $year, $term) {
         
             // create new object to insert int database
             $instance = new self();
@@ -314,15 +312,13 @@
             $instance->student_id 		= $student_id;
             $instance->year 			= $year;
             $instance->term 			= $term;
-			$instance->start_date 		= $start_date;
-			$instance->end_date 		= $end_date;
 			$instance->isCurrent 		= compute_isCurrent($year, $term);
             
             // insert into database
             insertSemester($link, $instance);
         }
         
-        public static function update($link, $semester_id, $year, $term, $start_date, $end_date) {
+        public static function update($link, $semester_id, $year, $term) {
         
             // select the object
             $instance = Semester::select($link, $semester_id);
@@ -330,8 +326,6 @@
             // set object properties
             $instance->year 			= $year;
             $instance->term 			= $term;
-			$instance->start_date 		= $start_date;
-			$instance->end_date 		= $end_date;
             $instance->semester_GPA 	= compute_gpa($link, $semester_id);
 			$instance->isCurrent 		= compute_isCurrent($year, $term);
 			
@@ -339,6 +333,23 @@
             updateSemester($link, $instance); 
         }
         
+		public static function updateGPA($link, $semester_id) {
+		
+			 // select the object
+            $instance = Semester::select($link, $semester_id);
+            
+			// get object properties
+			$year 		= $instance->year;
+			$term 		= $instance->term;
+			
+            // set object properties
+			$instance->isCurrent 		= compute_isCurrent($year, $term);
+			$instance->semester_GPA 	= compute_gpa($link, $semester_id);
+            
+            // insert into database
+            updateSemesterGPA($link, $instance);
+		}
+		
         public static function delete($link, $semester_id) {
             
             // select the object
@@ -362,8 +373,6 @@
             $instance->semester_id 		= $row['semester_id'];
             $instance->year 			= $row['year'];
             $instance->term 			= $row['term'];
-			$instance->start_date 		= $row['start_date'];
-			$instance->end_date 		= $row['end_date'];
 			$instance->semester_GPA 	= $row['semester_GPA'];
 			$instance->isCurrent 		= $row['isCurrent'];
 			
@@ -385,8 +394,6 @@
             $instance->semester_id 		= $row['semester_id'];
             $instance->year 			= $row['year'];
             $instance->term 			= $row['term'];
-			$instance->start_date 		= $row['start_date'];
-			$instance->end_date 		= $row['end_date'];
 			$instance->semester_GPA 	= $row['semester_GPA'];
 			$instance->isCurrent 		= $row['isCurrent'];
 			
@@ -463,6 +470,18 @@
             updateCourse($link, $instance);
         }
         
+		public static function updateGrade($link, $course_id) {
+		
+			 // select the object
+            $instance = Course::select($link, $course_id);
+            
+            // set object properties
+			$instance->grade = compute_grade($link, $course_id); //calculate_grade($link, $course_id);
+            
+            // insert into database
+            updateCourseGrade($link, $instance);
+		}
+		
         public static function delete($link, $course_id) {
             
             // select the object
@@ -533,6 +552,12 @@
             
             // insert into database
             insertAssignment($link, $instance);
+			
+			// update course grade
+			Course::updateGrade($link, $course_id);
+			
+			// update semester GPA
+			Semester::updateGPA($link, $semester_id);
         }
         
         public static function update($link, $assignment_id, $assignment_type, $name, $due_date, $points_allowed, $points_received) {
@@ -550,8 +575,36 @@
 			
             // insert into database
             updateAssignment($link, $instance);
+			
+			// update course grade
+			$course_id 		= $instance->course_id;
+			Course::updateGrade($link, $course_id);
+			
+			// update semester GPA
+			$semester_id	= $instance->semester_id;
+			Semester::updateGPA($link, $semester_id);
         }
-        
+      
+		public static function updateScore($link, $assignment_id, $points_received) {
+		
+            // select the object
+            $instance = Assignment::select($link, $assignment_id);
+            
+            // set object properties
+            $instance->points_received 	= $points_received;
+			
+            // insert into database
+            updateAssignment($link, $instance);
+			
+			// update course grade
+			$course_id 		= $instance->course_id;
+			Course::updateGrade($link, $course_id);
+			
+			// update semester GPA
+			$semester_id	= $instance->semester_id;
+			Semester::updateGPA($link, $semester_id);
+        }
+	  
         public static function delete($link, $assignment_id) {
             
             // select the object
@@ -559,6 +612,14 @@
             
             // delete from database
             deleteAssignment($link, $instance);
+			
+			// update course grade
+			$course_id 		= $instance->course_id;
+			Course::updateGrade($link, $course_id);
+			
+			// update semester GPA
+			$semester_id	= $instance->semester_id;
+			Semester::updateGPA($link, $semester_id);
         }
         
         public static function select($link, $assignment_id) {
@@ -639,13 +700,11 @@
         $student_id 		= $semesterObject->student_id;
         $year 				= $semesterObject->year;
         $term 				= $semesterObject->term;
-		$start_date 		= $semesterObject->start_date;
-		$end_date 			= $semesterObject->end_date;
 		$isCurrent			= $semesterObject->isCurrent;
 		
 		// insert into mysql database
-		$sql = "INSERT INTO Semester"."(student_id, year, term, start_date, end_date, isCurrent)".
-			   "VALUES ('$student_id', '$year', '$term', '$start_date', '$end_date', '$isCurrent')";
+		$sql = "INSERT INTO Semester"."(student_id, year, term, isCurrent)".
+			   "VALUES ('$student_id', '$year', '$term', '$isCurrent')";
 		$retval = mysql_query( $sql, $link );
 		
 		// test if database operation was successful
@@ -706,12 +765,12 @@
         $password 			= $studentObject->password;
 
 		// update mysql database
-        $sql = "UPDATE Student 
-                SET fname 		= '$fname', 
-					email 		= '$email', 
-					phone 		= '$phone', 
-					password 	= '$password' 
-                WHERE student_id = '$student_id'";
+        $sql = "UPDATE 	Student 
+                SET 	fname 		= '$fname', 
+						email 		= '$email', 
+						phone 		= '$phone', 
+						password 	= '$password' 
+                WHERE 	student_id 	= '$student_id'";
 		$retval = mysql_query( $sql, $link );
         
         // test if database operation was successful
@@ -732,15 +791,15 @@
 		$st_other 			= $settingsObject->st_other;
 		
 		// update mysql database
-        $sql = "UPDATE Settings 
-                SET study_tod 		= '$study_tod', 
-					st_exam 		= '$st_exam', 
-					st_quiz 		= '$st_quiz', 
-					st_project 		= '$st_project', 
-					st_homework 	= '$st_homework', 
-					st_discussion 	= '$st_discussion', 
-					st_other 		= '$st_other' 
-                WHERE student_id = '$student_id'";
+        $sql = "UPDATE 	Settings 
+                SET 	study_tod 		= '$study_tod', 
+						st_exam 		= '$st_exam', 
+						st_quiz 		= '$st_quiz', 
+						st_project 		= '$st_project', 
+						st_homework 	= '$st_homework', 
+						st_discussion 	= '$st_discussion', 
+						st_other 		= '$st_other' 
+                WHERE 	student_id 		= '$student_id'";
 		$retval = mysql_query( $sql, $link );
         
         // test if database operation was successful
@@ -754,24 +813,40 @@
 		$semester_id		= $semesterObject->semester_id;
         $year 				= $semesterObject->year;
         $term 				= $semesterObject->term;
-		$start_date 		= $semesterObject->start_date;
-		$end_date 			= $semesterObject->end_date;
 		$isCurrent			= $semesterObject->isCurrent;
 		
 		// update mysql database
-        $sql = "UPDATE Semester 
-                SET year 		= '$year', 
-					term 		= '$term', 
-					start_date 	= '$start_date', 
-					end_date 	= '$end_date', 
-					isCurrent 	= '$isCurrent' 
-                WHERE semester_id = '$semester_id'";
+        $sql = "UPDATE 	Semester 
+                SET 	year 		= '$year', 
+						term 		= '$term', 
+						isCurrent 	= '$isCurrent' 
+                WHERE 	semester_id = '$semester_id'";
 		$retval = mysql_query( $sql, $link );
         
         // test if database operation was successful
         if(! $retval )
           die('Could not update semester data: ' . mysql_error());
     }
+	
+	function updateSemesterGPA($link, $semesterObject) {
+	   
+	   // set variables from object properties
+		$semester_id		= $semesterObject->semester_id;
+        $semester_GPA		= $semesterObject->semester_GPA;
+		$isCurrent			= $semesterObject->isCurrent;
+		
+		// update mysql database
+        $sql = "UPDATE 	Semester 
+                SET 	semester_GPA = '$semester_GPA', 
+						isCurrent 	 = '$isCurrent' 
+                WHERE 	semester_id  = '$semester_id'";
+		$retval = mysql_query( $sql, $link );
+        
+        // test if database operation was successful
+        if(! $retval )
+          die('Could not update semester data: ' . mysql_error());
+    }
+	
 	
 	function updateCourse($link, $courseObject) {
         
@@ -783,12 +858,29 @@
 		$grade 				= $courseObject->grade;
 
 		// update mysql database
-        $sql = "UPDATE Course 
-                SET designation = '$designation', 
-					name 		= '$name', 
-					credits 	= '$credits', 
-					grade 		= '$grade' 
-                WHERE course_id = '$course_id'";
+        $sql = "UPDATE 	Course 
+                SET 	designation = '$designation', 
+						name 		= '$name', 
+						credits 	= '$credits', 
+						grade 		= '$grade' 
+                WHERE 	course_id 	= '$course_id'";
+		$retval = mysql_query( $sql, $link );
+        
+        // test if database operation was successful
+        if(! $retval )
+          die('Could not update course data: ' . mysql_error());
+    }
+	
+	function updateCourseGrade($link, $courseObject) {
+	    
+		// set variables from object properties
+		$course_id			= $courseObject->course_id;
+		$grade 				= $courseObject->grade;
+
+		// update mysql database
+        $sql = "UPDATE 	Course 
+                SET 	grade 		= '$grade'
+                WHERE 	course_id 	= '$course_id'";
 		$retval = mysql_query( $sql, $link );
         
         // test if database operation was successful
@@ -808,19 +900,36 @@
 		$points_received	= $assignmentObject->points_received;
 
 		// update mysql database
-        $sql = "UPDATE Assignment 
-                SET assignment_type = '$assignment_type', 
-					name 			= '$name', 
-					due_date 		= '$due_date', 
-					studytime 		= '$studytime', 
-					points_allowed 	= '$points_allowed', 
-					points_received = '$points_received'
-                WHERE assignment_id = '$assignment_id'";
+        $sql = "UPDATE 	Assignment 
+                SET 	assignment_type = '$assignment_type', 
+						name 			= '$name', 
+						due_date 		= '$due_date', 
+						studytime 		= '$studytime', 
+						points_allowed 	= '$points_allowed', 
+						points_received = '$points_received'
+                WHERE 	assignment_id 	= '$assignment_id'";
 		$retval = mysql_query( $sql, $link );
         
         // test if database operation was successful
         if(! $retval )
           die('Could not update assignment data: ' . mysql_error());
+    }
+	
+	function updateAssignmentScore($link, $assignmentObject) {
+	
+		// set variables from object properties
+		$assignment_id		= $assignmentObject->assignment_id;
+		$points_received	= $assignmentObject->points_received;
+
+		// update mysql database
+        $sql = "UPDATE 	Assignment 
+                SET 	points_received = '$points_received'
+                WHERE 	assignment_id = '$assignment_id'";
+		$retval = mysql_query( $sql, $link );
+        
+        // test if database operation was successful
+        if(! $retval )
+          die('Could not update assignment score: ' . mysql_error());
     }
 	
 	
