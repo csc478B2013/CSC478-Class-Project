@@ -13,15 +13,7 @@
 		
 	// connect to database
 	$link = db_connect();
-?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- Page Header -->
-	<header class="bg-dark" data-load='includes/header.php'></header>
-    
-	<?php
 	
 		// Add student to database and then redirect to add semester
 		if(isset($_POST['myFormSubmitted'])) {
@@ -43,6 +35,12 @@
 		}
 		
 	?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Page Header -->
+	<header class="bg-dark" data-load='includes/header.php'></header>
 	
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">

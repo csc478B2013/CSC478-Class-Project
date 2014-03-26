@@ -13,9 +13,7 @@
 		
 	// connect to database
 	$link = db_connect();
-?>
 
-<?php
 	if(isset($_POST['myFormSubmitted'])) {
 		
 		// local variables
