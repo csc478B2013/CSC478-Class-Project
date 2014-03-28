@@ -13,9 +13,7 @@
 		
 	// connect to database
 	$link = db_connect();
-?>
 
-<?php
 	// Add student to database and then redirect to add semester
 	if(isset($_POST['myFormSubmitted'])) {
 		
