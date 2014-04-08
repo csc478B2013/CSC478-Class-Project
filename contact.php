@@ -15,8 +15,15 @@
 <html lang="en">
 <head>
 	<!-- Page Header -->
-	<header class="bg-dark" data-load='includes/header.php'></header>
-    <header class="bg-white" data-load='includes/menu.html'></header>
+	<?php
+		if ($userLogged) {
+			echo "<header class='bg-dark' data-load='includes/header.php'></header>";
+			echo "<header class='bg-white' data-load='includes/menu.html'></header>";
+		} 
+		else {
+			echo "<header class='bg-dark' data-load='includes/public_header.php'></header>";
+		}
+	?>
 
 	<!-- Load CSS Libraries -->
     <link href="css/metro-bootstrap.css" rel="stylesheet">

@@ -121,7 +121,6 @@
 					<tr> 
 						<?php drawButton_Submit("Add"); ?>
 						<?php drawButton_Reset(); ?>
-						<?php drawButton_Link("modify_AddCourse.php", "Add Course"); ?>
 					</tr>
 				</table>   
 			</fieldset>

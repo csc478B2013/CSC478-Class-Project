@@ -33,7 +33,7 @@
 		echo "	</td>";	
 		echo " 	<td class='span5'>";	
 		echo " 		<div class='input-control password' data-role='input-control'>";	
-		echo " 			<input type='password' name='$name' placeholder='$placeholder' autofocus=''>";	
+		echo " 			<input type='password' name='$name' placeholder='$placeholder'>";	
 		echo " 			<button class='btn-reveal' tabindex='-1' type='button'></button>";	
 		echo " 		</div>";	
 		echo " 	</td>";	
@@ -46,6 +46,42 @@
 		echo " 	<td class='span2'>";	
 		echo " 		<div class='input-control text' data-role='input-control'>";	
 		echo " 			<input type='text' name='$name' placeholder='$placeholder'>";	
+		echo " 			<button class='btn-clear' tabindex='-1' type='button'></button>";	
+		echo " 		</div>";	
+		echo " 	</td>";
+	}
+	
+	function drawTextValue($label, $name, $value) {
+		echo "	<td class='span2'>";
+		echo "		<label>$label:</label>";
+		echo "	</td>";
+		echo "	<td class='span5'>";
+		echo "		<div class='input-control text' data-role='input-control'>";
+		echo "			<input type='text' name='$name' value='$value'>";
+		echo "			<button class='btn-clear' tabindex='-1' type='button'></button>";
+		echo "		</div>";
+		echo "	</td>";	
+	}
+	
+	function drawTextValue_Password($label, $name, $value) {
+		echo " 	<td class='span2'>";
+		echo "		<label>$label:</label>";
+		echo "	</td>";	
+		echo " 	<td class='span5'>";	
+		echo " 		<div class='input-control password' data-role='input-control'>";	
+		echo " 			<input type='password' name='$name' value='$value'>";	
+		echo " 			<button class='btn-reveal' tabindex='-1' type='button'></button>";	
+		echo " 		</div>";	
+		echo " 	</td>";	
+	} 
+	
+	function drawText_ST_Value($label, $name, $value) {
+		echo " 	<td class='span2'>";
+		echo "		<label>$label:</label>";
+		echo "	</td>";	
+		echo " 	<td class='span2'>";	
+		echo " 		<div class='input-control text' data-role='input-control'>";	
+		echo " 			<input type='text' name='$name' value='$value'>";	
 		echo " 			<button class='btn-clear' tabindex='-1' type='button'></button>";	
 		echo " 		</div>";	
 		echo " 	</td>";
@@ -165,7 +201,37 @@
 		echo "				<option>Morning</option>";
 		echo "				<option>Afternoon</option>";
 		echo "				<option>Evening</option>";
-		echo "				<option>Dedicated Insomniac!</option>";
+		echo "			</select>";
+		echo "		</div>";
+		echo "	</td></tr>";
+	}
+	
+	function drawSelect_TOD_Value($value) {
+		echo "	<tr><td class='span7'>";
+		echo "		<label>What time during the day do you prefer to study?</label>";
+		echo "	</td></tr>";
+		echo "	<tr><td class='span7'>";
+		echo "		<div class='input-control select'>";
+		echo "			<select name='study_tod' value='$value'>";
+		
+		switch ($value) {
+			case "Morning":
+				echo "		<option selected='selected'>Morning</option>";
+				echo "		<option>Afternoon</option>";
+				echo "		<option>Evening</option>";
+				break;
+			case "Afternoon":
+				echo "		<option>Morning</option>";
+				echo "		<option selected='selected'>Afternoon</option>";
+				echo "		<option>Evening</option>";
+				break;
+			case "Evening":
+				echo "		<option>Morning</option>";
+				echo "		<option>Afternoon</option>";
+				echo "		<option selected='selected'>Evening</option>";
+				break;
+			}
+
 		echo "			</select>";
 		echo "		</div>";
 		echo "	</td></tr>";

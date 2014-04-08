@@ -18,15 +18,24 @@
 	if(isset($_POST['myFormSubmitted'])) {
 		
 		// local variables
-		$fname = $_POST['name'];
-		$email = $_POST['email'];
-		$phone = $_POST['phone'];
-		$password = $_POST['password'];
+		$fname 			= $_POST['fname'];
+		$email 			= $_POST['email'];
+		$phone 			= $_POST['phone'];
+		$password 		= $_POST['password'];
+			
+		$study_tod		= $_POST['study_tod'];
+		$st_exam		= $_POST['st_exam'];
+		$st_quiz		= $_POST['st_quiz'];
+		$st_project		= $_POST['st_project'];
+		$st_homework	= $_POST['st_homework'];
+		$st_discussion	= $_POST['st_discussion'];
+		$st_other		= $_POST['st_other'];
 		
-		// insert record into database
+		// update records in database
 		Student::update($link, $student_id, $fname, $email, $phone, $password);
-
-		Redirect('account.php');
+		Settings::update($link, $student_id, $study_tod, $st_exam, $st_quiz, $st_project, $st_homework, $st_discussion, $st_other);
+		
+		//Redirect('account.php');
 	}
 ?>
 			
@@ -63,13 +72,21 @@
 <?php
 	// get information from database
 	$studentObject 		= Student::select($link, $student_id);
-	//$settingsObject 	= Settings::select($link, $student_id);		<- Need to Implement Settings Class
-
+	$settingsObject 	= Settings::select($link, $student_id);
+	
 	// set variables
 	$fname 				= $studentObject->fname;
 	$email 				= $studentObject->email;
 	$phone 				= $studentObject->phone;
 	$password 			= $studentObject->password;
+
+    $study_tod			= $settingsObject->study_tod;
+    $st_exam			= $settingsObject->st_exam;
+	$st_quiz			= $settingsObject->st_quiz;
+	$st_project			= $settingsObject->st_project;
+	$st_homework		= $settingsObject->st_homework;
+	$st_discussion		= $settingsObject->st_discussion;
+	$st_other			= $settingsObject->st_other;
 
 ?>
 
@@ -81,65 +98,52 @@
 		
             <form action="account.php" method="post">
 			<fieldset>
-			<legend>Update Student Settings</legend>
+			<legend>Account Settings</legend>
 				<table>
 
-					<!-- Get First Name -->
-					<tr>
-						<td class="span2"><label>First Name:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="input-control">
-								<input type="text" name="name" value="<?php echo $fname; ?>">
-								<button class="btn-clear" tabindex="-1""></button>
-							</div>
-						</td>
-					</tr>
+					<!-- Display Account Information -->
+					<tr><?php drawTextValue("First Name", "fname", $fname); ?></tr>
+					<tr><?php drawTextValue("Email", "email", $email); ?></tr>
+					<tr><?php drawTextValue("Phone Number", "phone", $phone); ?></tr>
+					<tr><?php drawTextValue_Password("Password", "password", $password); ?></tr>
 					
-					<!-- Get Email -->
-					<tr>
-						<td class="span2"><label>Email:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="input-control">
-								<input type="email" name="email" value="<?php echo $email; ?>">
-								<button class="btn-clear" tabindex="-1"></button>
-							</div>
-						</td>
-					</tr>
+				<!-- Force Divider -->
+				<tr><?php drawOther_Divider(); ?></tr>
 					
-					<!-- Get Phone Number -->
-					<tr>
-						<td class="span2"><label>Phone Number:</label></td>
-						<td class="span5">
-							<div class="input-control text" data-role="input-control">
-								<input type="tel" name="phone" value="<?php echo $phone; ?>">
-								<button class="btn-clear" tabindex="-1"></button>
-							</div>
-						</td>
-					</tr>
+					<!-- Display Student Settings -->
+					<tr><?php drawSelect_TOD_Value($study_tod); ?></tr>
+					<tr><?php drawLabel_st(); ?></tr>
+					<tr><?php drawText_ST_Value("Exam", "st_exam", $st_exam); ?></tr>
+					<tr><?php drawText_ST_Value("Quiz", "st_quiz", $st_quiz); ?></tr>
+					<tr><?php drawText_ST_Value("Project", "st_project", $st_project); ?></tr>
+					<tr><?php drawText_ST_Value("Homework", "st_homework", $st_homework); ?></tr>
+					<tr><?php drawText_ST_Value("Discussion", "st_discussion", $st_discussion); ?></tr>
+					<tr><?php drawText_ST_Value("Other", "st_other", $st_other); ?></tr>
 					
-					<!-- Get Password -->
-					<tr>
-						<td class="span2"><label>Password:</label></td>
-						<td class="span5">
-							<div class="input-control password" data-role="input-control">
-								<input type="password" name="password" value="<?php echo $password; ?>">
-								<button class="btn-reveal" tabindex="-1"></button>
-							</div>
-						</td>
-					</tr>
-					
+				<!-- Force Divider -->
+				<tr><?php drawOther_Divider(); ?></tr>
+				
 					<!-- Force Gap Between Input and Buttons -->
-					<tr>
-						<td class="span10"><div style="margin-top: 20px"></div></td>
-					</tr>
+					<tr><?php drawOther_Gap(); ?></tr>
 					
 					<!-- Submission Control Buttons -->
-					<tr>
-						<td class="span2"><input type="submit" class="primary span2" value="Update" name="myFormSubmitted"></td>
-					</tr>
+					<tr><?php drawButton_Submit("Update"); ?> </td>
+					
+					
 				</table>   
 			</fieldset>
 			</form>	
+			
+			<?php
+				if(isset($_POST['myFormSubmitted'])) {
+					
+				// alert the user 
+				echo "	<blockquote>
+							<p class='text-success'>Student settings have been updated successfully.</p>
+						</blockquote>";
+				}
+			?>	
+			
 			
         </div>
     </div>

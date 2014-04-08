@@ -52,7 +52,7 @@
 								'<label></label>'+
 								'<button class="button primary" type="submit" name="loginForm">Login</button>&nbsp;'+
 								'<button class="button warning" type="button" onclick="$.Dialog.close()">Cancel</button> '+
-								'<button class="button info offset1"><a href="newuser.php">Create Account</a></button></a>&nbsp;'+
+								'<button class="button info offset1"><a href="account_newuser.php">Create Account</a></button></a>&nbsp;'+
 							'</div>'+
 						'</form>';
 

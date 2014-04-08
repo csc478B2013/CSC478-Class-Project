@@ -20,7 +20,7 @@
 		$database = "myuplan";
 
 		// Local Connection (TEMP)
-		$hostname = "localhost";   
+		//$hostname = "localhost";   
 
 		// Connect to Database
 		$link = mysql_connect($hostname,$username,$password);
@@ -1084,7 +1084,7 @@
 		$sql = "SELECT * 
 				FROM Semester
 				WHERE student_id = $student_id
-				ORDER BY term, year";
+				ORDER BY year DESC, term DESC";
 		$result = mysql_query($sql)or die(mysql_error());
 			
 		// return information

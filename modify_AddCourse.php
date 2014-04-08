@@ -99,7 +99,6 @@
 					<tr> 
 						<?php drawButton_Submit("Add"); ?>
 						<?php drawButton_Reset(); ?>
-						<?php drawButton_Link("modify_AddAssignment.php", "Add Assignment"); ?>
 					</tr>
 					
 				</table>   
