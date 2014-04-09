@@ -42,6 +42,34 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 	<script src="includes/code.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	$("#addAssignmentForm").validate({
+	  	rules: 
+		{
+		
+		points_allowed: 
+		{
+			required: true,
+			minlength: 1,
+			digits: true
+		},
+		
+	    name: 
+		{
+	      required: true
+	    },
+		
+		due_date: 
+		{
+		required: true,
+		date: true
+		}
+	  	}
+	});
+	});
+	</script>
 	
 	<title>Add Assignment</title>
 	
@@ -94,7 +122,7 @@
 	<div class="grid">
 		<div class="row">
 		<div class="span10 offset1">
-			<form action="modify_AddAssignment.php" method="post" name="form">
+			<form action="modify_AddAssignment.php" method="post" name="form" id="addAssignmentForm">
 			<fieldset>
 			<legend>Add Assignment</legend>
 				<table>

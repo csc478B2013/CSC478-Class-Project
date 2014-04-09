@@ -45,7 +45,45 @@
 	
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	$("#indexLogin").validate({
+	  	rules: 
+		{
 
+	    login: 
+		{
+	      required: true,
+	      email: true
+	    },
+		
+		password: 
+		{
+		required: true,
+		}
+	  	}
+	});
+
+	$("#menuLogIn").validate({
+	  	rules: 
+		{
+
+	    login: 
+		{
+	      required: true,
+	      email: true
+	    },
+
+		password: 
+		{
+		required: true,
+		}
+	  	}
+	});
+	});
+
+	</script>
 	<title> MyUPlan</title>
 </head>
 
@@ -56,18 +94,18 @@
 		<div class="row">
 		<div class="span6 offset3" style="margin-top: 50px">
 			<legend>Student Login</legend>
-			<form class="user-input" action="index.php" method="post" >
+			<form class="user-input" action="index.php" method="post"id="indexLogin" >
 				
 				<!-- Enter student email address -->
 				<label>Email</label>
 				<div class="input-control text">
-					<input type="text" name="login"><button class="btn-clear"></button>
+					<input type="text" name="login" class="required"><button class="btn-clear"></button>
 				</div>
 				
 				<!-- Enter student password -->
 				<label>Password</label>
 				<div class="input-control password">
-					<input type="password" name="password"><button class="btn-reveal"></button>
+					<input type="password" name="password" class="required"><button class="btn-reveal"></button>
 				</div>
 				
 				<!-- Create a gap between the input and submission buttons -->

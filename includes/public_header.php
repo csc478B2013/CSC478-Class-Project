@@ -43,11 +43,11 @@
 					padding: 10,
 					onShow: function(_dialog){
 						var content = 
-						'<form class="user-input" action="index.php" method="post" >' +
+						'<form class="user-input" action="index.php" method="post" id="menuLogIn">' +
 							'<label>Email</label>' +
-							'<div class="input-control text"><input type="text" name="login"><button class="btn-clear"></button></div>' +
+							'<div class="input-control text"><input type="text" name="login" class="required"><button class="btn-clear"></button></div>' +
 								'<label>Password</label>'+
-								'<div class="input-control password"><input type="password" name="password"><button class="btn-reveal"></button></div>' +
+								'<div class="input-control password"><input type="password" name="password" class="required"><button class="btn-reveal"></button></div>' +
 								'<div class="form-actions">' +
 								'<label></label>'+
 								'<button class="button primary" type="submit" name="loginForm">Login</button>&nbsp;'+
@@ -63,6 +63,5 @@
 			});
 		})
 	</script>
-
     </div>
 </div>

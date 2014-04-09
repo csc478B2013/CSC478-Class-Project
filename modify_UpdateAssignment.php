@@ -42,7 +42,22 @@
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
 	<script src="includes/code.js"></script>
-	
+	<script src="js/jquery.validate.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	$("#updateAssignmentForm").validate({
+	  	rules: 
+		{	
+		points_received: 
+		{
+			required: true,
+			minlength: 1,
+			digits: true
+		}
+	  	}
+	});
+	});
+	</script>
 	<title>Update Assignment Score</title>
 	
 	<!-- Remove assignment from database and then reload current page-->
@@ -105,7 +120,7 @@
 	<div class="grid">
 		<div class="row">
 		<div class="span10 offset1">
-			<form action="modify_UpdateAssignment.php" method="post" name="form">
+			<form action="modify_UpdateAssignment.php" method="post" name="form" id="updateAssignmentForm">
 			<fieldset>
 			<legend>Update Assignment Score</legend>
 				<table>

@@ -41,7 +41,35 @@
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
-
+	<script src="js/jquery.validate.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	$("#addCourseForm").validate({
+	  	rules: 
+		{
+		
+		designation: 
+		{
+		required: true
+		},
+		
+	    name: 
+		{
+	      required: true
+	    },
+		
+		credits: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		}
+	  	}
+	});
+	});
+	</script>
+	
 	<title>Add Course</title>
 	
 	<!-- Add Course to database -->
@@ -75,7 +103,7 @@
 	<div class="grid">
 		<div class="row">
 		<div class="span10 offset1">
-			<form action="modify_AddCourse.php" method="post" name="form">
+			<form action="modify_AddCourse.php" method="post" name="form" id="addCourseForm">
 			<fieldset>
 			<legend>Add Course</legend>
 				<table>

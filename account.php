@@ -64,6 +64,85 @@
 	
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	$("#accountForm").validate({
+	  	rules: 
+		{
+		
+		fname: 
+		{
+		required: true,
+		},
+		
+	    email: 
+		{
+	      required: true,
+	      email: true
+	    },
+	
+		phone: 
+		{
+		required: true,
+		},
+		
+		password: 
+		{
+		required: true,
+		},
+		
+		st_exam: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_quiz: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_project: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_homework: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_discussion: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_other: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		}
+	  	}
+	});
+	});
+	</script>
     
 	<title> Account </title>
 </head>
@@ -96,7 +175,7 @@
     <div class="grid">
         <div class="row">
 		
-            <form action="account.php" method="post">
+            <form action="account.php" method="post" id="accountForm">
 			<fieldset>
 			<legend>Account Settings</legend>
 				<table>
