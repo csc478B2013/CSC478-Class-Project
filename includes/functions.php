@@ -35,10 +35,10 @@
 		header('Location: ' . $url, true, $permanent ? 301 : 302);
 		exit();
 	}
-  
-  
+	
+	
 
-// Authentication
+	// Authentication
 	// SIDE NOTE: THIS IS LOW-SECURITY  SOLUTION BUT THIS IS A CLASS PROJECT SO WE NEED TO FOCUS ON OTHER ASPECTS OF THE CODE
 	// TODO: Fix this weak security
 	function authenticateUserWithCookie($link, $passedEmail, $passedPassword) {
