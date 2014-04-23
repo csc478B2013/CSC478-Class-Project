@@ -75,6 +75,10 @@
 	
 	<!-- Add Assignment to database -->
 	<?php
+	
+		$isSubmissionSuccessfull = true;
+		
+		
 		if(isset($_POST['myFormSubmitted'])) {
 			
 			// local variables
@@ -85,15 +89,24 @@
 			$due_date           = $_POST['due_date'];
 			$points_allowed     = $_POST['points_allowed'];
 			
-			// insert assignment into database
-			Assignment::insert($link, $student_id, $semester_id, $course_id, $assignment_type, $name, $due_date, $points_allowed);
+			//check to make sure that the course for a semester doesnt already exist
+			//
+			if(doesSemesterAndCourseAndAssignmentExist($link, $semester_id, $course_id, $name, $student_id) == false)
+			{
+				// insert assignment into database
+				Assignment::insert($link, $student_id, $semester_id, $course_id, $assignment_type, $name, $due_date, $points_allowed);
 					
-			// get course information from database
-			$courseOutput 				= Course::select($link, $course_id);
-			$assignmentOutput			= new Assignment();
+				// get course information from database
+				$courseOutput 				= Course::select($link, $course_id);
+				$assignmentOutput			= new Assignment();
 			
-			// pass information for output use
-			$assignmentOutput->name 	= $name;
+				// pass information for output use
+				$assignmentOutput->name 	= $name;
+			}
+			else
+			{
+				$isSubmissionSuccessfull = false;
+			}
 		}
 	?>
 		
@@ -150,6 +163,14 @@
 						<?php drawButton_Submit("Add"); ?>
 						<?php drawButton_Reset(); ?>
 					</tr>
+					<tr>
+						<?php // if we try to double submit an assignment 
+							if($isSubmissionSuccessfull == false) {
+								echo "	<span class='fg-red'>
+									Sorry, but you have already created this assignment.
+										</span>";}?>
+					</tr>
+					
 				</table>   
 			</fieldset>
 			</form>
@@ -159,23 +180,26 @@
 			
 				if(isset($_POST['myFormSubmitted'])) {
 					
-					// get course information
-					$designation    	= $courseOutput->designation;
-					$name           	= $courseOutput->name;
+					if($isSubmissionSuccessfull == true)
+					{
+						// get course information
+						$designation    	= $courseOutput->designation;
+						$name           	= $courseOutput->name;
 					
-					// get assignment information
-					$assignment_name 	= $assignmentOutput->name;
+						// get assignment information
+						$assignment_name 	= $assignmentOutput->name;
 
-					// let the user know that the course has been added. prompt options
-					echo "<p class='text-success'>$assignment_name has been added successfully to $designation, $name.</p>"; 
-					echo "<blockquote>
-							<p class='text-info'>
-								<strong>Add</strong> another assignment, a
-								<strong>New</strong> course, or 
-								<strong>Return</strong> to dashboard.
-							</p>
-						</blockquote>";
-					exit;
+						// let the user know that the course has been added. prompt options
+						echo "<p class='text-success'>$assignment_name has been added successfully to $designation, $name.</p>"; 
+						echo "<blockquote>
+								<p class='text-info'>
+									<strong>Add</strong> another assignment, a
+									<strong>New</strong> course, or 
+									<strong>Return</strong> to dashboard.
+								</p>
+							</blockquote>";
+						exit;
+					}
 				}
 			?>
 		</div>	
