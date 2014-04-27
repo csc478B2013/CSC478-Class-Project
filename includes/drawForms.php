@@ -21,7 +21,7 @@
 		echo "	</td>";
 		echo "	<td class='span5'>";
 		echo "		<div class='input-control text' data-role='input-control'>";
-		echo "			<input type='text' name='$name' placeholder='$placeholder'>";
+		echo "			<input type='text' name='$name' class='required' placeholder='$placeholder'>";
 		echo "			<button class='btn-clear' tabindex='-1' type='button'></button>";
 		echo "		</div>";
 		echo "	</td>";	
@@ -33,7 +33,7 @@
 		echo "	</td>";	
 		echo " 	<td class='span5'>";	
 		echo " 		<div class='input-control password' data-role='input-control'>";	
-		echo " 			<input type='password' name='$name' placeholder='$placeholder'>";	
+		echo " 			<input type='password' name='$name' class='required' placeholder='$placeholder'>";	
 		echo " 			<button class='btn-reveal' tabindex='-1' type='button'></button>";	
 		echo " 		</div>";	
 		echo " 	</td>";	
@@ -57,19 +57,20 @@
 		echo "	</td>";
 		echo "	<td class='span5'>";
 		echo "		<div class='input-control text' data-role='input-control'>";
-		echo "			<input type='text' name='$name' value='$value'>";
+		echo "			<input type='text' class='required' name='$name' value='$value'>";
 		echo "			<button class='btn-clear' tabindex='-1' type='button'></button>";
 		echo "		</div>";
 		echo "	</td>";	
 	}
 	
+
 	function drawTextValue_Password($label, $name, $value) {
 		echo " 	<td class='span2'>";
 		echo "		<label>$label:</label>";
 		echo "	</td>";	
 		echo " 	<td class='span5'>";	
 		echo " 		<div class='input-control password' data-role='input-control'>";	
-		echo " 			<input type='password' name='$name' value='$value'>";	
+		echo " 			<input type='password' name='$name' class='required' value='$value'>";	
 		echo " 			<button class='btn-reveal' tabindex='-1' type='button'></button>";	
 		echo " 		</div>";	
 		echo " 	</td>";	
@@ -81,7 +82,7 @@
 		echo "	</td>";	
 		echo " 	<td class='span2'>";	
 		echo " 		<div class='input-control text' data-role='input-control'>";	
-		echo " 			<input type='text' name='$name' value='$value'>";	
+		echo " 			<input type='text' name='$name' class='required' value='$value'>";	
 		echo " 			<button class='btn-clear' tabindex='-1' type='button'></button>";	
 		echo " 		</div>";	
 		echo " 	</td>";

@@ -35,10 +35,10 @@
 		header('Location: ' . $url, true, $permanent ? 301 : 302);
 		exit();
 	}
-  
-  
+	
+	
 
-// Authentication
+	// Authentication
 	// SIDE NOTE: THIS IS LOW-SECURITY  SOLUTION BUT THIS IS A CLASS PROJECT SO WE NEED TO FOCUS ON OTHER ASPECTS OF THE CODE
 	// TODO: Fix this weak security
 	function authenticateUserWithCookie($link, $passedEmail, $passedPassword) {
@@ -1102,6 +1102,7 @@
 		return $result;
 	}
 	
+	
 	function selectSemester_Current($link, $student_id) {		// select the current semester
 		// get information from database
 		$sql = "SELECT * 
@@ -1424,11 +1425,68 @@
     }
 
 	
+	//submission check functions
+	//
+	function doesSemesterByYearAndTermExist($link, $year, $term, $student_id) {				// check a specific semester by year and term
+		$doesSemesterExits = false;
+		
+		// select item from mysql database
+		$sql = "SELECT * 
+				FROM Semester
+				WHERE (year = $year and term = '$term') and student_id = $student_id";
+		$result = mysql_query($sql)or die(mysql_error());
+		
+		$num_results = mysql_num_rows($result);
+		
+		if($num_results > 0)
+		{
+			$doesSemesterExits = true;
+		}
+		// return result
+		return $doesSemesterExits;
+	}
 	
 	
+	function doesSemesterAndCourseExist($link, $semester_id, $designation, $student_id) {			// check if course and semester combo already exist
+		
+		$doesSemesterAndCourseExits = false;
+		
+		// get information from database
+		$sql = "SELECT * 
+				FROM Course
+				WHERE (student_id = $student_id and semester_id = $semester_id) and designation='$designation'";
+		$result = mysql_query($sql)or die(mysql_error());
+			
+		$num_results = mysql_num_rows($result);
+		
+		if($num_results > 0)
+		{
+			$doesSemesterAndCourseExits = true;
+		}
+		// return result
+		return $doesSemesterAndCourseExits;
+	}
 	
 	
-	
+	function doesSemesterAndCourseAndAssignmentExist($link, $semester_id, $course_id, $name, $student_id) {	// check if assignment already exists for current semester and course
+		
+		$doesSemesterAndCourseAndAssignmentExits = false;
+		
+		// get information from database
+		$sql = "SELECT * 
+				FROM Assignment
+				WHERE (semester_id = $semester_id and student_id = $student_id) and (course_id = $course_id and name='$name')";
+		
+		$result = mysql_query($sql)or die(mysql_error());
+			
+		
+		if($num_results > 0)
+		{
+			$doesSemesterAndCourseAndAssignmentExits = true;
+		}
+		// return result
+		return $doesSemesterAndCourseAndAssignmentExits;
+	}
 	
 	
 	

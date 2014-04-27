@@ -978,6 +978,11 @@ a {
 .metro .text-alert {
   color: #e51400 !important;
 }
+
+.metro .error {
+  color: #e51400 !important;
+}
+
 .metro .text-warning {
   color: #fa6800 !important;
 }

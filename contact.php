@@ -53,7 +53,8 @@
     <div class="grid">
         <div class="row">
 		
-			Not Started
+			<h2>Contact Us:</h2>
+			<p>Please contact us by <a href="mailto:sfost3@uis.edu?Subject=Contact%20Query" target="_top">clicking here.</a></p>
 			
         </div>
     </div>

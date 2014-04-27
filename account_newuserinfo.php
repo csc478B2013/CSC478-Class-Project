@@ -60,7 +60,65 @@
 	
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
-    
+    <script src="js/jquery.validate.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	$("#newUserInfoForm").validate({
+	  	rules: 
+		{
+		
+		
+		st_exam: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_quiz: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_project: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_homework: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_discussion: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		},
+		
+		st_other: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		}
+	  	}
+	});
+	});
+	</script>
 	<title> New User </title>
 </head>
 
@@ -69,7 +127,7 @@
 	<div class="grid">
 		<div class="row">
 		<div class="span10 offset1">
-			<form action="account_newuserinfo.php" method="post" name="form">
+			<form action="account_newuserinfo.php" method="post" name="form" id="newUserInfoForm">
 			<fieldset>
 				<legend>New User Questionaire</legend>
 				<table>

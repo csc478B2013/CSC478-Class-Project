@@ -53,6 +53,37 @@
 	
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
+	<script src="js/jquery.validate.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	$("#accountForm").validate({
+	  	rules: 
+		{
+		
+		name: 
+		{
+		required: true,
+		},
+		
+	    email: 
+		{
+	      required: true,
+	      email: true
+	    },
+	
+		phone: 
+		{
+		required: true,
+		},
+		
+		password: 
+		{
+		required: true,
+		}
+	  	}
+	});
+	});
+	</script>
     
 	<title> New User </title>
 </head>
@@ -62,7 +93,7 @@
 	<div class="grid">
 		<div class="row">
 		<div class="span10 offset1">
-			<form action="account_newuser.php" method="post">
+			<form action="account_newuser.php" method="post" id="accountForm">
 			<fieldset>
 				<legend>New User Setup</legend>
 				<table>

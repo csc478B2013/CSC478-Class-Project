@@ -10,6 +10,8 @@
 	
 	// set the student id
 	$student_id = $_COOKIE["UserIdent"];
+	
+	$isSubmissionSuccessfull = true;
 		
 	// connect to database
 	$link = db_connect();
@@ -20,12 +22,23 @@
 		$year           = $_POST['year'];
 		$term           = $_POST['term'];
 		
+		//ok check if we have a potential duplicate
+		//
+		if(doesSemesterByYearAndTermExist($link, $year, $term, $student_id) == false)
+		{
 		// insert semester into database
 		Semester::insert($link, $student_id, $year, $term);
 
 		// go to the next page
 		Redirect('modify_AddCourse.php');
 		exit;
+		}
+		else
+		{
+			$isSubmissionSuccessfull = false;
+		}
+		
+		
 		
 	}
 ?>
@@ -83,6 +96,14 @@
 					<tr>
 						<?php drawButton_Submit("Add"); ?> 
 						<?php drawButton_Reset(); ?>
+					</tr>
+					
+					<tr>
+						<?php // if we try to double submit a semester 
+						if($isSubmissionSuccessfull == false) {
+							echo "	<span class='fg-red'>
+										Sorry, but you have already created this semester.
+									</span>";}?>
 					</tr>
 
 				</table>   

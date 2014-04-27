@@ -41,11 +41,42 @@
     <!-- Load JavaScript Local Libraries-->
     <script src="js/docs.js"></script>
     <script src="js/github.info.js"></script>
-
+	<script src="js/jquery.validate.min.js"></script>
+	<script>
+	$(document).ready(function(){
+	$("#addCourseForm").validate({
+	  	rules: 
+		{
+		
+		designation: 
+		{
+		required: true
+		},
+		
+	    name: 
+		{
+	      required: true
+	    },
+		
+		credits: 
+		{
+		required: true,
+		maxlength: 1,
+		minlength: 1,
+		digits: true
+		}
+	  	}
+	});
+	});
+	</script>
+	
 	<title>Add Course</title>
 	
 	<!-- Add Course to database -->
 	<?php
+	
+		$isSubmissionSuccessfull = true;
+		
 		if(isset($_POST['myFormSubmitted'])) {
 			
 			// local variables
@@ -54,16 +85,25 @@
 			$name           = $_POST['name'];
 			$credits        = $_POST['credits'];
 			
-			// insert into database
-			Course::insert($link, $student_id, $semester_id, $designation, $name, $credits);
+			//check to make sure that the course for a semester doesnt already exist
+			//
+			if(doesSemesterAndCourseExist($link, $semester_id, $designation, $student_id) == false)
+			{
+				// insert into database
+				Course::insert($link, $student_id, $semester_id, $designation, $name, $credits);
 
-			// get record information from database for output use
-			$semesterOutput = Semester::select($link, $semester_id);
-			$courseOutput 	= new Course();
+				// get record information from database for output use
+				$semesterOutput = Semester::select($link, $semester_id);
+				$courseOutput 	= new Course();
 			
-			// pass information for output use
-			$courseOutput->designation 	= $designation;
-			$courseOutput->name 		= $name;
+				// pass information for output use
+				$courseOutput->designation 	= $designation;
+				$courseOutput->name 		= $name;
+			}
+			else
+			{
+				$isSubmissionSuccessfull = false;
+			}
 		}
 	?>
 			
@@ -75,7 +115,7 @@
 	<div class="grid">
 		<div class="row">
 		<div class="span10 offset1">
-			<form action="modify_AddCourse.php" method="post" name="form">
+			<form action="modify_AddCourse.php" method="post" name="form" id="addCourseForm">
 			<fieldset>
 			<legend>Add Course</legend>
 				<table>
@@ -100,7 +140,13 @@
 						<?php drawButton_Submit("Add"); ?>
 						<?php drawButton_Reset(); ?>
 					</tr>
-					
+					<tr>
+						<?php // if we try to double submit a course 
+						if($isSubmissionSuccessfull == false) {
+							echo "	<span class='fg-red'>
+										Sorry, but you have already created this course.
+									</span>";}?>
+					</tr>
 				</table>   
 			</fieldset>
 			</form>
@@ -109,24 +155,27 @@
 			<?php
 				if(isset($_POST['myFormSubmitted'])) {
 
-					// get semester information
-					$year           = $semesterOutput->year;
-					$term           = $semesterOutput->term;
+					if($isSubmissionSuccessfull == true)
+					{
+						// get semester information
+						$year           = $semesterOutput->year;
+						$term           = $semesterOutput->term;
 					
-					// get course information
-					$designation    = $courseOutput->designation;
-					$name           = $courseOutput->name;
+						// get course information
+						$designation    = $courseOutput->designation;
+						$name           = $courseOutput->name;
 					
-					// let the user know that the course has been added. prompt options
-					echo "<p class='text-success'>$designation, $name has been added to $term, $year. </p>"; 
-					echo "<blockquote>
-							<p class='text-info'>
-								<strong>Add</strong> another course, 
-								<strong>Add</strong> an assignment, or 
-								<strong>Return</strong> to dashboard.
-							</p>
-						</blockquote>";
-					exit;
+						// let the user know that the course has been added. prompt options
+						echo "<p class='text-success'>$designation, $name has been added to $term, $year. </p>"; 
+						echo "<blockquote>
+								<p class='text-info'>
+									<strong>Add</strong> another course, 
+									<strong>Add</strong> an assignment, or 
+									<strong>Return</strong> to dashboard.
+									</p>
+									</blockquote>";
+									exit;
+					}
 				}
 			?>
 			
