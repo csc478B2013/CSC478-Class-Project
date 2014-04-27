@@ -251,5 +251,94 @@
 		echo "</div>";
 	}
 
+	function drawTable_OptimalPlan($link, $course_id, $desiredGrade) {
+		
+		// get course information from database
+		$courseObject = Course::select($link, $course_id);
+		$designation = $courseObject->designation;
+		$name = $courseObject->name;
+		
+		// compute optimal grade
+		$percent_needed = compute_optimal($link, $course_id, $desiredGrade);
+	
+	
+		// if there are no assignments in the course, let the user know
+		if ($percent_needed == -1) {
+			echo "	<blockquote>
+						<p class='text-alert'>
+							I'm sorry, there are no assignments to build an 
+							optimal plan from in $designation, $name.
+						</p>
+					</blockquote>";
+		}
+		// if the letter grade is unachievable, let the user know
+		else if ($percent_needed == 0) {
+			echo "	<blockquote>
+						<p class='text-alert'>I'm sorry, a letter grade of <strong>$desiredGrade</strong> 
+						is unachievable in $designation, $name.</p>
+					</blockquote>";
+		}
+		
+		// else, display what scores are needed on the remaining assignments
+		else {
+		
+			// get record information from database for output use
+			$courseAssignments	= selectAssignment_Course($link, $course_id);
+			$totalPointsNeeded 	= 0;
+			$totalPointsAllowed	= 0;
+			
+			// create table
+			echo "<table class='table'>";
+			echo "<thead><tr>
+					<th class='text-left'>Assignment</th>
+					<th class='text-left'>Type</th>
+					<th class='text-left'>Points Possible</th>
+					<th class='text-left'>Points Needed</th>
+				</tr></thead>";
+			
+			// fill table
+			while($row = mysql_fetch_array($courseAssignments)){
+				
+				// set variables
+				$assignment_type	= $row['assignment_type'];
+				$name				= $row['name'];
+				$points_allowed		= $row['points_allowed'];
+				$points_received    = $row['points_received'];
+				
+				// only display assignments that haven't been graded yet
+				if ($points_received == NULL){
+					
+					// internal calculations
+					$assignmentPointsNeeded	= round($percent_needed * $points_allowed);
+					$totalPointsAllowed		= $totalPointsAllowed + $points_allowed;
+					$totalPointsNeeded		= $totalPointsNeeded + $assignmentPointsNeeded;
+					
+					// fill row
+					echo "<tr>
+							<td>".$assignment_type."</td>
+							<td>".$name."</td>
+							<td>".$points_allowed."</td>
+							<td>".$assignmentPointsNeeded."</td>
+						</tr>";
+				}
+				
+			} // end loop for table
+			
+			// output gpa to footer of table
+			echo "<tfoot>";
+			echo "<tr><td colspan='4'>
+					<p class='text-warning'>
+					You will need <strong>$totalPointsNeeded / $totalPointsAllowed</strong> points from the remaining assignments in order 
+					to achieve a <strong>$desiredGrade</strong> in $designation, $name. 
+					</p>
+				  </td></tr>";
+			echo "</tfoot>";
+			echo "</table>";
+			
+			echo "</div>";
+			
+		}
+	}
+	
 	
 ?>

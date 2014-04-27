@@ -237,6 +237,22 @@
 		echo "		</div>";
 		echo "	</td></tr>";
 	}
+
+	function drawSelect_DesiredGrade() {
+		echo "	<td class='span2'>";
+		echo "		<label>Desired Grade:</label>";
+		echo "	</td>";
+		echo "	<td class='span5'>";
+		echo "		<div class='input-control select' data-role='input-control'>";
+		echo "			<select name='desiredGrade'>";
+		echo "				<option>A</option>";
+		echo "				<option>B</option>";
+		echo "				<option>C</option>";
+		echo "				<option>D</option>";
+		echo "			</select>";
+		echo "		</div>";
+		echo "	</td>";
+	}
 	
 	
 // Select Input (Special Case)

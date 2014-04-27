@@ -1373,7 +1373,65 @@
         return $isCurrent;
     }
     
-
+	function compute_optimal($link, $course_id, $desiredGrade) {
+	
+		// get record information from database and calculate totals
+		$courseAssignments	= selectAssignment_Course($link, $course_id);
+		
+		// local variables
+		$points_total = 0;
+		$points_scored = 0;
+		$points_remaining = 0;
+		$points_needed = 0;
+		
+		// add to running totals
+		while($row = mysql_fetch_array($courseAssignments)){
+			
+			// set variables
+			$assignment_id		= $row['assignment_id'];
+			$points_allowed		= $row['points_allowed'];
+			$points_received    = $row['points_received'];
+			
+			// calculate running totals
+			$points_total = $points_total + $points_allowed;
+			
+			if ($points_received != NULL)
+				$points_scored = $points_scored + $points_received;
+			else
+				$points_remaining = $points_remaining + $points_allowed;
+		
+		}
+		
+		// calculate points needed to achieve desired grade
+		switch($desiredGrade) {
+			case 'A':
+				$points_needed = 0.9 * $points_total - $points_scored;
+				break;
+			case 'B':
+				$points_needed = 0.8 * $points_total - $points_scored;
+				break;
+			case 'C':
+				$points_needed = 0.7 * $points_total - $points_scored;
+				break;
+			case 'D':
+				$points_needed = 0.6 * $points_total - $points_scored;
+				break;
+		}
+		
+		// determine if desired grade is possible.
+		// if there are no assignments loaded, retuan a -1
+		if ($points_total == 0) {
+			return -1;
+		}
+		// if desired grade is not possible, return a 0
+		else if ($points_needed > $points_remaining) {
+			return 0;
+		}
+		// if desired grade is possible, return the points ratio needed
+		else {
+			return $points_needed / $points_remaining;
+		}
+	}
 
 // Get Functions
 
